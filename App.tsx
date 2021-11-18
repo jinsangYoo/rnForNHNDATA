@@ -8,108 +8,73 @@
  * @format
  */
 
-import React from 'react'
+import React, {useMemo, useState} from 'react'
+import type {FC} from 'react'
 import {
   SafeAreaView,
   ScrollView,
-  StatusBar,
+  FlatList,
   StyleSheet,
   Text,
-  useColorScheme,
+  Dimensions,
   View,
 } from 'react-native'
+import {Colors} from 'react-native-paper'
+import PersonUsingObjectState from './src/screens/PersonUsingObjectState'
+import PersonUsingPassingState from './src/screens/PersonUsingPassingState'
+import PersonUsingValueState from './src/screens/PersonUsingValueState'
+import * as D from './src/data'
+import TopBar from './src/screens/TopBar'
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen'
+const {width} = Dimensions.get('window')
 
-const Section: React.FC<{
+type PersonInformation = {
   title: string
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark'
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  )
+  Component: FC<any>
 }
+const personInformations: PersonInformation[] = [
+  {title: 'PersonUsingValueState', Component: PersonUsingValueState},
+  {title: 'PersonUsingObjectState', Component: PersonUsingObjectState},
+  {title: 'PersonUsingPassingState', Component: PersonUsingPassingState},
+]
+const numberOfComponents = personInformations.length
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark'
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  }
+  // const people = useMemo(() => D.makeArray(10).map(D.createRandomPerson), [])
+  const [people, setPeople] = useState<D.IPerson[]>([])
+  const children = useMemo(
+    () =>
+      personInformations.map(({title, Component}: PersonInformation) => (
+        <View style={{flex: 1}} key={title}>
+          <Text style={[styles.text]}>{title}</Text>
+          <FlatList
+            data={people}
+            renderItem={({item}) => <Component person={item} />}
+            keyExtractor={(item, index) => item.id}
+            ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
+          />
+        </View>
+      )),
+    [people.length],
+  )
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+    <SafeAreaView style={styles.flex}>
+      <TopBar setPeople={setPeople} />
       <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
+        horizontal
+        contentContainerStyle={styles.horizontalScrollView}>
+        {children}
       </ScrollView>
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  flex: {flex: 1},
+  itemSeparator: {borderWidth: 1, borderColor: Colors.grey500},
+  horizontalScrollView: {width: width * numberOfComponents},
+  text: {fontSize: 24, textAlign: 'center'},
 })
 
 export default App
