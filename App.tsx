@@ -8,73 +8,63 @@
  * @format
  */
 
-import React, {useMemo, useState} from 'react'
-import type {FC} from 'react'
+import React, {useLayoutEffect} from 'react'
+import {SafeAreaView, StyleSheet, Platform} from 'react-native'
+
 import {
-  SafeAreaView,
-  ScrollView,
-  FlatList,
-  StyleSheet,
-  Text,
-  Dimensions,
-  View,
-} from 'react-native'
-import {Colors} from 'react-native-paper'
-import PersonUsingObjectState from './src/screens/PersonUsingObjectState'
-import PersonUsingPassingState from './src/screens/PersonUsingPassingState'
-import PersonUsingValueState from './src/screens/PersonUsingValueState'
-import * as D from './src/data'
-import TopBar from './src/screens/TopBar'
-
-const {width} = Dimensions.get('window')
-
-type PersonInformation = {
-  title: string
-  Component: FC<any>
-}
-const personInformations: PersonInformation[] = [
-  {title: 'PersonUsingValueState', Component: PersonUsingValueState},
-  {title: 'PersonUsingObjectState', Component: PersonUsingObjectState},
-  {title: 'PersonUsingPassingState', Component: PersonUsingPassingState},
-]
-const numberOfComponents = personInformations.length
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus,
+} from 'reactslimer'
+import MainNavigator from './src/screens/MainNavigator'
 
 const App = () => {
-  // const people = useMemo(() => D.makeArray(10).map(D.createRandomPerson), [])
-  const [people, setPeople] = useState<D.IPerson[]>([])
-  const children = useMemo(
-    () =>
-      personInformations.map(({title, Component}: PersonInformation) => (
-        <View style={{flex: 1}} key={title}>
-          <Text style={[styles.text]}>{title}</Text>
-          <FlatList
-            data={people}
-            renderItem={({item}) => <Component person={item} />}
-            keyExtractor={(item, index) => item.id}
-            ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
-          />
-        </View>
-      )),
-    [people.length],
-  )
+  useLayoutEffect(() => {
+    const _config = AceConfiguration.init(getGCode())
+    ACS.configure(_config)
+      .then(response => {
+        console.log('SDK Promise 초기화::in then!!')
+        console.log('response: ' + JSON.stringify(response, null, 2))
+      })
+      .catch(err => {
+        console.log('SDK Promise 초기화::in reject!!')
+        console.log('err: ' + JSON.stringify(err, null, 2))
+      })
+  }, [])
 
   return (
-    <SafeAreaView style={styles.flex}>
-      <TopBar setPeople={setPeople} />
-      <ScrollView
-        horizontal
-        contentContainerStyle={styles.horizontalScrollView}>
-        {children}
-      </ScrollView>
+    <SafeAreaView style={styles.safeAreaView}>
+      <MainNavigator />
     </SafeAreaView>
   )
 }
 
+function getGCode(): string {
+  if (Platform.OS == 'ios') {
+    return 'AK3A79964'
+  } else {
+    return 'AK2A79936'
+  }
+}
+
+function isEmpty(value: any): boolean {
+  return (
+    value === null || // check for null
+    value === undefined || // check for undefined
+    value === '' || // check for empty string
+    (Array.isArray(value) && value.length === 0) || // check for empty array
+    (typeof value === 'object' && Object.keys(value).length === 0) // check for empty object
+  )
+}
+
 const styles = StyleSheet.create({
-  flex: {flex: 1},
-  itemSeparator: {borderWidth: 1, borderColor: Colors.grey500},
-  horizontalScrollView: {width: width * numberOfComponents},
-  text: {fontSize: 24, textAlign: 'center'},
+  safeAreaView: {
+    flex: 1,
+  },
 })
 
 export default App
