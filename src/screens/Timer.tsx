@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useLayoutEffect} from 'react'
 import {
   Platform,
   StyleSheet,
@@ -10,8 +10,27 @@ import {
 import {Colors} from 'react-native-paper'
 import {useToggle, useTimeout} from '../hooks'
 
+import {getRandomIntInclusive} from '../../utils'
+import {sendCommonWithPromise} from '../../acsdk'
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus,
+} from 'reactslimer'
+
 const title = 'Timer'
 export default function Timer() {
+  useLayoutEffect(() => {
+    const randomValue = getRandomIntInclusive(0, 999).toString()
+    const msg = `>>${title}<< >>${randomValue}<<`
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
+
   const [loading, toggleLoading] = useToggle(true)
   useTimeout(
     () => {

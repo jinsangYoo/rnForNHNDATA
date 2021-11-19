@@ -1,12 +1,31 @@
-import React, {useState} from 'react'
+import React, {useLayoutEffect, useState} from 'react'
 import {StyleSheet, View, Text, FlatList} from 'react-native'
 import {Colors} from 'react-native-paper'
 import Country from './Country'
 import * as D from '../data'
 import {useAsync} from '../hooks'
 
+import {getRandomIntInclusive} from '../../utils'
+import {sendCommonWithPromise} from '../../acsdk'
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus,
+} from 'reactslimer'
+
 const title = 'Fetch'
 export default function Fetch() {
+  useLayoutEffect(() => {
+    const randomValue = getRandomIntInclusive(0, 999).toString()
+    const msg = `>>${title}<< >>${randomValue}<<`
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
+
   const [countries, setCountries] = useState<D.ICountry[]>([])
   const [error, resetError] = useAsync(async () => {
     setCountries([])
