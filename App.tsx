@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, {useLayoutEffect} from 'react'
+import React, {useState, useCallback, useLayoutEffect} from 'react'
 import {SafeAreaView, StyleSheet, Platform} from 'react-native'
 
 import {
@@ -21,6 +21,18 @@ import {
   ACEMaritalStatus,
 } from 'reactslimer'
 import MainNavigator from './src/screens/MainNavigator'
+
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from '@react-navigation/native'
+import {AppearanceProvider, useColorScheme} from 'react-native-appearance'
+import {Provider as ReduxProvider} from 'react-redux'
+import {ToggleThemeProvider} from './src/contexts'
+import {makeStore} from './src/store'
+
+const store = makeStore()
 
 const App = () => {
   useLayoutEffect(() => {
@@ -36,9 +48,23 @@ const App = () => {
       })
   }, [])
 
+  const scheme = useColorScheme() // 'dark' 혹은 'light'
+  const [theme, setTheme] = useState(
+    scheme === 'dark' ? DarkTheme : DefaultTheme,
+  )
+  // prettier-ignore
+  const toggleTheme = useCallback(
+  () => setTheme(({dark}) => (dark ? DefaultTheme : DarkTheme)),
+  [])
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <MainNavigator />
+      <ToggleThemeProvider toggleTheme={toggleTheme}>
+        <ReduxProvider store={store}>
+          <NavigationContainer theme={theme}>
+            <MainNavigator />
+          </NavigationContainer>
+        </ReduxProvider>
+      </ToggleThemeProvider>
     </SafeAreaView>
   )
 }
