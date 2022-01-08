@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react'
 import {StyleSheet} from 'react-native'
 // prettier-ignore
-import {View, Text, NavigationHeader, UnderlineText,
+import {View, Text, NavigationHeader, UnderlineText, TouchableView,
 MaterialCommunityIcon as Icon, Switch} from '../theme'
 import type {FC} from 'react'
 import type {DrawerContentComponentProps} from '@react-navigation/drawer'
@@ -24,8 +24,10 @@ const DrawerContent: FC<DrawerContentComponentProps> = props => {
   const {navigation} = props
   const close = useCallback(
     () => navigation.dispatch(DrawerActions.closeDrawer()),
-    []
+    [],
   )
+  const goSettings = useCallback(() => navigation.navigate('Settings'), [])
+
   if (!loggedIn) {
     return (
       <DrawerContentScrollView {...props} contentContainerStyle={[styles.view]}>
@@ -34,6 +36,12 @@ const DrawerContent: FC<DrawerContentComponentProps> = props => {
         />
         <View style={[styles.content]}>
           <Text style={[styles.text]}>Please login or signup.</Text>
+          <TouchableView
+            notification
+            style={[styles.touchableView, {marginTop: 20}]}
+            onPress={goSettings}>
+            <Text style={[styles.text]}>Settings</Text>
+          </TouchableView>
           <View style={[styles.row, {marginTop: 20}]}>
             <Switch />
           </View>
@@ -60,6 +68,12 @@ const DrawerContent: FC<DrawerContentComponentProps> = props => {
             {email}
           </UnderlineText>
         </View>
+        <TouchableView
+          notification
+          style={[styles.touchableView, {marginTop: 20}]}
+          onPress={goSettings}>
+          <Text style={[styles.text]}>Settings</Text>
+        </TouchableView>
         <View style={[styles.row, {marginTop: 20}]}>
           <Switch />
         </View>
@@ -73,5 +87,13 @@ const styles = StyleSheet.create({
   row: {flexDirection: 'row', padding: 5, alignItems: 'center'},
   m: {marginLeft: 5},
   text: {fontSize: 20},
-  content: {flex: 1, padding: 5}
+  content: {flex: 1, padding: 5},
+  touchableView: {
+    flexDirection: 'row',
+    height: 50,
+    borderRadius: 10,
+    width: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })
