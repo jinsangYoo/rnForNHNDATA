@@ -103,18 +103,33 @@ export default function Settings() {
               {isAdTrackingEnabled.toString()}
             </Text>
           </View>
-          <View style={[styles.textView]}>
-            <Text style={[styles.text]}>password</Text>
-            <View border style={[styles.textInputView]}>
-              <TextInput
-                secureTextEntry
-                onFocus={focus}
-                style={[styles.textInput]}
-                value={password}
-                onChangeText={setPassword}
-                placeholder="enter your name"
-              />
-            </View>
+          <View style={[commonStyles.widthFullView]}>
+            <Text style={[commonStyles.rowTitle, styles.text]}>
+              {Platform.select({
+                ios: 'bundle identifier',
+                android: 'ANDROID_ID',
+              })}
+              :
+            </Text>
+            <Text
+              style={[
+                commonStyles.flex,
+                commonStyles.rowValueToLeftPadding,
+                styles.text,
+              ]}>
+              {DeviceInfo.getBundleId()}
+            </Text>
+          </View>
+          <View style={[commonStyles.widthFullView]}>
+            <Text style={[commonStyles.rowTitle, styles.text]}>푸시 토큰</Text>
+            <Text
+              style={[
+                commonStyles.flex,
+                commonStyles.rowValueToLeftPadding,
+                styles.text,
+              ]}>
+              {DeviceInfo.getBundleId()}
+            </Text>
           </View>
           <TouchableView
             notification
@@ -122,11 +137,6 @@ export default function Settings() {
             onPress={goTabNavigator}>
             <Text style={[styles.text]}>Login</Text>
           </TouchableView>
-          <UnderlineText
-            style={[styles.text, {marginTop: 15}]}
-            onPress={goSignUp}>
-            SignUp
-          </UnderlineText>
         </AutoFocusProvider>
       </View>
     </SafeAreaView>
