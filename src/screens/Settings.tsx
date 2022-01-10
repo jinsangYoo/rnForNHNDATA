@@ -1,6 +1,7 @@
 import React, {useState, useCallback, useEffect} from 'react'
-import {Platform, StyleSheet} from 'react-native'
+import {Platform, StyleSheet, ToastAndroid, Alert} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
+import Clipboard from '@react-native-clipboard/clipboard'
 // prettier-ignore
 import {SafeAreaView, View, Text, TextInput, TouchableView, UnderlineText}
 from '../theme'
@@ -16,6 +17,8 @@ import DeviceInfo from 'react-native-device-info'
 import ReactNativeIdfaAaid, {
   AdvertisingInfoResponse,
 } from '@sparkfabrik/react-native-idfa-aaid'
+import {useAsync} from '../hooks'
+import {getToken} from '../message'
 
 export default function Settings() {
   const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
@@ -34,7 +37,7 @@ export default function Settings() {
     dispatch(L.loginAction({email, name, password}))
     navigation.navigate('TabNavigator')
   }, [email, name, password])
-  const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
+  // const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
 
   useEffect(() => {
     ReactNativeIdfaAaid.getAdvertisingInfo()
@@ -50,15 +53,32 @@ export default function Settings() {
 
     U.readFromStorage(L.loggedUserKey)
       .then(value => {
-        if (value.length > 0) {
-          const savedUser = JSON.parse(value)
-          setEmail(savedUser.email)
-          setName(savedUser.name)
-          setPassword(savedUser.password)
-        }
+        // if (value.length > 0) {
+        //   const savedUser = JSON.parse(value)
+        //   setEmail(savedUser.email)
+        //   setName(savedUser.name)
+        //   setPassword(savedUser.password)
+        // }
       })
       .catch(e => {})
   }, [loggedIn])
+
+  const [token, setToken] = useState<string>('not init')
+  const [error, resetError] = useAsync(async () => {
+    setToken('not init')
+    resetError()
+    const _token = await getToken()
+    setToken(_token)
+  })
+  const copyToClipboard = () => {
+    Clipboard.setString(token)
+    const doneCopy = '푸시 토큰을 복사했습니다.'
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(doneCopy, ToastAndroid.SHORT)
+    } else {
+      Alert.alert(doneCopy)
+    }
+  }
 
   return (
     <SafeAreaView>
@@ -121,21 +141,22 @@ export default function Settings() {
             </Text>
           </View>
           <View style={[commonStyles.widthFullView]}>
-            <Text style={[commonStyles.rowTitle, styles.text]}>푸시 토큰</Text>
+            <Text style={[commonStyles.rowTitle, styles.text]}>푸시 토큰:</Text>
             <Text
               style={[
                 commonStyles.flex,
                 commonStyles.rowValueToLeftPadding,
                 styles.text,
               ]}>
-              {DeviceInfo.getBundleId()}
+              {error && <Text>error: {error.message}</Text>}
+              {token}
             </Text>
           </View>
           <TouchableView
             notification
             style={[styles.touchableView]}
-            onPress={goTabNavigator}>
-            <Text style={[styles.text]}>Login</Text>
+            onPress={copyToClipboard}>
+            <Text style={[styles.text]}>복사</Text>
           </TouchableView>
         </AutoFocusProvider>
       </View>

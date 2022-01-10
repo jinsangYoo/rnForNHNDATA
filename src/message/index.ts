@@ -14,7 +14,7 @@ import {
   ACEMaritalStatus,
 } from 'reactslimer'
 
-function CloudMessaging() {
+export function CloudMessaging() {
   useEffect(() => {
     console.log('컴포넌트가 화면에 나타남')
     registerAppWithFCM()
@@ -142,4 +142,25 @@ function CloudMessaging() {
   return null
 }
 
-export default CloudMessaging
+export const hasPermissionForPush = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    messaging()
+      .hasPermission()
+      .then(enabled => resolve(enabled ? true : false))
+      .catch(reject)
+  })
+
+export const getToken = (): Promise<string> =>
+  new Promise((resolve, reject) => {
+    hasPermissionForPush().then(enabled => {
+      if (enabled) {
+        messaging()
+          .getToken()
+          .then(token => resolve(token))
+          .catch(reject)
+      } else {
+        console.log('please, check permission.')
+        reject(new Error('please, check permission.'))
+      }
+    })
+  })

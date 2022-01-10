@@ -32,7 +32,7 @@ import {Provider as ReduxProvider} from 'react-redux'
 import {ToggleThemeProvider} from './src/contexts'
 import {makeStore} from './src/store'
 
-import CloudMessaging from './src/message/Messaging'
+import {CloudMessaging} from './src/message'
 import {gcodeSelector} from './utils/aceWrappers'
 
 const store = makeStore()
