@@ -70,7 +70,7 @@ export default function Settings() {
     const _token = await getToken()
     setToken(_token)
   })
-  const copyToClipboard = () => {
+  const copyToClipboard = useCallback(() => {
     Clipboard.setString(token)
     const doneCopy = '푸시 토큰을 복사했습니다.'
     if (Platform.OS === 'android') {
@@ -78,7 +78,7 @@ export default function Settings() {
     } else {
       Alert.alert(doneCopy)
     }
-  }
+  }, [token])
 
   return (
     <SafeAreaView>
