@@ -17,7 +17,7 @@ export const NavigationHeader: FC<NavigationHeaderProps> = ({
   Left,
   Right,
   viewStyle,
-  titleStyle
+  titleStyle,
 }) => {
   return (
     <View style={[styles.view, viewStyle]}>
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     padding: 5,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   title: {fontSize: 20, fontWeight: '500', textAlign: 'center'},
-  flex: {flex: 1, backgroundColor: 'transparent'}
+  flex: {flex: 1, backgroundColor: 'transparent'},
 })

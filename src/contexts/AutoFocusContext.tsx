@@ -1,36 +1,3 @@
-// 초기 모습
-/*
-import React, {createContext, useContext, useRef, useCallback} from 'react'
-import type {FC, ComponentProps} from 'react'
-import {findNodeHandle} from 'react-native'
-import type {NativeSyntheticEvent, TextInputFocusEventData} from 'react-native'
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
-
-export type FocusContextType = {}
-const defaultFocusContext = {}
-const AutoFocusContext = createContext<FocusContextType>(defaultFocusContext)
-
-export type AutoFocusProviderProps = ComponentProps<
-  typeof KeyboardAwareScrollView
->
-export const AutoFocusProvider: FC<AutoFocusProviderProps> = ({
-  children,
-  ...props
-}) => {
-  const value = {}
-  return (
-    <AutoFocusContext.Provider value={value}>
-      {children}
-    </AutoFocusContext.Provider>
-  )
-}
-
-export const useAutoFocus = () => {
-  const value = useContext(AutoFocusContext)
-  return value
-}
-*/
-// 최종 모습
 import React, {createContext, useContext, useRef, useCallback} from 'react'
 import type {FC, ComponentProps} from 'react'
 import {findNodeHandle} from 'react-native'
@@ -42,10 +9,10 @@ export type AutoFocusContextType = {
   autoFocus: (event: FocusEvent) => void
 }
 const defaultAutoFocusContext = {
-  autoFocus: (event: FocusEvent) => {}
+  autoFocus: (event: FocusEvent) => {},
 }
 const AutoFocusContext = createContext<AutoFocusContextType>(
-  defaultAutoFocusContext
+  defaultAutoFocusContext,
 )
 
 export type AutoFocusProviderProps = ComponentProps<
@@ -63,7 +30,7 @@ export const AutoFocusProvider: FC<AutoFocusProviderProps> = ({
     scrollToInput(findNodeHandle(event.target))
   }, [])
   const value = {
-    autoFocus
+    autoFocus,
   }
 
   return (

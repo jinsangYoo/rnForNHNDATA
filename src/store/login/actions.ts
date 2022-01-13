@@ -4,10 +4,20 @@ import type * as T from './types'
 
 export const loginAction = (loggedUser: T.User): T.LoginAction => ({
   type: 'login',
-  loggedUser
+  loggedUser,
 })
+export const loginWithSaveAction =
+  (loggedUser: T.User) => (dispatch: Dispatch) => {
+    U.writeToStorage(loggedUserKey, JSON.stringify(loggedUser))
+      .then(() => {
+        dispatch(loginAction(loggedUser))
+      })
+      .catch(e => {
+        dispatch(loginAction(loggedUser))
+      })
+  }
 export const logoutAction = (): T.LogoutAction => ({
-  type: 'logout'
+  type: 'logout',
 })
 
 export const loggedUserKey = 'loggedUser'

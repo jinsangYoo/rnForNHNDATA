@@ -12,7 +12,7 @@ const loggedInReducer = (state = initialLoggedIn, action: T.Actions) => {
   }
   return state
 }
-const initialLoggedUser: T.User = {email: '', name: '', password: ''}
+const initialLoggedUser: T.User = {acesession: '', id: '', password: ''}
 const loggedUserReducer = (state = initialLoggedUser, action: T.Actions) => {
   switch (action.type) {
     case 'login':
@@ -24,5 +24,5 @@ const loggedUserReducer = (state = initialLoggedUser, action: T.Actions) => {
 }
 export const reducer = combineReducers({
   loggedIn: loggedInReducer,
-  loggedUser: loggedUserReducer
+  loggedUser: loggedUserReducer,
 })

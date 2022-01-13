@@ -1,5 +1,11 @@
 import React, {useState, useCallback, useEffect} from 'react'
-import {StyleSheet} from 'react-native'
+import {
+  Platform,
+  StyleSheet,
+  ActivityIndicator,
+  ToastAndroid,
+  Alert,
+} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 // prettier-ignore
 import {SafeAreaView, View, Text, TextInput, TouchableView, UnderlineText}
@@ -10,19 +16,20 @@ import {useDispatch, useSelector} from 'react-redux'
 import {AppState} from '../store'
 import * as U from '../utils'
 import * as L from '../store/login'
+import {Colors} from 'react-native-paper'
 
 export default function Login() {
   const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
-  const [email, setEmail] = useState<string>('')
-  const [name, setName] = useState<string>('')
+  const [acesession, setAcesession] = useState<string>('')
+  const [id, setId] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const focus = useAutoFocus()
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const goTabNavigator = useCallback(() => {
-    dispatch(L.loginAction({email, name, password}))
+    dispatch(L.loginAction({acesession, id, password}))
     navigation.navigate('TabNavigator')
-  }, [email, name, password])
+  }, [acesession, id, password])
   const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
 
   useEffect(() => {
@@ -30,27 +37,97 @@ export default function Login() {
       .then(value => {
         if (value.length > 0) {
           const savedUser = JSON.parse(value)
-          setEmail(savedUser.email)
-          setName(savedUser.name)
+          setAcesession(savedUser.acesession)
+          setId(savedUser.id)
           setPassword(savedUser.password)
         }
       })
       .catch(e => {})
   }, [loggedIn])
 
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const onLogin = useCallback(() => {
+    setLoading(true)
+    fetch(`http://m.acecounter.com/login.amz?id=${id}&pw=${password}`)
+      .then(res => {
+        var _resultMap = new Map()
+        for (const [key, value] of Object.entries(res)) {
+          _resultMap.set(key, value)
+        }
+
+        if (_resultMap.has('status') && _resultMap.get('status') === 200) {
+          console.log(`_resultMap.get('status'): ${_resultMap.get('status')}`)
+        } else {
+          throw new Error('response is not ok.')
+        }
+
+        var _resultHeadersMap = new Map()
+        if (!_resultMap.has('headers')) {
+          throw new Error('response headers key is not exist.')
+        } else {
+          const _headers = _resultMap.get('headers')
+          for (const [keyHeaders, valueHeaders] of Object.entries(
+            _headers['map'],
+          )) {
+            _resultHeadersMap.set(keyHeaders, valueHeaders)
+          }
+
+          if (_resultHeadersMap.has('set-cookie')) {
+            const regex = /^ACESESSION=(?!deleted).*/
+            const setCookie = _resultHeadersMap
+              .get('set-cookie')
+              .split(' ')
+              .filter(item => {
+                return regex.test(item)
+              })
+
+            if (setCookie.length != 1) {
+              throw new Error(
+                'not found ACE SESSION information at response headers.',
+              )
+            } else {
+              return setCookie[0]
+            }
+          } else {
+            throw new Error('not found set-cookie key at response headers.')
+          }
+        }
+      })
+      .then(result => {
+        console.log(`result: ${result}`)
+        dispatch(L.loginWithSaveAction({acesession: result, id, password}))
+        setLoading(false)
+        navigation.navigate('WebViewHome')
+      })
+      .catch(e => {
+        setLoading(false)
+        setErrorMessage(e.message)
+        popupErrorMessage()
+      })
+  }, [id, password])
+  const popupErrorMessage = useCallback(() => {
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(errorMessage, ToastAndroid.LONG)
+    } else {
+      Alert.alert(errorMessage)
+    }
+  }, [errorMessage])
+
   return (
     <SafeAreaView>
       <View style={[styles.view]}>
         <AutoFocusProvider contentContainerStyle={[styles.keyboardAwareFocus]}>
+          <Text style={[styles.title, {marginBottom: 100}]}>ACE COUNTER</Text>
           <View style={[styles.textView]}>
-            <Text style={[styles.text]}>email</Text>
+            <Text style={[styles.text]}>ID</Text>
             <View border style={[styles.textInputView]}>
               <TextInput
                 onFocus={focus}
                 style={[styles.textInput]}
-                value={email}
-                onChangeText={setEmail}
-                placeholder="enter your email"
+                value={id}
+                onChangeText={setId}
+                placeholder="enter your id."
               />
             </View>
           </View>
@@ -63,21 +140,19 @@ export default function Login() {
                 style={[styles.textInput]}
                 value={password}
                 onChangeText={setPassword}
-                placeholder="enter your name"
+                placeholder="enter your password."
               />
             </View>
           </View>
+          {loading && (
+            <ActivityIndicator size="large" color={Colors.lightBlue500} />
+          )}
           <TouchableView
             notification
             style={[styles.touchableView]}
-            onPress={goTabNavigator}>
+            onPress={onLogin}>
             <Text style={[styles.text]}>Login</Text>
           </TouchableView>
-          <UnderlineText
-            style={[styles.text, {marginTop: 15}]}
-            onPress={goSignUp}>
-            SignUp
-          </UnderlineText>
         </AutoFocusProvider>
       </View>
     </SafeAreaView>
@@ -86,6 +161,7 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   view: {flex: 1, justifyContent: 'space-between', alignItems: 'center'},
+  title: {fontSize: 40},
   text: {fontSize: 20},
   keyboardAwareFocus: {
     flex: 1,

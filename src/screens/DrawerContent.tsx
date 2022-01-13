@@ -20,13 +20,17 @@ const DrawerContent: FC<DrawerContentComponentProps> = props => {
   const login = useSelector<AppState, L.State>(state => state.login)
   const {loggedIn, loggedUser} = login
 
-  const {email, name} = loggedUser
+  const {id} = loggedUser
   const {navigation} = props
   const close = useCallback(
     () => navigation.dispatch(DrawerActions.closeDrawer()),
     [],
   )
   const goLogin = useCallback(() => navigation.navigate('Login'), [])
+  const goWebViewHome = useCallback(
+    () => navigation.navigate('WebViewHome'),
+    [],
+  )
   const goSettings = useCallback(() => navigation.navigate('Settings'), [])
 
   if (!loggedIn) {
@@ -63,17 +67,15 @@ const DrawerContent: FC<DrawerContentComponentProps> = props => {
       />
       <View style={[styles.content]}>
         <View style={[styles.row]}>
-          <Avatar uri={D.avatarUriByName(name)} size={40} />
-          <Text style={[styles.text, styles.m]}>{name}</Text>
+          <Avatar uri={D.avatarUriByName(id)} size={40} />
+          <Text style={[styles.text, styles.m]}>{id}</Text>
         </View>
-        <View style={[styles.row]}>
-          <UnderlineText
-            numberOfLines={1}
-            ellipsizeMode="tail"
-            style={[styles.text, styles.m]}>
-            {email}
-          </UnderlineText>
-        </View>
+        <TouchableView
+          notification
+          style={[styles.touchableView, {marginTop: 20}]}
+          onPress={goWebViewHome}>
+          <Text style={[styles.text]}>ACE</Text>
+        </TouchableView>
         <TouchableView
           notification
           style={[styles.touchableView, {marginTop: 20}]}
