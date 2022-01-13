@@ -26,6 +26,7 @@ const DrawerContent: FC<DrawerContentComponentProps> = props => {
     () => navigation.dispatch(DrawerActions.closeDrawer()),
     [],
   )
+  const goLogin = useCallback(() => navigation.navigate('Login'), [])
   const goSettings = useCallback(() => navigation.navigate('Settings'), [])
 
   if (!loggedIn) {
@@ -35,7 +36,12 @@ const DrawerContent: FC<DrawerContentComponentProps> = props => {
           Right={() => <Icon name="close" size={24} onPress={close} />}
         />
         <View style={[styles.content]}>
-          <Text style={[styles.text]}>Please login or signup.</Text>
+          <TouchableView
+            notification
+            style={[styles.touchableView, {marginTop: 20}]}
+            onPress={goLogin}>
+            <Text style={[styles.text]}>Please login or signup.</Text>
+          </TouchableView>
           <TouchableView
             notification
             style={[styles.touchableView, {marginTop: 20}]}
