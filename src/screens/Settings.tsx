@@ -84,7 +84,7 @@ export default function Settings() {
     <SafeAreaView>
       <View style={[styles.view]}>
         <AutoFocusProvider contentContainerStyle={[styles.keyboardAwareFocus]}>
-          <View style={[commonStyles.widthFullView]}>
+          <View style={[commonStyles.widthFullAndRowFlexDirectionView]}>
             <Text style={[commonStyles.rowTitle, styles.text]}>
               샘플앱 버전:
             </Text>
@@ -97,7 +97,7 @@ export default function Settings() {
               {DeviceInfo.getVersion()}
             </Text>
           </View>
-          <View style={[commonStyles.widthFullView]}>
+          <View style={[commonStyles.widthFullAndRowFlexDirectionView]}>
             <Text style={[commonStyles.rowTitle, styles.text]}>
               {Platform.select({ios: 'IDFA', android: 'ADID'})}:
             </Text>
@@ -110,7 +110,7 @@ export default function Settings() {
               {idfa}
             </Text>
           </View>
-          <View style={[commonStyles.widthFullView]}>
+          <View style={[commonStyles.widthFullAndRowFlexDirectionView]}>
             <Text style={[commonStyles.rowTitle, styles.text]}>
               광고 분석 활성화 여부:
             </Text>
@@ -123,7 +123,7 @@ export default function Settings() {
               {isAdTrackingEnabled.toString()}
             </Text>
           </View>
-          <View style={[commonStyles.widthFullView]}>
+          <View style={[commonStyles.widthFullAndRowFlexDirectionView]}>
             <Text style={[commonStyles.rowTitle, styles.text]}>
               {Platform.select({
                 ios: 'bundle identifier',
@@ -140,7 +140,7 @@ export default function Settings() {
               {DeviceInfo.getBundleId()}
             </Text>
           </View>
-          <View style={[commonStyles.widthFullView]}>
+          <View style={[commonStyles.widthFullAndRowFlexDirectionView]}>
             <Text style={[commonStyles.rowTitle, styles.text]}>푸시 토큰:</Text>
             <Text
               style={[

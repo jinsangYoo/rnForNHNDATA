@@ -2,6 +2,7 @@ import React from 'react'
 import {createDrawerNavigator} from '@react-navigation/drawer'
 import DrawerContent from './DrawerContent'
 
+import Grid from './Grid'
 import Login from './Login'
 import SignUp from './SignUp'
 import TabNavigator from './TabNavigator'
@@ -15,6 +16,7 @@ export default function MainNavigator() {
     <Drawer.Navigator
       drawerContent={props => <DrawerContent {...props} />}
       screenOptions={{headerShown: false}}>
+      <Drawer.Screen name="Grid" component={Grid} />
       <Drawer.Screen name="Login" component={Login} />
       <Drawer.Screen name="SignUp" component={SignUp} />
       <Drawer.Screen name="WebViewHome" component={WebViewHome} />

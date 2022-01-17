@@ -7,7 +7,7 @@ export type TextInputProps = ComponentProps<typeof RNTextInput>
 
 const _TextInput: ForwardRefRenderFunction<RNTextInput, TextInputProps> = (
   {style, ...props},
-  ref
+  ref,
 ) => {
   const {colors} = useTheme()
   return (
@@ -16,7 +16,7 @@ const _TextInput: ForwardRefRenderFunction<RNTextInput, TextInputProps> = (
       style={[
         {color: colors.text, borderColor: colors.text},
         styles.textInput,
-        style
+        style,
       ]}
       placeholderTextColor={colors.text}
       {...props}
@@ -25,5 +25,5 @@ const _TextInput: ForwardRefRenderFunction<RNTextInput, TextInputProps> = (
 }
 export const TextInput = forwardRef(_TextInput)
 const styles = StyleSheet.create({
-  textInput: {borderWidth: 1, borderRadius: 5}
+  textInput: {borderWidth: 1, borderRadius: 5},
 })

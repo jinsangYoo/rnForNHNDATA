@@ -5,12 +5,12 @@ import type {StyleProp, ViewStyle} from 'react-native'
 import {View} from './View'
 import type {ViewProps} from './View'
 
-export type TouchableViewProps = ViewProps & {
+export type TouchableViewForFullWidthProps = ViewProps & {
   onPress?: () => void
   touchableStyle?: StyleProp<ViewStyle>
 }
 
-export const TouchableView: FC<TouchableViewProps> = ({
+export const TouchableViewForFullWidth: FC<TouchableViewForFullWidthProps> = ({
   children,
   onPress,
   touchableStyle,
@@ -25,5 +25,5 @@ export const TouchableView: FC<TouchableViewProps> = ({
   )
 }
 const styles = StyleSheet.create({
-  touchable: {width: '20%', alignItems: 'center', justifyContent: 'center'},
+  touchable: {width: '100%', alignItems: 'center', justifyContent: 'center'},
 })

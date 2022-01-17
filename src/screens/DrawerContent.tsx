@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react'
 import {StyleSheet} from 'react-native'
 // prettier-ignore
-import {View, Text, NavigationHeader, UnderlineText, TouchableView,
+import {View, Text, NavigationHeader, UnderlineText, TouchableViewForFullWidth as TouchableView ,
 MaterialCommunityIcon as Icon, Switch} from '../theme'
 import type {FC} from 'react'
 import type {DrawerContentComponentProps} from '@react-navigation/drawer'
@@ -26,6 +26,7 @@ const DrawerContent: FC<DrawerContentComponentProps> = props => {
     () => navigation.dispatch(DrawerActions.closeDrawer()),
     [],
   )
+  const goGrid = useCallback(() => navigation.navigate('Grid'), [])
   const goLogin = useCallback(() => navigation.navigate('Login'), [])
   const goWebViewHome = useCallback(
     () => navigation.navigate('WebViewHome'),
@@ -75,6 +76,12 @@ const DrawerContent: FC<DrawerContentComponentProps> = props => {
           style={[styles.touchableView, {marginTop: 20}]}
           onPress={goWebViewHome}>
           <Text style={[styles.text]}>ACE</Text>
+        </TouchableView>
+        <TouchableView
+          notification
+          style={[styles.touchableView, {marginTop: 20}]}
+          onPress={goGrid}>
+          <Text style={[styles.text]}>Grid</Text>
         </TouchableView>
         <TouchableView
           notification

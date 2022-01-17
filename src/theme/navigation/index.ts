@@ -1,6 +1,7 @@
 export * from './Switch'
 export * from './View'
 export * from './TouchableView'
+export * from './TouchableViewForFullWidth'
 export * from './SafeAreaView'
 export * from './Text'
 export * from './MaterialCommunityIcon'

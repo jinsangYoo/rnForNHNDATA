@@ -8,9 +8,8 @@ import {
 } from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 // prettier-ignore
-import {SafeAreaView, View, Text, TextInput, TouchableView, UnderlineText}
+import {SafeAreaView, View, Text, TextInput, TouchableViewForFullWidth as TouchableView}
 from '../theme'
-import * as D from '../data'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppState} from '../store'
