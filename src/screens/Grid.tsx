@@ -143,7 +143,6 @@ export default function Grid() {
         </View>
         <View style={styles.view}>
           <FlatList
-            numColumns={3}
             scrollEnabled={scrollEnabled}
             data={cells}
             renderItem={({item}) => (

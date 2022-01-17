@@ -12,7 +12,21 @@ const createAPI = (name: string) => {
 }
 
 export const useDefaultAPIList = (deps: any[] = []) => {
-  const [name, setName] = useState<string[]>(['PL', 'BUY'])
+  const [name, setName] = useState<string[]>([
+    'Add Cart',
+    'Appear Product',
+    'BUY',
+    'Del Cart',
+    'Event',
+    'Join',
+    'Leave',
+    'Link',
+    'Login',
+    'Push',
+    'Referrer',
+    'Search',
+    'Tel',
+  ])
   return useMemo(() => {
     return name.map(item => createAPI(item))
   }, [deps])

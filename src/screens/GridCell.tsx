@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import type {FC} from 'react'
 import {Colors} from 'react-native-paper'
 // prettier-ignore
-import {View, Text, UnderlineText, TouchableView,
+import {View, Text, UnderlineText, TouchableViewForFullWidth as TouchableView,
 MaterialCommunityIcon as Icon} from '../theme/navigation'
 import * as D from '../data'
 import {Avatar} from '../components'
@@ -19,21 +19,20 @@ const GridCell: FC<GridCellProps> = ({api: initialApi, onPressed}) => {
     <TouchableView
       style={[styles.view, {backgroundColor: Colors.cyan100}]}
       onPress={onPressed}>
-      <TouchableView style={[styles.topView]}>
+      <View style={[styles.leftView]}>
         <Avatar
           imageStyle={[styles.avatar]}
           uri={api.avatar}
           size={50}
           onPress={onPressed}
         />
-      </TouchableView>
-      <View style={[styles.bottomView]}>
+      </View>
+      <View style={[styles.rightView]}>
         <Text style={[styles.name]}>{api.name}</Text>
         <UnderlineText
-          numberOfLines={3}
           ellipsizeMode="tail"
           style={[styles.text, styles.remark]}>
-          구현:{api.isEnable.toString()}
+          {api.isEnable == true ? '구현' : '미구현'}
         </UnderlineText>
       </View>
     </TouchableView>
