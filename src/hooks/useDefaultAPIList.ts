@@ -1,31 +1,30 @@
 import {useMemo, useState} from 'react'
-import type {IAPI} from '../data/IAPI'
+import type {IAPI, TypeForAPI} from '../data/IAPI'
 import * as F from '../data/faker'
 
-const createAPI = (node: Record<string, boolean>) => {
+const createAPI = (api: TypeForAPI) => {
   return {
     id: F.randomId(),
-    name: Object.keys(node)[0],
-    avatar: F.randomAvatarUrl(Object.keys(node)[0]),
-    isEnable: Object.values(node)[0],
+    avatar: F.randomAvatarUrl(api.type),
+    node: api,
   } as IAPI
 }
 
 export const useDefaultAPIList = (deps: any[] = []) => {
-  const [name, setName] = useState<Record<string, boolean>[]>([
-    {'Add Cart': true},
-    {'Appear Product': false},
-    {BUY: false},
-    {'Del Cart': false},
-    {Event: false},
-    {Join: false},
-    {Leave: false},
-    {Link: false},
-    {Login: false},
-    {Push: false},
-    {Referrer: false},
-    {Search: false},
-    {Tel: false},
+  const [name, setName] = useState<TypeForAPI[]>([
+    {type: 'Add Cart', isEnable: true},
+    {type: 'Appear Product', isEnable: false},
+    {type: 'Buy', isEnable: false},
+    {type: 'Del Cart', isEnable: false},
+    {type: 'Event', isEnable: false},
+    {type: 'Join', isEnable: false},
+    {type: 'Leave', isEnable: false},
+    {type: 'Link', isEnable: false},
+    {type: 'Login', isEnable: false},
+    {type: 'Push', isEnable: false},
+    {type: 'Referrer', isEnable: false},
+    {type: 'Search', isEnable: false},
+    {type: 'Tel', isEnable: false},
   ])
   return useMemo(() => {
     return name.map(item => createAPI(item))

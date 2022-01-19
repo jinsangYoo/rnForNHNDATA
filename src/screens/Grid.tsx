@@ -18,7 +18,7 @@ import ReactNativeIdfaAaid, {
 import {gcodeSelector} from '../../utils'
 import GridCell from './GridCell'
 import {useDefaultAPIList} from '../hooks'
-import {IAPI} from '../data'
+import type {IAPI, TypeForAPI} from '../data'
 
 export default function Grid() {
   // gcode
@@ -65,8 +65,19 @@ export default function Grid() {
     [],
   )
   const clickedCell = useCallback(
-    (node: IAPI) => () => {
-      console.log(`clickedCell::node: ${JSON.stringify(node, null, 2)}`)
+    (item: IAPI) => () => {
+      console.log(`clickedCell::item: ${JSON.stringify(item, null, 2)}`)
+      switch (item.node.type) {
+        case 'Add Cart':
+          console.log(`Add Cart`)
+          break
+        case 'Buy':
+          console.log(`Buy`)
+          break
+        default:
+          console.log(`default`)
+          break
+      }
     },
     [],
   )

@@ -28,11 +28,11 @@ const GridCell: FC<GridCellProps> = ({api: initialApi, onPressed}) => {
         />
       </View>
       <View style={[styles.rightView]}>
-        <Text style={[styles.name]}>{api.name}</Text>
+        <Text style={[styles.name]}>{api.node.type}</Text>
         <UnderlineText
           ellipsizeMode="tail"
           style={[styles.text, styles.remark]}>
-          {api.isEnable == true ? '구현' : '미구현'}
+          {api.node.isEnable == true ? '구현' : '미구현'}
         </UnderlineText>
       </View>
     </TouchableView>
