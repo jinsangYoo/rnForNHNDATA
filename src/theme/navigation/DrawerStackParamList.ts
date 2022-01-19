@@ -5,11 +5,11 @@ type DrawerStackParamList = {
   AppearProduct: undefined
   Buy: undefined
   DeleteInCart: undefined
-  Event: undefined
   Join: undefined
   Leave: undefined
   Link: undefined
   LoginForAPI: undefined
+  PL: undefined
   Search: undefined
   Tel: undefined
   Webview: undefined

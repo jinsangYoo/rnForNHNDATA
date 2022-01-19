@@ -8,7 +8,7 @@ import AddInCart from './AddInCart'
 import AppearProduct from './AppearProduct'
 import Buy from './Buy'
 import DeleteInCart from './DeleteInCart'
-import Event from './Event'
+import PL from './PL'
 import Join from './Join'
 import Leave from './Leave'
 import Link from './Link'
@@ -38,7 +38,7 @@ export default function MainNavigator() {
       <Drawer.Screen name="AppearProduct" component={AppearProduct} />
       <Drawer.Screen name="Buy" component={Buy} />
       <Drawer.Screen name="DeleteInCart" component={DeleteInCart} />
-      <Drawer.Screen name="Event" component={Event} />
+      <Drawer.Screen name="PL" component={PL} />
       <Drawer.Screen name="Join" component={Join} />
       <Drawer.Screen name="Leave" component={Leave} />
       <Drawer.Screen name="Link" component={Link} />

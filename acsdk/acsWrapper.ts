@@ -1,3 +1,4 @@
+import {Platform, ToastAndroid, Alert} from 'react-native'
 import {
   AceConfiguration,
   ACParams,
@@ -7,6 +8,14 @@ import {
   ACEGender,
   ACEMaritalStatus,
 } from 'reactslimer'
+
+function popupMessage(msg: string) {
+  if (Platform.OS === 'android') {
+    ToastAndroid.show(msg, ToastAndroid.LONG)
+  } else {
+    Alert.alert(msg)
+  }
+}
 
 export function sendCommonWithPromise(
   argMessage: string,
@@ -20,16 +29,22 @@ export function sendCommonWithPromise(
       console.log(`${argMessage}::in then!!`)
       if (response) {
         console.log('response: ' + JSON.stringify(response, null, 2))
+        popupMessage(`success sdk send ${params.name}`)
       } else {
         console.log('response is undefined.')
+        popupMessage(
+          `success sdk send ${params.name} but response is undefined`,
+        )
       }
     })
     .catch(err => {
       console.log(`${argMessage}::in reject!!`)
       if (err) {
         console.log('err: ' + JSON.stringify(err, null, 2))
+        popupMessage(`fail sdk send ${params.name}`)
       } else {
         console.log('err is undefined.')
+        popupMessage(`fail sdk send ${params.name} but err is undefined`)
       }
     })
 }

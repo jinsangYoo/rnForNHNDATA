@@ -113,7 +113,7 @@ export default function Grid() {
     <SafeAreaView>
       <View style={[styles.view]}>
         <NavigationHeader
-          title="Grid"
+          title={title}
           Left={() => <Icon name="menu" size={30} onPress={open} />}
           Right={() => <Icon name="logout" size={30} onPress={logout} />}
         />
