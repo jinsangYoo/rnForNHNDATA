@@ -16,6 +16,8 @@ import {AppState} from '../store'
 import * as U from '../utils'
 import * as L from '../store/login'
 import {Colors} from 'react-native-paper'
+import {DrawerNavigationProp} from '@react-navigation/drawer'
+import {DrawerStackParamList} from '../theme/navigation'
 
 import {getRandomIntInclusive} from '../../utils'
 import {sendCommonWithPromise} from '../../acsdk'
@@ -29,8 +31,16 @@ import {
   ACEMaritalStatus,
 } from 'reactslimer'
 
-const title = 'Login'
-export default function Login() {
+type EventScreenNavigationProp = DrawerNavigationProp<
+  DrawerStackParamList,
+  'Event'
+>
+type Props = {
+  navigation: EventScreenNavigationProp
+}
+
+const title = 'Event'
+export default function Event() {
   const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
   const [acesession, setAcesession] = useState<string>('')
   const [id, setId] = useState<string>('')
@@ -45,16 +55,16 @@ export default function Login() {
   const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
 
   useEffect(() => {
-    U.readFromStorage(L.loggedUserKey)
-      .then(value => {
-        if (value.length > 0) {
-          const savedUser = JSON.parse(value)
-          setAcesession(savedUser.acesession)
-          setId(savedUser.id)
-          setPassword(savedUser.password)
-        }
-      })
-      .catch(e => {})
+    // U.readFromStorage(L.loggedUserKey)
+    //   .then(value => {
+    //     if (value.length > 0) {
+    //       const savedUser = JSON.parse(value)
+    //       setAcesession(savedUser.acesession)
+    //       setId(savedUser.id)
+    //       setPassword(savedUser.password)
+    //     }
+    //   })
+    //   .catch(e => {})
   }, [loggedIn])
 
   useLayoutEffect(() => {
@@ -146,7 +156,7 @@ export default function Login() {
                 style={[styles.textInput]}
                 value={id}
                 onChangeText={setId}
-                placeholder="enter your id."
+                placeholder="Event"
               />
             </View>
           </View>

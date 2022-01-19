@@ -16,10 +16,17 @@ export type GridCellProps = {
 const GridCell: FC<GridCellProps> = ({api: initialApi, onPressed}) => {
   const [api, setApi] = useState<D.IAPI>(initialApi)
   return (
-    <TouchableView
-      style={[styles.view, {backgroundColor: Colors.cyan100}]}
-      onPress={onPressed}>
-      <View style={[styles.leftView]}>
+    <TouchableView style={[styles.view]} onPress={onPressed}>
+      <View
+        style={[
+          styles.leftView,
+          {
+            backgroundColor:
+              api.node.isEnable == true
+                ? 'rgba(99, 255, 99, 1.0)'
+                : 'rgba(255, 99, 99, 1.0)',
+          },
+        ]}>
         <Avatar
           imageStyle={[styles.avatar]}
           uri={api.avatar}
@@ -27,7 +34,16 @@ const GridCell: FC<GridCellProps> = ({api: initialApi, onPressed}) => {
           onPress={onPressed}
         />
       </View>
-      <View style={[styles.rightView]}>
+      <View
+        style={[
+          styles.rightView,
+          {
+            backgroundColor:
+              api.node.isEnable == true
+                ? 'rgba(99, 255, 99, 1.0)'
+                : 'rgba(255, 99, 99, 1.0)',
+          },
+        ]}>
         <Text style={[styles.name]}>{api.node.type}</Text>
         <UnderlineText
           ellipsizeMode="tail"

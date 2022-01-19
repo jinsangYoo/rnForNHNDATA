@@ -1,5 +1,5 @@
-import React, {useEffect, useState, useCallback} from 'react'
-import {StyleSheet, FlatList} from 'react-native'
+import React, {useEffect, useState, useCallback, useLayoutEffect} from 'react'
+import {Platform, StyleSheet, FlatList, ToastAndroid, Alert} from 'react-native'
 import {useNavigation, DrawerActions} from '@react-navigation/native'
 // prettier-ignore
 import {SafeAreaView, View, Text, TextInput, TouchableView,
@@ -18,13 +18,33 @@ import ReactNativeIdfaAaid, {
 import {gcodeSelector} from '../../utils'
 import GridCell from './GridCell'
 import {useDefaultAPIList} from '../hooks'
-import type {IAPI, TypeForAPI} from '../data'
+import type {IAPI} from '../data'
 
+import {getRandomIntInclusive} from '../../utils'
+import {sendCommonWithPromise} from '../../acsdk'
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus,
+} from 'reactslimer'
+
+const title = 'Grid'
 export default function Grid() {
   // gcode
   const focus = useAutoFocus()
   const [gcode, setGcode] = useState<string>(gcodeSelector())
-  const onApplyGcode = useCallback(() => {}, [])
+  const onApplyGcode = useCallback(() => {
+    const message = 'not implementaion.'
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(message, ToastAndroid.SHORT)
+    } else {
+      Alert.alert(message)
+    }
+  }, [])
   // debug mode
   const [isDebug, setIsDebug] = useState<boolean>(false)
   // idfa
@@ -39,6 +59,12 @@ export default function Grid() {
         setIsAdTrackingEnabled(false)
       })
     D.makeArray(5).forEach(addPerson)
+  }, [])
+  useLayoutEffect(() => {
+    const randomValue = getRandomIntInclusive(0, 999).toString()
+    const msg = `>>${title}<< >>${randomValue}<<`
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
   }, [])
   // navigation
   const navigation = useNavigation()
@@ -67,22 +93,21 @@ export default function Grid() {
   const clickedCell = useCallback(
     (item: IAPI) => () => {
       console.log(`clickedCell::item: ${JSON.stringify(item, null, 2)}`)
-      switch (item.node.type) {
-        case 'Add Cart':
-          console.log(`Add Cart`)
-          break
-        case 'Buy':
-          console.log(`Buy`)
-          break
-        default:
-          console.log(`default`)
-          break
+      if (!item.node.isEnable) {
+        const message = 'not implementaion.'
+        if (Platform.OS === 'android') {
+          ToastAndroid.show(message, ToastAndroid.SHORT)
+        } else {
+          Alert.alert(message)
+        }
+        return
       }
+
+      navigation.navigate(item.node.type)
     },
     [],
   )
   const cells = useDefaultAPIList()
-  console.log(`Grid::cells: ${JSON.stringify(cells, null, 2)}`)
 
   return (
     <SafeAreaView>
@@ -92,23 +117,10 @@ export default function Grid() {
           Left={() => <Icon name="menu" size={30} onPress={open} />}
           Right={() => <Icon name="logout" size={30} onPress={logout} />}
         />
-        <View
-          style={[
-            commonStyles.widthFullView,
-            {backgroundColor: Colors.amber100},
-          ]}>
-          <View
-            style={[
-              commonStyles.rowFlexDirectionViewNonPadding,
-              {backgroundColor: Colors.lightGreen100},
-            ]}>
+        <View style={[commonStyles.widthFullView]}>
+          <View style={[commonStyles.rowFlexDirectionViewNonPadding]}>
             <Text style={[styles.text]}>key:</Text>
-            <View
-              border
-              style={[
-                styles.textInputViewInControlBox,
-                {backgroundColor: Colors.limeA100},
-              ]}>
+            <View border style={[styles.textInputViewInControlBox]}>
               <TextInput
                 onFocus={focus}
                 style={[styles.textInput]}
@@ -128,9 +140,6 @@ export default function Grid() {
             style={[
               commonStyles.rowFlexDirectionViewNonPadding,
               styles.controlBoxJustifyContent,
-              {
-                backgroundColor: Colors.lightBlue100,
-              },
             ]}>
             <Text style={[styles.text]}>debug 모드:</Text>
             <Switch
@@ -143,9 +152,6 @@ export default function Grid() {
             style={[
               commonStyles.rowFlexDirectionViewNonPadding,
               styles.controlBoxJustifyContent,
-              {
-                backgroundColor: Colors.lightGreenA100,
-              },
             ]}
             pointerEvents="none">
             <Text style={[styles.text]}>개인 정보 취급 방침 활성화:</Text>

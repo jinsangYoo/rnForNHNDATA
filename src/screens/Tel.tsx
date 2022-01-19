@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
+import React, {useState, useCallback, useEffect} from 'react'
 import {
   Platform,
   StyleSheet,
@@ -16,21 +16,18 @@ import {AppState} from '../store'
 import * as U from '../utils'
 import * as L from '../store/login'
 import {Colors} from 'react-native-paper'
+import {DrawerNavigationProp} from '@react-navigation/drawer'
+import {DrawerStackParamList} from '../theme/navigation'
 
-import {getRandomIntInclusive} from '../../utils'
-import {sendCommonWithPromise} from '../../acsdk'
-import {
-  AceConfiguration,
-  ACParams,
-  ACS,
-  ACEResponseToCaller,
-  ACProduct,
-  ACEGender,
-  ACEMaritalStatus,
-} from 'reactslimer'
+type AddCartScreenNavigationProp = DrawerNavigationProp<
+  DrawerStackParamList,
+  'AddCart'
+>
+type Props = {
+  navigation: AddCartScreenNavigationProp
+}
 
-const title = 'Login'
-export default function Login() {
+export default function Tel() {
   const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
   const [acesession, setAcesession] = useState<string>('')
   const [id, setId] = useState<string>('')
@@ -45,24 +42,17 @@ export default function Login() {
   const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
 
   useEffect(() => {
-    U.readFromStorage(L.loggedUserKey)
-      .then(value => {
-        if (value.length > 0) {
-          const savedUser = JSON.parse(value)
-          setAcesession(savedUser.acesession)
-          setId(savedUser.id)
-          setPassword(savedUser.password)
-        }
-      })
-      .catch(e => {})
+    // U.readFromStorage(L.loggedUserKey)
+    //   .then(value => {
+    //     if (value.length > 0) {
+    //       const savedUser = JSON.parse(value)
+    //       setAcesession(savedUser.acesession)
+    //       setId(savedUser.id)
+    //       setPassword(savedUser.password)
+    //     }
+    //   })
+    //   .catch(e => {})
   }, [loggedIn])
-
-  useLayoutEffect(() => {
-    const randomValue = getRandomIntInclusive(0, 999).toString()
-    const msg = `>>${title}<< >>${randomValue}<<`
-    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
-    sendCommonWithPromise(msg, params)
-  }, [])
 
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
@@ -146,7 +136,7 @@ export default function Login() {
                 style={[styles.textInput]}
                 value={id}
                 onChangeText={setId}
-                placeholder="enter your id."
+                placeholder="Tel"
               />
             </View>
           </View>

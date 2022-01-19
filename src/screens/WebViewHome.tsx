@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useLayoutEffect, useCallback} from 'react'
 import {StyleSheet} from 'react-native'
 import {useNavigation, DrawerActions} from '@react-navigation/native'
 // prettier-ignore
@@ -11,7 +11,27 @@ import {WebView} from 'react-native-webview'
 import {commonStyles} from '../styles/Common.style'
 import {Colors} from 'react-native-paper'
 
+import {getRandomIntInclusive} from '../../utils'
+import {sendCommonWithPromise} from '../../acsdk'
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus,
+} from 'reactslimer'
+
+const title = 'WebViewHome'
 export default function WebViewHome() {
+  useLayoutEffect(() => {
+    const randomValue = getRandomIntInclusive(0, 999).toString()
+    const msg = `>>${title}<< >>${randomValue}<<`
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
+
   // navigation
   const navigation = useNavigation()
   const dispatch = useDispatch()

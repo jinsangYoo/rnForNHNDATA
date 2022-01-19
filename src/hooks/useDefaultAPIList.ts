@@ -12,19 +12,18 @@ const createAPI = (api: TypeForAPI) => {
 
 export const useDefaultAPIList = (deps: any[] = []) => {
   const [name, setName] = useState<TypeForAPI[]>([
-    {type: 'Add Cart', isEnable: true},
-    {type: 'Appear Product', isEnable: false},
+    {type: 'AddInCart', isEnable: false},
+    {type: 'AppearProduct', isEnable: false},
     {type: 'Buy', isEnable: false},
-    {type: 'Del Cart', isEnable: false},
-    {type: 'Event', isEnable: false},
+    {type: 'DeleteInCart', isEnable: false},
+    {type: 'Event', isEnable: true},
     {type: 'Join', isEnable: false},
     {type: 'Leave', isEnable: false},
     {type: 'Link', isEnable: false},
-    {type: 'Login', isEnable: false},
-    {type: 'Push', isEnable: false},
-    {type: 'Referrer', isEnable: false},
+    {type: 'LoginForAPI', isEnable: false},
     {type: 'Search', isEnable: false},
     {type: 'Tel', isEnable: false},
+    {type: 'Webview', isEnable: false},
   ])
   return useMemo(() => {
     return name.map(item => createAPI(item))

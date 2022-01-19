@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react'
+import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
 import {Platform, StyleSheet, ToastAndroid, Alert} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 import Clipboard from '@react-native-clipboard/clipboard'
@@ -20,6 +20,19 @@ import ReactNativeIdfaAaid, {
 import {useAsync} from '../hooks'
 import {getToken} from '../message'
 
+import {getRandomIntInclusive} from '../../utils'
+import {sendCommonWithPromise} from '../../acsdk'
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus,
+} from 'reactslimer'
+
+const title = 'Settings'
 export default function Settings() {
   const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
   const [email, setEmail] = useState<string>('')
@@ -62,6 +75,13 @@ export default function Settings() {
       })
       .catch(e => {})
   }, [loggedIn])
+
+  useLayoutEffect(() => {
+    const randomValue = getRandomIntInclusive(0, 999).toString()
+    const msg = `>>${title}<< >>${randomValue}<<`
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
 
   const [token, setToken] = useState<string>('not init')
   const [error, resetError] = useAsync(async () => {

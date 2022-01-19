@@ -6,19 +6,18 @@ type IAPI = {
 
 type TypeForAPI = {
   type:
-    | 'Add Cart'
-    | 'Appear Product'
+    | 'AddInCart'
+    | 'AppearProduct'
     | 'Buy'
-    | 'Del Cart'
+    | 'DeleteInCart'
     | 'Event'
     | 'Join'
     | 'Leave'
     | 'Link'
-    | 'Login'
-    | 'Push'
-    | 'Referrer'
+    | 'LoginForAPI'
     | 'Search'
     | 'Tel'
+    | 'Webview'
   isEnable: boolean
 }
 export type {IAPI, TypeForAPI}
