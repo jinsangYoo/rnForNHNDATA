@@ -32,6 +32,8 @@ export default function MainNavigator() {
     <Drawer.Navigator
       drawerContent={props => <DrawerContent {...props} />}
       screenOptions={{headerShown: false}}>
+      <Drawer.Screen name="Login" component={Login} />
+      <Drawer.Screen name="SignUp" component={SignUp} />
       <Drawer.Screen name="Grid" component={Grid} />
 
       <Drawer.Screen name="AddInCart" component={AddInCart} />
@@ -46,9 +48,6 @@ export default function MainNavigator() {
       <Drawer.Screen name="Search" component={Search} />
       <Drawer.Screen name="Tel" component={Tel} />
       <Drawer.Screen name="Webview" component={Webview} />
-
-      <Drawer.Screen name="Login" component={Login} />
-      <Drawer.Screen name="SignUp" component={SignUp} />
 
       <Drawer.Screen name="WebViewHome" component={WebViewHome} />
       <Drawer.Screen name="Settings" component={Settings} />
