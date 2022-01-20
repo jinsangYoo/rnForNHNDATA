@@ -129,14 +129,14 @@ export default function Grid() {
                 placeholder="enter your gcode."
               />
             </View>
-            <TouchableView
+            {/* <TouchableView
               notification
               style={[styles.touchableViewInControlBox]}
               onPress={onApplyGcode}>
               <Text style={[styles.textInTouchableView]}>apply</Text>
-            </TouchableView>
+            </TouchableView> */}
           </View>
-          <View
+          {/* <View
             style={[
               commonStyles.rowFlexDirectionViewNonPadding,
               styles.controlBoxJustifyContent,
@@ -147,7 +147,7 @@ export default function Grid() {
               onValueChange={setIsDebug}
               style={{height: 50}}
             />
-          </View>
+          </View> */}
           <View
             style={[
               commonStyles.rowFlexDirectionViewNonPadding,

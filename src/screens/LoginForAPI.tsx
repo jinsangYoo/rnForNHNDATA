@@ -1,169 +1,188 @@
-import React, {useState, useCallback, useEffect} from 'react'
-import {
-  Platform,
-  StyleSheet,
-  ActivityIndicator,
-  ToastAndroid,
-  Alert,
-} from 'react-native'
-import {useNavigation} from '@react-navigation/native'
+import React, {useState, useCallback, useLayoutEffect} from 'react'
+import {StyleSheet, ScrollView} from 'react-native'
+import {useNavigation, DrawerActions} from '@react-navigation/native'
 // prettier-ignore
-import {SafeAreaView, View, Text, TextInput, TouchableViewForFullWidth as TouchableView}
+import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TextInput, TouchableViewForFullWidth as TouchableView}
 from '../theme'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {useDispatch, useSelector} from 'react-redux'
-import {AppState} from '../store'
-import * as U from '../utils'
 import * as L from '../store/login'
-import {Colors} from 'react-native-paper'
+
+import {View as RNView} from 'react-native'
+import {RadioButton} from 'react-native-paper'
+
 import {DrawerNavigationProp} from '@react-navigation/drawer'
 import {DrawerStackParamList} from '../theme/navigation'
 
-type AddCartScreenNavigationProp = DrawerNavigationProp<
+import {getRandomIntInclusive} from '../../utils'
+import {sendCommonWithPromise} from '../../acsdk'
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus,
+} from 'reactslimer'
+import {combineTransition} from 'react-native-reanimated'
+
+type LoginForAPIScreenNavigationProp = DrawerNavigationProp<
   DrawerStackParamList,
-  'AddCart'
+  'LoginForAPI'
 >
 type Props = {
-  navigation: AddCartScreenNavigationProp
+  navigation: LoginForAPIScreenNavigationProp
 }
 
+const title = 'LoginForAPI'
 export default function LoginForAPI() {
-  const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
-  const [acesession, setAcesession] = useState<string>('')
-  const [id, setId] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
   const focus = useAutoFocus()
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  const goTabNavigator = useCallback(() => {
-    dispatch(L.loginAction({acesession, id, password}))
-    navigation.navigate('TabNavigator')
-  }, [acesession, id, password])
-  const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
+  const open = useCallback(() => {
+    navigation.dispatch(DrawerActions.openDrawer())
+  }, [])
+  const logout = useCallback(() => {
+    dispatch(L.logoutAction())
+    navigation.navigate('Login')
+  }, [])
 
-  useEffect(() => {
-    // U.readFromStorage(L.loggedUserKey)
-    //   .then(value => {
-    //     if (value.length > 0) {
-    //       const savedUser = JSON.parse(value)
-    //       setAcesession(savedUser.acesession)
-    //       setId(savedUser.id)
-    //       setPassword(savedUser.password)
-    //     }
-    //   })
-    //   .catch(e => {})
-  }, [loggedIn])
+  useLayoutEffect(() => {
+    const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
+    const msgForScreen = `>>${title}<< >>${randomValueForScreen}<<`
+    const params = ACParams.init(ACParams.TYPE.EVENT, msgForScreen)
+    sendCommonWithPromise(msgForScreen, params)
+  }, [])
 
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
-  const onLogin = useCallback(() => {
-    setLoading(true)
-    fetch(`http://m.acecounter.com/login.amz?id=${id}&pw=${password}`)
-      .then(res => {
-        var _resultMap = new Map()
-        for (const [key, value] of Object.entries(res)) {
-          _resultMap.set(key, value)
-        }
+  const randomValue = getRandomIntInclusive(0, 999)
+  const [url, setUrl] = useState<string>(`>>${title}<< >>${randomValue}<<`)
+  const [keyword, setKeyword] = useState<string>(`로그인 >>${randomValue}<<`)
+  const [age, setAge] = useState<string>(randomValue.toString())
+  const [genderChecked, setGenderChecked] = useState<string>(ACEGender.Unknown)
+  const [maritalStatusChecked, setMaritalStatusChecked] = useState<string>(
+    ACEMaritalStatus.Unknown,
+  )
+  if (randomValue % 5 == 0) {
+    setGenderChecked(ACEGender.Unknown)
+  } else if (randomValue % 3 == 0) {
+    setGenderChecked(ACEGender.Woman)
+  } else if (randomValue % 2 == 0) {
+    setGenderChecked(ACEGender.Man)
+  }
 
-        if (_resultMap.has('status') && _resultMap.get('status') === 200) {
-          console.log(`_resultMap.get('status'): ${_resultMap.get('status')}`)
-        } else {
-          throw new Error('response is not ok.')
-        }
+  if (randomValue % 5 == 0) {
+    setMaritalStatusChecked(ACEMaritalStatus.Unknown)
+  } else if (randomValue % 3 == 0) {
+    setMaritalStatusChecked(ACEMaritalStatus.Single)
+  } else if (randomValue % 2 == 0) {
+    setMaritalStatusChecked(ACEMaritalStatus.Married)
+  }
 
-        var _resultHeadersMap = new Map()
-        if (!_resultMap.has('headers')) {
-          throw new Error('response headers key is not exist.')
-        } else {
-          const _headers = _resultMap.get('headers')
-          for (const [keyHeaders, valueHeaders] of Object.entries(
-            _headers['map'],
-          )) {
-            _resultHeadersMap.set(keyHeaders, valueHeaders)
-          }
-
-          if (_resultHeadersMap.has('set-cookie')) {
-            const regex = /^ACESESSION=(?!deleted).*/
-            const setCookie = _resultHeadersMap
-              .get('set-cookie')
-              .split(' ')
-              .filter(item => {
-                return regex.test(item)
-              })
-
-            if (setCookie.length != 1) {
-              throw new Error(
-                'not found ACE SESSION information at response headers.',
-              )
-            } else {
-              return setCookie[0]
-            }
-          } else {
-            throw new Error('not found set-cookie key at response headers.')
-          }
-        }
-      })
-      .then(result => {
-        console.log(`result: ${result}`)
-        dispatch(L.loginWithSaveAction({acesession: result, id, password}))
-        setLoading(false)
-        navigation.navigate('WebViewHome')
-      })
-      .catch(e => {
-        setLoading(false)
-        setErrorMessage(e.message)
-        popupErrorMessage()
-      })
-  }, [id, password])
-  const popupErrorMessage = useCallback(() => {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(errorMessage, ToastAndroid.LONG)
-    } else {
-      Alert.alert(errorMessage)
-    }
-  }, [errorMessage])
+  const onSend = useCallback(() => {
+    const params = ACParams.init(ACParams.TYPE.LOGIN, url)
+    params.userId = keyword
+    params.userAge = +age
+    params.userGender = genderChecked as ACEGender
+    params.userMaritalStatus = maritalStatusChecked as ACEMaritalStatus
+    sendCommonWithPromise(url, params)
+  }, [url, keyword, age, genderChecked, maritalStatusChecked])
 
   return (
     <SafeAreaView>
-      <View style={[styles.view]}>
-        <AutoFocusProvider contentContainerStyle={[styles.keyboardAwareFocus]}>
-          <Text style={[styles.title, {marginBottom: 100}]}>ACE COUNTER</Text>
-          <View style={[styles.textView]}>
-            <Text style={[styles.text]}>ID</Text>
-            <View border style={[styles.textInputView]}>
-              <TextInput
-                onFocus={focus}
-                style={[styles.textInput]}
-                value={id}
-                onChangeText={setId}
-                placeholder="LoginForAPI"
-              />
+      <NavigationHeader
+        title={title}
+        Left={() => <Icon name="menu" size={30} onPress={open} />}
+        Right={() => <Icon name="logout" size={30} onPress={logout} />}
+      />
+      <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+        <View style={[styles.view]}>
+          <AutoFocusProvider
+            contentContainerStyle={[styles.keyboardAwareFocus]}>
+            <View style={[styles.textView]}>
+              <Text style={[styles.text]}>{title} 명(key: url)</Text>
+              <View border style={[styles.textInputView]}>
+                <TextInput
+                  onFocus={focus}
+                  style={[styles.textInput]}
+                  value={url}
+                  onChangeText={setUrl}
+                  placeholder="이벤트 명 입력"
+                />
+              </View>
             </View>
-          </View>
-          <View style={[styles.textView]}>
-            <Text style={[styles.text]}>password</Text>
-            <View border style={[styles.textInputView]}>
-              <TextInput
-                secureTextEntry
-                onFocus={focus}
-                style={[styles.textInput]}
-                value={password}
-                onChangeText={setPassword}
-                placeholder="enter your password."
-              />
+            <View style={[styles.textView]}>
+              <Text style={[styles.text]}>유저ID 입력</Text>
+              <View border style={[styles.textInputView]}>
+                <TextInput
+                  onFocus={focus}
+                  style={[styles.textInput]}
+                  value={keyword}
+                  onChangeText={setKeyword}
+                  placeholder="유저ID 입력"
+                />
+              </View>
+              <Text style={[styles.text]}>유저 나이 입력</Text>
+              <View border style={[styles.textInputView]}>
+                <TextInput
+                  onFocus={focus}
+                  style={[styles.textInput]}
+                  value={age}
+                  onChangeText={setAge}
+                  keyboardType="decimal-pad"
+                  placeholder="유저 나이 입력"
+                />
+              </View>
+              <Text style={[styles.text]}>성별 입력</Text>
+              <RadioButton.Group
+                onValueChange={setGenderChecked}
+                value={genderChecked}>
+                <RadioButton.Item
+                  label="알수 없음"
+                  value={ACEGender.Unknown}
+                  color="#1E6DAD"
+                />
+                <RadioButton.Item
+                  label={ACEGender.Man}
+                  value={ACEGender.Man}
+                  color="#1E6DAD"
+                />
+                <RadioButton.Item
+                  label={ACEGender.Woman}
+                  value={ACEGender.Woman}
+                  color="#1E6DAD"
+                />
+              </RadioButton.Group>
+              <Text style={[styles.text]}>결혼여부 입력</Text>
+              <RadioButton.Group
+                onValueChange={setMaritalStatusChecked}
+                value={maritalStatusChecked}>
+                <RadioButton.Item
+                  label="알수 없음"
+                  value={ACEMaritalStatus.Unknown}
+                  color="#1E6DAD"
+                />
+                <RadioButton.Item
+                  label={ACEMaritalStatus.Single}
+                  value={ACEMaritalStatus.Single}
+                  color="#1E6DAD"
+                />
+                <RadioButton.Item
+                  label={ACEMaritalStatus.Married}
+                  value={ACEMaritalStatus.Married}
+                  color="#1E6DAD"
+                />
+              </RadioButton.Group>
             </View>
-          </View>
-          {loading && (
-            <ActivityIndicator size="large" color={Colors.lightBlue500} />
-          )}
-          <TouchableView
-            notification
-            style={[styles.touchableView]}
-            onPress={onLogin}>
-            <Text style={[styles.text]}>Login</Text>
-          </TouchableView>
-        </AutoFocusProvider>
-      </View>
+            <TouchableView
+              notification
+              style={[styles.touchableView]}
+              onPress={onSend}>
+              <Text style={[styles.text]}>{title}</Text>
+            </TouchableView>
+          </AutoFocusProvider>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -189,4 +208,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  contentContainerStyle: {width: '100%'},
 })

@@ -21,6 +21,7 @@ export function sendCommonWithPromise(
   argMessage: string,
   params: ACParams,
 ): void {
+  console.log('in sendCommonWithPromise')
   console.log(argMessage)
   console.log(JSON.stringify(params, null, 2))
 
