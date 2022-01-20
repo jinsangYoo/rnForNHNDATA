@@ -1,21 +1,12 @@
-import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
-import {
-  Platform,
-  StyleSheet,
-  ActivityIndicator,
-  ToastAndroid,
-  Alert,
-} from 'react-native'
+import React, {useState, useCallback, useLayoutEffect} from 'react'
+import {StyleSheet} from 'react-native'
 import {useNavigation, DrawerActions} from '@react-navigation/native'
 // prettier-ignore
 import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TextInput, TouchableViewForFullWidth as TouchableView}
 from '../theme'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {useDispatch, useSelector} from 'react-redux'
-import {AppState} from '../store'
-import * as U from '../utils'
 import * as L from '../store/login'
-import {Colors} from 'react-native-paper'
 import {DrawerNavigationProp} from '@react-navigation/drawer'
 import {DrawerStackParamList} from '../theme/navigation'
 
@@ -57,11 +48,11 @@ export default function PL() {
   }, [])
 
   const randomValue = getRandomIntInclusive(0, 999).toString()
-  const [msg, setMsg] = useState<string>(`>>${title}<< >>${randomValue}<<`)
+  const [url, setUrl] = useState<string>(`>>${title}<< >>${randomValue}<<`)
   const onSend = useCallback(() => {
-    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
-    sendCommonWithPromise(msg, params)
-  }, [msg])
+    const params = ACParams.init(ACParams.TYPE.EVENT, url)
+    sendCommonWithPromise(url, params)
+  }, [url])
 
   return (
     <SafeAreaView>
@@ -73,13 +64,13 @@ export default function PL() {
         />
         <AutoFocusProvider contentContainerStyle={[styles.keyboardAwareFocus]}>
           <View style={[styles.textView]}>
-            <Text style={[styles.text]}>PL 명</Text>
+            <Text style={[styles.text]}>{title} 명(key: url)</Text>
             <View border style={[styles.textInputView]}>
               <TextInput
                 onFocus={focus}
                 style={[styles.textInput]}
-                value={msg}
-                onChangeText={setMsg}
+                value={url}
+                onChangeText={setUrl}
                 placeholder="이벤트 명 입력"
               />
             </View>
@@ -88,7 +79,7 @@ export default function PL() {
             notification
             style={[styles.touchableView]}
             onPress={onSend}>
-            <Text style={[styles.text]}>PL</Text>
+            <Text style={[styles.text]}>{title}</Text>
           </TouchableView>
         </AutoFocusProvider>
       </View>
