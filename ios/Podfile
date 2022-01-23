@@ -12,11 +12,11 @@ target 'rnForNHNDATA' do
     :hermes_enabled => false
   )
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
 
-  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
+
+
 
   target 'rnForNHNDATATests' do
     inherit! :complete
