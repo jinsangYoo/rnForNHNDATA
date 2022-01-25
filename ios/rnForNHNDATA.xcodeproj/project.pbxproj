@@ -65,6 +65,7 @@
 		A15FB2B4279EEBF200B0A789 /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		A15FB2B5279EEBF200B0A789 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		A1BAB543279D6A1300BD7EDD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A1CCAC97279FD0B700979B48 /* rnForNHNDATA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = rnForNHNDATA.entitlements; path = rnForNHNDATA/rnForNHNDATA.entitlements; sourceTree = "<group>"; };
 		ABFE59519B596E51CEFDCCC0 /* libPods-rnForNHNDATA-rnForNHNDATATests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnForNHNDATA-rnForNHNDATATests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0A881CF5CF3F2B244570E2A /* Pods-rnForNHNDATA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnForNHNDATA.debug.xcconfig"; path = "Target Support Files/Pods-rnForNHNDATA/Pods-rnForNHNDATA.debug.xcconfig"; sourceTree = "<group>"; };
 		D00AAFFCFCFDA5787532823F /* Pods-rnForNHNDATA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnForNHNDATA.release.xcconfig"; path = "Target Support Files/Pods-rnForNHNDATA/Pods-rnForNHNDATA.release.xcconfig"; sourceTree = "<group>"; };
@@ -112,6 +113,7 @@
 		13B07FAE1A68108700A75B9A /* rnForNHNDATA */ = {
 			isa = PBXGroup;
 			children = (
+				A1CCAC97279FD0B700979B48 /* rnForNHNDATA.entitlements */,
 				A15FB2A5279EEBD500B0A789 /* Fonts */,
 				A1BAB543279D6A1300BD7EDD /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -565,6 +567,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = rnForNHNDATA/rnForNHNDATA.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HA4JNBHU77;
 				ENABLE_BITCODE = NO;
@@ -592,6 +595,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = rnForNHNDATA/rnForNHNDATA.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HA4JNBHU77;
 				INFOPLIST_FILE = rnForNHNDATA/Info.plist;
