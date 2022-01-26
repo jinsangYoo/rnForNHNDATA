@@ -113,11 +113,11 @@ export default function Login() {
           }
         }
       })
-      .then(result => {
-        console.log(`result: ${result}`)
-        dispatch(L.loginWithSaveAction({acesession: result, id, password}))
+      .then(acesession => {
+        console.log(`acesession: ${acesession}`)
+        dispatch(L.loginWithSaveAction({acesession, id, password}))
         setLoading(false)
-        navigation.navigate('WebViewHome')
+        navigation.navigate('WebViewHome', {acesession: acesession})
       })
       .catch(e => {
         setLoading(false)

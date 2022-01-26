@@ -30,6 +30,7 @@ const Drawer = createDrawerNavigator<DrawerStackParamList>()
 export default function MainNavigator() {
   return (
     <Drawer.Navigator
+      initialRouteName="Login"
       drawerContent={props => <DrawerContent {...props} />}
       screenOptions={{headerShown: false}}>
       <Drawer.Screen name="Login" component={Login} />

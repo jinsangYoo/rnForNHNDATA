@@ -38,31 +38,6 @@ import {gcodeSelector} from './utils/aceWrappers'
 const store = makeStore()
 
 const App = () => {
-  // Foreground 상태인 경우
-  // useEffect(() => {
-  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
-  //     console.log(
-  //       'A new FCM message arrived on foreground!',
-  //       JSON.stringify(remoteMessage, null, 2),
-  //     )
-  //     const params = ACParams.init(ACParams.TYPE.PUSH)
-  //     params.data = remoteMessage.data
-  //     ACS.send(params)
-  //   })
-  //   return unsubscribe
-  // })
-
-  // Register background handler, Background, Quit 상태일 경우  // messaging().setBackgroundMessageHandler(async remoteMessage => {
-  //   console.log(
-  //     'Message handled in the background!',
-  //     JSON.stringify(remoteMessage, null, 2),
-  //   )
-
-  //   const params = ACParams.init(ACParams.TYPE.PUSH)
-  //   params.data = remoteMessage.data
-  //   ACS.send(params)
-  // })
-
   useLayoutEffect(() => {
     const _config = AceConfiguration.init(gcodeSelector())
     ACS.configure(_config)

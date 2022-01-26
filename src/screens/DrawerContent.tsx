@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react'
 import {StyleSheet} from 'react-native'
 // prettier-ignore
-import {View, Text, NavigationHeader, UnderlineText, TouchableViewForFullWidth as TouchableView ,
+import {View, Text, NavigationHeader, TouchableViewForFullWidth as TouchableView ,
 MaterialCommunityIcon as Icon, Switch} from '../theme'
 import type {FC} from 'react'
 import type {DrawerContentComponentProps} from '@react-navigation/drawer'

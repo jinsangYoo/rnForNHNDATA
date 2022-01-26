@@ -17,7 +17,7 @@ type DrawerStackParamList = {
   Login: undefined
   SignUp: undefined
 
-  WebViewHome: undefined
+  WebViewHome: {acesession: string} | undefined
   Settings: undefined
   TabNavigator: undefined
 }

@@ -2,14 +2,12 @@ import React, {useLayoutEffect, useCallback} from 'react'
 import {StyleSheet} from 'react-native'
 import {useNavigation, DrawerActions} from '@react-navigation/native'
 // prettier-ignore
-import {SafeAreaView, View, TextInput,
+import {SafeAreaView, View,
 NavigationHeader, MaterialCommunityIcon as Icon} from '../theme'
-import {AppState} from '../store'
-import {useDispatch, useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import * as L from '../store/login'
 import {WebView} from 'react-native-webview'
 import {commonStyles} from '../styles/Common.style'
-import {Colors} from 'react-native-paper'
 
 import {getRandomIntInclusive} from '../../utils'
 import {sendCommonWithPromise} from '../../acsdk'
@@ -22,9 +20,10 @@ import {
   ACEGender,
   ACEMaritalStatus,
 } from 'reactslimer'
+import {WebViewHomeScreenProps} from '../routeProps.ts'
 
 const title = 'WebViewHome'
-export default function WebViewHome() {
+export default function WebViewHome({route}: WebViewHomeScreenProps) {
   useLayoutEffect(() => {
     const randomValue = getRandomIntInclusive(0, 999).toString()
     const msg = `>>${title}<< >>${randomValue}<<`
@@ -42,8 +41,9 @@ export default function WebViewHome() {
     dispatch(L.logoutAction())
     navigation.navigate('Login')
   }, [])
-  const {loggedUser} = useSelector<AppState, L.State>(({login}) => login)
-  console.log(`loggedUser: ${JSON.stringify(loggedUser, null, 2)}`)
+  console.log(
+    `${title}.acesession: ${JSON.stringify(route.params?.acesession, null, 2)}`,
+  )
 
   return (
     <SafeAreaView>
@@ -58,7 +58,7 @@ export default function WebViewHome() {
           source={{
             uri: 'http://m.acecounter.com/stat/my/site_list.amz',
             headers: {
-              Cookie: loggedUser.acesession,
+              Cookie: route.params?.acesession,
             },
           }}
           style={[commonStyles.flex]}
