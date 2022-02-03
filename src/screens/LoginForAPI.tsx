@@ -2,13 +2,13 @@ import React, {useState, useCallback, useLayoutEffect} from 'react'
 import {StyleSheet, ScrollView} from 'react-native'
 import {useNavigation, DrawerActions} from '@react-navigation/native'
 // prettier-ignore
-import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TextInput, TouchableViewForFullWidth as TouchableView}
+import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TextInput, TouchableViewForFullWidth as TouchableView, RadioButton}
 from '../theme'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {useDispatch, useSelector} from 'react-redux'
 import * as L from '../store/login'
 import {LoginForAPIScreenProps as Props} from '../routeProps'
-import {RadioButton} from 'react-native-paper'
+// import {RadioButton} from 'react-native-paper'
 
 import {getRandomIntInclusive} from '../../utils'
 import {sendCommonWithPromise} from '../../acsdk'
@@ -46,7 +46,17 @@ export default function LoginForAPI({navigation}: Props) {
   const [url, setUrl] = useState<string>(`>>${title}<< >>${randomValue}<<`)
   const [keyword, setKeyword] = useState<string>(`로그인 >>${randomValue}<<`)
   const [age, setAge] = useState<string>(randomValue.toString())
+  const genderData = [
+    {value: ACEGender.Unknown},
+    {value: ACEGender.Man},
+    {value: ACEGender.Woman},
+  ]
   const [genderChecked, setGenderChecked] = useState<string>(ACEGender.Unknown)
+  const maritalStatusData = [
+    {value: ACEMaritalStatus.Unknown},
+    {value: ACEMaritalStatus.Single},
+    {value: ACEMaritalStatus.Married},
+  ]
   const [maritalStatusChecked, setMaritalStatusChecked] = useState<string>(
     ACEMaritalStatus.Unknown,
   )
@@ -121,45 +131,23 @@ export default function LoginForAPI({navigation}: Props) {
                 />
               </View>
               <Text style={[styles.text]}>성별 입력</Text>
-              <RadioButton.Group
-                onValueChange={setGenderChecked}
-                value={genderChecked}>
-                <RadioButton.Item
-                  label="알수 없음"
-                  value={ACEGender.Unknown}
-                  color="#1E6DAD"
+              <View border style={[styles.textInputView]}>
+                <RadioButton
+                  data={genderData}
+                  defaultValue={genderChecked}
+                  valueAtZeroIndex="알수 없음"
+                  onPress={value => setGenderChecked(value)}
                 />
-                <RadioButton.Item
-                  label={ACEGender.Man}
-                  value={ACEGender.Man}
-                  color="#1E6DAD"
-                />
-                <RadioButton.Item
-                  label={ACEGender.Woman}
-                  value={ACEGender.Woman}
-                  color="#1E6DAD"
-                />
-              </RadioButton.Group>
+              </View>
               <Text style={[styles.text]}>결혼여부 입력</Text>
-              <RadioButton.Group
-                onValueChange={setMaritalStatusChecked}
-                value={maritalStatusChecked}>
-                <RadioButton.Item
-                  label="알수 없음"
-                  value={ACEMaritalStatus.Unknown}
-                  color="#1E6DAD"
+              <View border style={[styles.textInputView]}>
+                <RadioButton
+                  data={maritalStatusData}
+                  defaultValue={maritalStatusChecked}
+                  valueAtZeroIndex="알수 없음"
+                  onPress={value => setMaritalStatusChecked(value)}
                 />
-                <RadioButton.Item
-                  label={ACEMaritalStatus.Single}
-                  value={ACEMaritalStatus.Single}
-                  color="#1E6DAD"
-                />
-                <RadioButton.Item
-                  label={ACEMaritalStatus.Married}
-                  value={ACEMaritalStatus.Married}
-                  color="#1E6DAD"
-                />
-              </RadioButton.Group>
+              </View>
             </View>
             <TouchableView
               notification
