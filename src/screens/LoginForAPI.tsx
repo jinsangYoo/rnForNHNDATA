@@ -1,6 +1,5 @@
 import React, {useState, useCallback, useLayoutEffect} from 'react'
 import {StyleSheet, ScrollView} from 'react-native'
-import {useNavigation, DrawerActions} from '@react-navigation/native'
 // prettier-ignore
 import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TextInput, TouchableViewForFullWidth as TouchableView, RadioButton}
 from '../theme'
@@ -8,7 +7,6 @@ import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {useDispatch, useSelector} from 'react-redux'
 import * as L from '../store/login'
 import {LoginForAPIScreenProps as Props} from '../routeProps'
-// import {RadioButton} from 'react-native-paper'
 
 import {getRandomIntInclusive} from '../../utils'
 import {sendCommonWithPromise} from '../../acsdk'
@@ -21,7 +19,6 @@ import {
   ACEGender,
   ACEMaritalStatus,
 } from 'reactslimer'
-import {combineTransition} from 'react-native-reanimated'
 
 const title = 'LoginForAPI'
 export default function LoginForAPI({navigation}: Props) {
@@ -130,7 +127,7 @@ export default function LoginForAPI({navigation}: Props) {
                   placeholder="유저 나이 입력"
                 />
               </View>
-              <Text style={[styles.text]}>성별 입력</Text>
+              <Text style={[styles.text, {marginTop: 20}]}>성별 입력</Text>
               <View border style={[styles.textInputView]}>
                 <RadioButton
                   data={genderData}
@@ -139,7 +136,7 @@ export default function LoginForAPI({navigation}: Props) {
                   onPress={value => setGenderChecked(value)}
                 />
               </View>
-              <Text style={[styles.text]}>결혼여부 입력</Text>
+              <Text style={[styles.text, {marginTop: 20}]}>결혼여부 입력</Text>
               <View border style={[styles.textInputView]}>
                 <RadioButton
                   data={maritalStatusData}
