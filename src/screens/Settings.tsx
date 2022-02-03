@@ -1,9 +1,9 @@
 import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
 import {Platform, StyleSheet, ToastAndroid, Alert} from 'react-native'
-import {useNavigation} from '@react-navigation/native'
+import {useNavigation, DrawerActions} from '@react-navigation/native'
 import Clipboard from '@react-native-clipboard/clipboard'
 // prettier-ignore
-import {SafeAreaView, View, Text, TextInput, TouchableView, UnderlineText}
+import {SafeAreaView, View, Text, NavigationHeader, TouchableView, MaterialCommunityIcon as Icon}
 from '../theme'
 import * as D from '../data'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
@@ -45,6 +45,13 @@ export default function Settings() {
   const focus = useAutoFocus()
   const navigation = useNavigation()
   const dispatch = useDispatch()
+  const open = useCallback(() => {
+    navigation.dispatch(DrawerActions.openDrawer())
+  }, [])
+  const logout = useCallback(() => {
+    dispatch(L.logoutAction())
+    navigation.reset({index: 0, routes: [{name: 'Login'}]})
+  }, [])
 
   const goTabNavigator = useCallback(() => {
     dispatch(L.loginAction({email, name, password}))
@@ -103,6 +110,11 @@ export default function Settings() {
   return (
     <SafeAreaView>
       <View style={[styles.view]}>
+        <NavigationHeader
+          title={title}
+          Left={() => <Icon name="menu" size={30} onPress={open} />}
+          Right={() => <Icon name="logout" size={30} onPress={logout} />}
+        />
         <AutoFocusProvider contentContainerStyle={[styles.keyboardAwareFocus]}>
           <View style={[commonStyles.widthFullAndRowFlexDirectionView]}>
             <Text style={[commonStyles.rowTitle, styles.text]}>

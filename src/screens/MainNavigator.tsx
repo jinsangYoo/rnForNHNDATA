@@ -2,20 +2,7 @@ import React from 'react'
 import {createDrawerNavigator} from '@react-navigation/drawer'
 import DrawerContent from './DrawerContent'
 
-import Grid from './Grid'
-
-import AddInCart from './AddInCart'
-import AppearProduct from './AppearProduct'
-import Buy from './Buy'
-import DeleteInCart from './DeleteInCart'
-import PL from './PL'
-import Join from './Join'
-import Leave from './Leave'
-import Link from './Link'
-import LoginForAPI from './LoginForAPI'
-import Search from './Search'
-import Tel from './Tel'
-import Webview from './Webview'
+import GridNavigator from './GridNavigator'
 
 import Login from './Login'
 import SignUp from './SignUp'
@@ -35,20 +22,7 @@ export default function MainNavigator() {
       screenOptions={{headerShown: false}}>
       <Drawer.Screen name="Login" component={Login} />
       <Drawer.Screen name="SignUp" component={SignUp} />
-      <Drawer.Screen name="Grid" component={Grid} />
-
-      <Drawer.Screen name="AddInCart" component={AddInCart} />
-      <Drawer.Screen name="AppearProduct" component={AppearProduct} />
-      <Drawer.Screen name="Buy" component={Buy} />
-      <Drawer.Screen name="DeleteInCart" component={DeleteInCart} />
-      <Drawer.Screen name="PL" component={PL} />
-      <Drawer.Screen name="Join" component={Join} />
-      <Drawer.Screen name="Leave" component={Leave} />
-      <Drawer.Screen name="Link" component={Link} />
-      <Drawer.Screen name="LoginForAPI" component={LoginForAPI} />
-      <Drawer.Screen name="Search" component={Search} />
-      <Drawer.Screen name="Tel" component={Tel} />
-      <Drawer.Screen name="Webview" component={Webview} />
+      <Drawer.Screen name="GridNavigator" component={GridNavigator} />
 
       <Drawer.Screen name="WebViewHome" component={WebViewHome} />
       <Drawer.Screen name="Settings" component={Settings} />

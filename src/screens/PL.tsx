@@ -7,8 +7,7 @@ from '../theme'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {useDispatch, useSelector} from 'react-redux'
 import * as L from '../store/login'
-import {DrawerNavigationProp} from '@react-navigation/drawer'
-import {DrawerStackParamList} from '../theme/navigation'
+import {PLScreenProps as Props} from '../routeProps'
 
 import {getRandomIntInclusive} from '../../utils'
 import {sendCommonWithPromise} from '../../acsdk'
@@ -22,22 +21,16 @@ import {
   ACEMaritalStatus,
 } from 'reactslimer'
 
-type PLScreenNavigationProp = DrawerNavigationProp<DrawerStackParamList, 'PL'>
-type Props = {
-  navigation: PLScreenNavigationProp
-}
-
 const title = 'PL'
-export default function PL() {
+export default function PL({navigation}: Props) {
   const focus = useAutoFocus()
-  const navigation = useNavigation()
   const dispatch = useDispatch()
-  const open = useCallback(() => {
-    navigation.dispatch(DrawerActions.openDrawer())
+  const onBack = useCallback(() => {
+    navigation.canGoBack() && navigation.goBack()
   }, [])
   const logout = useCallback(() => {
     dispatch(L.logoutAction())
-    navigation.navigate('Login')
+    navigation.reset({index: 0, routes: [{name: 'Login'}]})
   }, [])
 
   useLayoutEffect(() => {
@@ -59,7 +52,9 @@ export default function PL() {
       <View style={[styles.view]}>
         <NavigationHeader
           title={title}
-          Left={() => <Icon name="menu" size={30} onPress={open} />}
+          Left={() => (
+            <Icon name="arrow-left-thick" size={30} onPress={onBack} />
+          )}
           Right={() => <Icon name="logout" size={30} onPress={logout} />}
         />
         <AutoFocusProvider contentContainerStyle={[styles.keyboardAwareFocus]}>

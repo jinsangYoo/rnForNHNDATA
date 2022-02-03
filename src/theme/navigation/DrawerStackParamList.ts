@@ -1,18 +1,5 @@
 type DrawerStackParamList = {
-  Grid: undefined
-
-  AddInCart: undefined
-  AppearProduct: undefined
-  Buy: undefined
-  DeleteInCart: undefined
-  Join: undefined
-  Leave: undefined
-  Link: undefined
-  LoginForAPI: undefined
-  PL: undefined
-  Search: undefined
-  Tel: undefined
-  Webview: undefined
+  GridNavigator: undefined
 
   Login: undefined
   SignUp: undefined

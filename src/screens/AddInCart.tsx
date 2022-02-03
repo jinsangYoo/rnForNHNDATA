@@ -16,25 +16,18 @@ import {AppState} from '../store'
 import * as U from '../utils'
 import * as L from '../store/login'
 import {Colors} from 'react-native-paper'
-import {DrawerNavigationProp} from '@react-navigation/drawer'
-import {DrawerStackParamList} from '../theme/navigation'
+import {AddInCartScreenProps as Props} from '../routeProps'
 
-type AddInCartScreenNavigationProp = DrawerNavigationProp<
-  DrawerStackParamList,
-  'AddInCart'
->
-type Props = {
-  navigation: AddInCartScreenNavigationProp
-}
-
-export default function AddInCart() {
+export default function AddInCart({navigation}: Props) {
   const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
   const [acesession, setAcesession] = useState<string>('')
   const [id, setId] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const focus = useAutoFocus()
-  const navigation = useNavigation()
   const dispatch = useDispatch()
+  const onBack = useCallback(() => {
+    navigation.canGoBack() && navigation.goBack()
+  }, [])
   const goTabNavigator = useCallback(() => {
     dispatch(L.loginAction({acesession, id, password}))
     navigation.navigate('TabNavigator')

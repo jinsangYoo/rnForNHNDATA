@@ -7,12 +7,8 @@ from '../theme'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {useDispatch, useSelector} from 'react-redux'
 import * as L from '../store/login'
-
-import {View as RNView} from 'react-native'
+import {LoginForAPIScreenProps as Props} from '../routeProps'
 import {RadioButton} from 'react-native-paper'
-
-import {DrawerNavigationProp} from '@react-navigation/drawer'
-import {DrawerStackParamList} from '../theme/navigation'
 
 import {getRandomIntInclusive} from '../../utils'
 import {sendCommonWithPromise} from '../../acsdk'
@@ -27,25 +23,16 @@ import {
 } from 'reactslimer'
 import {combineTransition} from 'react-native-reanimated'
 
-type LoginForAPIScreenNavigationProp = DrawerNavigationProp<
-  DrawerStackParamList,
-  'LoginForAPI'
->
-type Props = {
-  navigation: LoginForAPIScreenNavigationProp
-}
-
 const title = 'LoginForAPI'
-export default function LoginForAPI() {
+export default function LoginForAPI({navigation}: Props) {
   const focus = useAutoFocus()
-  const navigation = useNavigation()
   const dispatch = useDispatch()
-  const open = useCallback(() => {
-    navigation.dispatch(DrawerActions.openDrawer())
+  const onBack = useCallback(() => {
+    navigation.canGoBack() && navigation.goBack()
   }, [])
   const logout = useCallback(() => {
     dispatch(L.logoutAction())
-    navigation.navigate('Login')
+    navigation.reset({index: 0, routes: [{name: 'Login'}]})
   }, [])
 
   useLayoutEffect(() => {
@@ -92,7 +79,7 @@ export default function LoginForAPI() {
     <SafeAreaView>
       <NavigationHeader
         title={title}
-        Left={() => <Icon name="menu" size={30} onPress={open} />}
+        Left={() => <Icon name="arrow-left-thick" size={30} onPress={onBack} />}
         Right={() => <Icon name="logout" size={30} onPress={logout} />}
       />
       <ScrollView contentContainerStyle={styles.contentContainerStyle}>

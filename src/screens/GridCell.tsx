@@ -44,10 +44,30 @@ const GridCell: FC<GridCellProps> = ({api: initialApi, onPressed}) => {
                 : 'rgba(255, 99, 99, 1.0)',
           },
         ]}>
-        <Text style={[styles.name]}>{api.node.type}</Text>
+        <Text
+          style={[
+            styles.name,
+            {
+              color:
+                api.node.isEnable == true
+                  ? 'rgba(99, 99, 99, 1.0)'
+                  : 'rgba(200, 200, 200, 1.0)',
+            },
+          ]}>
+          {api.node.type}
+        </Text>
         <UnderlineText
           ellipsizeMode="tail"
-          style={[styles.text, styles.remark]}>
+          style={[
+            styles.text,
+            styles.remark,
+            {
+              color:
+                api.node.isEnable == true
+                  ? 'rgba(99, 99, 99, 1.0)'
+                  : 'rgba(200, 200, 200, 1.0)',
+            },
+          ]}>
           {api.node.isEnable == true ? '구현' : '미구현'}
         </UnderlineText>
       </View>

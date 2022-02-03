@@ -15,16 +15,19 @@ import {useDispatch, useSelector} from 'react-redux'
 import {AppState} from '../store'
 import * as U from '../utils'
 import * as L from '../store/login'
+import {BuyScreenProps as Props} from '../routeProps'
 import {Colors} from 'react-native-paper'
 
-export default function Buy() {
+export default function Buy({navigation}: Props) {
   const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
   const [acesession, setAcesession] = useState<string>('')
   const [id, setId] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const focus = useAutoFocus()
-  const navigation = useNavigation()
   const dispatch = useDispatch()
+  const onBack = useCallback(() => {
+    navigation.canGoBack() && navigation.goBack()
+  }, [])
   const goTabNavigator = useCallback(() => {
     dispatch(L.loginAction({acesession, id, password}))
     navigation.navigate('TabNavigator')

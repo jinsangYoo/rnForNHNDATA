@@ -26,7 +26,10 @@ const DrawerContent: FC<DrawerContentComponentProps> = props => {
     () => navigation.dispatch(DrawerActions.closeDrawer()),
     [],
   )
-  const goGrid = useCallback(() => navigation.navigate('Grid'), [])
+  const goGridNavigator = useCallback(
+    () => navigation.navigate('GridNavigator'),
+    [],
+  )
   const goLogin = useCallback(() => navigation.navigate('Login'), [])
   const goWebViewHome = useCallback(
     () => navigation.navigate('WebViewHome'),
@@ -80,7 +83,7 @@ const DrawerContent: FC<DrawerContentComponentProps> = props => {
         <TouchableView
           notification
           style={[styles.touchableView, {marginTop: 20}]}
-          onPress={goGrid}>
+          onPress={goGridNavigator}>
           <Text style={[styles.text]}>Grid</Text>
         </TouchableView>
         <TouchableView

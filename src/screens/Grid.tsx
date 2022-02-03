@@ -19,6 +19,7 @@ import {gcodeSelector} from '../../utils'
 import GridCell from './GridCell'
 import {useDefaultAPIList} from '../hooks'
 import type {IAPI} from '../data'
+import {GridScreenProps as Props} from '../routeProps'
 
 import {getRandomIntInclusive} from '../../utils'
 import {sendCommonWithPromise} from '../../acsdk'
@@ -33,7 +34,7 @@ import {
 } from 'reactslimer'
 
 const title = 'Grid'
-export default function Grid() {
+export default function Grid({navigation}: Props) {
   // gcode
   const focus = useAutoFocus()
   const [gcode, setGcode] = useState<string>(gcodeSelector())
@@ -67,14 +68,13 @@ export default function Grid() {
     sendCommonWithPromise(msg, params)
   }, [])
   // navigation
-  const navigation = useNavigation()
   const dispatch = useDispatch()
   const open = useCallback(() => {
     navigation.dispatch(DrawerActions.openDrawer())
   }, [])
   const logout = useCallback(() => {
     dispatch(L.logoutAction())
-    navigation.navigate('Login')
+    navigation.reset({index: 0, routes: [{name: 'Login'}]})
   }, [])
   const {loggedUser} = useSelector<AppState, L.State>(({login}) => login)
   console.log(`loggedUser: ${JSON.stringify(loggedUser, null, 2)}`)
@@ -103,7 +103,7 @@ export default function Grid() {
         return
       }
 
-      navigation.navigate(item.node.type)
+      navigation.push(item.node.type)
     },
     [],
   )
@@ -152,10 +152,11 @@ export default function Grid() {
             style={[
               commonStyles.rowFlexDirectionViewNonPadding,
               styles.controlBoxJustifyContent,
+              {marginTop: 10},
             ]}
             pointerEvents="none">
             <Text style={[styles.text]}>개인 정보 취급 방침 활성화:</Text>
-            <Switch value={isAdTrackingEnabled} style={{height: 50}} />
+            <Switch value={isAdTrackingEnabled} />
           </View>
         </View>
         <View style={styles.view}>

@@ -20,10 +20,10 @@ import {
   ACEGender,
   ACEMaritalStatus,
 } from 'reactslimer'
-import {WebViewHomeScreenProps} from '../routeProps.ts'
+import {WebViewHomeScreenProps as Props} from '../routeProps'
 
 const title = 'WebViewHome'
-export default function WebViewHome({route}: WebViewHomeScreenProps) {
+export default function WebViewHome({route}: Props) {
   useLayoutEffect(() => {
     const randomValue = getRandomIntInclusive(0, 999).toString()
     const msg = `>>${title}<< >>${randomValue}<<`
@@ -39,9 +39,10 @@ export default function WebViewHome({route}: WebViewHomeScreenProps) {
   }, [])
   const logout = useCallback(() => {
     dispatch(L.logoutAction())
-    navigation.navigate('Login')
+    navigation.reset({index: 0, routes: [{name: 'Login'}]})
   }, [])
   console.log(
+    `${title}: ${JSON.stringify(route, null, 2)}`,
     `${title}.acesession: ${JSON.stringify(route.params?.acesession, null, 2)}`,
   )
 
