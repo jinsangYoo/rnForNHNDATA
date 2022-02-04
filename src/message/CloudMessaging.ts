@@ -1,5 +1,5 @@
 import {useEffect} from 'react'
-import {Platform} from 'react-native'
+import {Platform, Alert} from 'react-native'
 import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging'
@@ -19,9 +19,19 @@ export function CloudMessaging() {
     console.log('컴포넌트가 화면에 나타남')
     registerAppWithFCM()
     requestUserPermission()
-    return () => {
-      console.log('컴포넌트가 화면에서 사라짐')
-    }
+
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      if (remoteMessage) {
+        console.log(
+          'A new FCM message arrived on foreground!',
+          JSON.stringify(remoteMessage, null, 2),
+        )
+        Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage))
+        handleCloudMsg(remoteMessage)
+      }
+    })
+
+    return unsubscribe
   }, [])
 
   async function registerAppWithFCM() {
@@ -55,16 +65,6 @@ export function CloudMessaging() {
         console.log(`${authorizationStatus}: 수락`)
         // 토큰 요청
         checkToken()
-
-        messaging().onMessage(async remoteMessage => {
-          if (remoteMessage) {
-            console.log(
-              'A new FCM message arrived on foreground!',
-              JSON.stringify(remoteMessage, null, 2),
-            )
-            handleCloudMsg(remoteMessage)
-          }
-        })
 
         // 앱 꺼져있을 때
         messaging()
