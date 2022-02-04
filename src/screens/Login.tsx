@@ -117,7 +117,10 @@ export default function Login() {
         console.log(`acesession: ${acesession}`)
         dispatch(L.loginWithSaveAction({acesession, id, password}))
         setLoading(false)
-        navigation.navigate('WebViewHome', {acesession: acesession})
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'WebViewHome', params: {acesession}}],
+        })
       })
       .catch(e => {
         setLoading(false)

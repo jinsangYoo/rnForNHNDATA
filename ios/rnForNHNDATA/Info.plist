@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>Your data will be used to show you personalized ads.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -41,6 +39,8 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Your data will be used to show you personalized ads.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Zocial.ttf</string>
@@ -63,6 +63,10 @@
 		<string>DancingScript-SemiBold.ttf</string>
 		<string>AntDesign.ttf</string>
 		<string>Entypo.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
