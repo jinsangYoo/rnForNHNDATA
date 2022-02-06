@@ -1,55 +1,55 @@
 {
   "images" : [
     {
-      "filename" : "Star-grey-icon-40.png",
+      "filename" : "test_sdk_40.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
-      "filename" : "Star-grey-icon-60.png",
+      "filename" : "test_sdk_60.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "20x20"
     },
     {
-      "filename" : "Star-grey-icon-58.png",
+      "filename" : "test_sdk_58.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
-      "filename" : "Star-grey-icon-87.png",
+      "filename" : "test_sdk_87.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "29x29"
     },
     {
-      "filename" : "Star-grey-icon-80.png",
+      "filename" : "test_sdk_80.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
-      "filename" : "Star-grey-icon-120.png",
+      "filename" : "test_sdk_120.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "40x40"
     },
     {
-      "filename" : "Star-grey-icon-121.png",
+      "filename" : "test_sdk_120-1.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"
     },
     {
-      "filename" : "Star-grey-icon-180.png",
+      "filename" : "test_sdk_180.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "60x60"
     },
     {
-      "filename" : "Star-grey-icon-1024.png",
+      "filename" : "Icon-1024.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
