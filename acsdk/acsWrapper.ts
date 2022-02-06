@@ -42,10 +42,10 @@ export function sendCommonWithPromise(
       console.log(`${argMessage}::in reject!!`)
       if (err) {
         console.log('err: ' + JSON.stringify(err, null, 2))
-        popupMessage(`fail sdk send ${params.name}`)
+        // popupMessage(`fail sdk send ${params.name}`)
       } else {
         console.log('err is undefined.')
-        popupMessage(`fail sdk send ${params.name} but err is undefined`)
+        // popupMessage(`fail sdk send ${params.name} but err is undefined`)
       }
     })
 }
