@@ -1,17 +1,15 @@
 import React, {useEffect, useState, useCallback, useLayoutEffect} from 'react'
 import {Platform, StyleSheet, FlatList, ToastAndroid, Alert} from 'react-native'
-import {useNavigation, DrawerActions} from '@react-navigation/native'
+import {DrawerActions} from '@react-navigation/native'
 // prettier-ignore
 import {SafeAreaView, View, Text, TextInput, TouchableView,
 NavigationHeader, MaterialCommunityIcon as Icon} from '../theme'
 import {AppState} from '../store'
 import {useDispatch, useSelector} from 'react-redux'
-import * as D from '../data'
 import * as L from '../store/login'
 import {useAutoFocus, useScrollEnabled} from '../contexts'
 import {Switch} from 'react-native'
 import {commonStyles} from '../styles/Common.style'
-import {Colors} from 'react-native-paper'
 import ReactNativeIdfaAaid, {
   AdvertisingInfoResponse,
 } from '@sparkfabrik/react-native-idfa-aaid'
@@ -59,7 +57,6 @@ export default function Grid({navigation}: Props) {
         console.log(err)
         setIsAdTrackingEnabled(false)
       })
-    D.makeArray(5).forEach(addPerson)
   }, [])
   useLayoutEffect(() => {
     const randomValue = getRandomIntInclusive(0, 999).toString()
@@ -79,17 +76,6 @@ export default function Grid({navigation}: Props) {
   const {loggedUser} = useSelector<AppState, L.State>(({login}) => login)
   console.log(`loggedUser: ${JSON.stringify(loggedUser, null, 2)}`)
   const [scrollEnabled] = useScrollEnabled()
-  // people
-  const [people, setPeople] = useState<D.IPerson[]>([])
-  const addPerson = useCallback(() => {
-    setPeople(people => [D.createRandomPerson(), ...people])
-  }, [])
-  const deletePerson = useCallback(
-    (id: string) => () => {
-      setPeople(people => people.filter(person => person.id != id))
-    },
-    [],
-  )
   const clickedCell = useCallback(
     (item: IAPI) => () => {
       console.log(`clickedCell::item: ${JSON.stringify(item, null, 2)}`)

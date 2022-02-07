@@ -5,3 +5,6 @@ export * from './createRandomPerson'
 export * from './ICountry'
 export * from './getCountries'
 export * from './IAPI'
+
+export * from './IProduct'
+export * from './createRandomProduct'

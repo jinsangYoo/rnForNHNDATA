@@ -12,7 +12,7 @@ const createAPI = (api: TypeForAPI) => {
 
 export const useDefaultAPIList = (deps: any[] = []) => {
   const [name, setName] = useState<TypeForAPI[]>([
-    {type: 'AddInCart', isEnable: false},
+    {type: 'AddInCart', isEnable: true},
     {type: 'AppearProduct', isEnable: true},
     {type: 'Buy', isEnable: false},
     {type: 'DeleteInCart', isEnable: false},
