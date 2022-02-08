@@ -17,6 +17,7 @@
 		7A0DF4E4C36449029D9DF8F8 /* DancingScript-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E63127F9EDE94F3E95F52CB8 /* DancingScript-Bold.ttf */; };
 		7EF68E3733C33B6898317E18 /* libPods-rnForNHNDATA-rnForNHNDATATests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFE59519B596E51CEFDCCC0 /* libPods-rnForNHNDATA-rnForNHNDATATests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		A15D2E9727B20BD70034B488 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A15D2E9627B20BD70034B488 /* AppTrackingTransparency.framework */; };
 		A1BAB544279D6A1300BD7EDD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A1BAB543279D6A1300BD7EDD /* GoogleService-Info.plist */; };
 		B288FACE3D8D4CE9A7970DFA /* DancingScript-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90BFF6E83C42431CA51B072B /* DancingScript-Medium.ttf */; };
 /* End PBXBuildFile section */
@@ -48,6 +49,7 @@
 		6C97AB639B58BBB4B15BBE30 /* Pods-rnForNHNDATA-rnForNHNDATATests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnForNHNDATA-rnForNHNDATATests.debug.xcconfig"; path = "Target Support Files/Pods-rnForNHNDATA-rnForNHNDATATests/Pods-rnForNHNDATA-rnForNHNDATATests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = rnForNHNDATA/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		90BFF6E83C42431CA51B072B /* DancingScript-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DancingScript-Medium.ttf"; path = "../src/assets/fonts/DancingScript-Medium.ttf"; sourceTree = "<group>"; };
+		A15D2E9627B20BD70034B488 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		A15FB2A6279EEBF200B0A789 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		A15FB2A7279EEBF200B0A789 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		A15FB2A8279EEBF200B0A789 /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6172F2D35A4C3AA820D92908 /* libPods-rnForNHNDATA.a in Frameworks */,
+				A15D2E9727B20BD70034B488 /* AppTrackingTransparency.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,6 +132,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A15D2E9627B20BD70034B488 /* AppTrackingTransparency.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				6423831EA8574132BED9D8CC /* libPods-rnForNHNDATA.a */,
 				ABFE59519B596E51CEFDCCC0 /* libPods-rnForNHNDATA-rnForNHNDATATests.a */,
