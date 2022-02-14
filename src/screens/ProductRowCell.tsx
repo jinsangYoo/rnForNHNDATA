@@ -12,6 +12,7 @@ export type ProductRowCellProps = {
   index: number
   onDeletePressed: () => void
   onChange?: ((product: D.IProduct, index: number) => void) | undefined
+  isDisableProductIdAndOptionCodeName?: boolean
 }
 
 const ProductRowCell: FC<ProductRowCellProps> = ({
@@ -19,6 +20,7 @@ const ProductRowCell: FC<ProductRowCellProps> = ({
   index,
   onDeletePressed,
   onChange,
+  isDisableProductIdAndOptionCodeName,
 }) => {
   const [product, setProduct] = useState<D.IProduct>(initialProduct)
   return (
@@ -73,12 +75,14 @@ const ProductRowCell: FC<ProductRowCellProps> = ({
         </TextInput>
         <TextInput
           style={[styles.productId]}
-          placeholder="제품ID"
+          placeholder={'제품ID'}
           onChange={e => {
             onChange &&
               onChange({...product, productId: e.nativeEvent.text}, index)
-          }}>
-          {product.productId}
+          }}
+          editable={!isDisableProductIdAndOptionCodeName}
+          selectTextOnFocus={!isDisableProductIdAndOptionCodeName}>
+          {isDisableProductIdAndOptionCodeName ? '비활성' : product.productId}
         </TextInput>
         <TextInput
           style={[styles.optionCodeName]}
@@ -86,8 +90,12 @@ const ProductRowCell: FC<ProductRowCellProps> = ({
           onChange={e => {
             onChange &&
               onChange({...product, optionCodeName: e.nativeEvent.text}, index)
-          }}>
-          {product.optionCodeName}
+          }}
+          editable={!isDisableProductIdAndOptionCodeName}
+          selectTextOnFocus={!isDisableProductIdAndOptionCodeName}>
+          {isDisableProductIdAndOptionCodeName
+            ? '비활성'
+            : product.optionCodeName}
         </TextInput>
         <TouchableView
           style={[

@@ -59,12 +59,22 @@ export default function AddInCart({navigation}: Props) {
 
   const randomValue = getRandomIntInclusive(0, 999)
   const [url, setUrl] = useState<string>(`>>${title}<< >>${randomValue}<<`)
-  // const onSend = useCallback(() => {
-  //   const params = ACParams.init(ACParams.TYPE.ADDCART, url)
-  //   sendCommonWithPromise(url, params)
-  // }, [url])
   const onSend = useCallback(() => {
-    console.log(`addProduct:: ${JSON.stringify(products, null, 2)}`)
+    const params = ACParams.init(ACParams.TYPE.ADDCART, url)
+    params.products = []
+    products.map(item => {
+      params.products?.push(
+        new ACProduct(
+          item.name,
+          item.category,
+          item.price,
+          item.quantity,
+          item.productId,
+          item.optionCodeName,
+        ),
+      )
+    })
+    sendCommonWithPromise(url, params)
   }, [products])
 
   const renderSeparator = useCallback(() => {
@@ -109,6 +119,7 @@ export default function AddInCart({navigation}: Props) {
               onChange={(product, index) => {
                 products[index] = {...products[index], ...product}
               }}
+              isDisableProductIdAndOptionCodeName={true}
             />
           )}
           keyExtractor={item => item.id}
