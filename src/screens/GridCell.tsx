@@ -2,8 +2,7 @@ import React, {useState} from 'react'
 import type {FC} from 'react'
 import {Colors} from 'react-native-paper'
 // prettier-ignore
-import {View, Text, UnderlineText, TouchableViewForFullWidth as TouchableView,
-MaterialCommunityIcon as Icon} from '../theme/navigation'
+import {View, Text, UnderlineText, TouchableViewForFullWidth as TouchableView} from '../theme/navigation'
 import * as D from '../data'
 import {Avatar} from '../components'
 import {styles} from './GridCell.style'

@@ -1,5 +1,12 @@
 import React, {useEffect, useState, useCallback, useLayoutEffect} from 'react'
-import {Platform, StyleSheet, FlatList, ToastAndroid, Alert} from 'react-native'
+import {
+  Platform,
+  StyleSheet,
+  FlatList,
+  ToastAndroid,
+  Alert,
+  Switch,
+} from 'react-native'
 import {DrawerActions} from '@react-navigation/native'
 // prettier-ignore
 import {SafeAreaView, View, Text, TextInput, TouchableView,
@@ -8,7 +15,6 @@ import {AppState} from '../store'
 import {useDispatch, useSelector} from 'react-redux'
 import * as L from '../store/login'
 import {useAutoFocus, useScrollEnabled} from '../contexts'
-import {Switch} from 'react-native'
 import {commonStyles} from '../styles/Common.style'
 import ReactNativeIdfaAaid, {
   AdvertisingInfoResponse,
