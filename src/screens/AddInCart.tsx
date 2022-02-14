@@ -4,7 +4,7 @@ import {StyleSheet, FlatList} from 'react-native'
 import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TouchableViewForFullWidth as TouchableView}
 from '../theme'
 import {useScrollEnabled} from '../contexts'
-import {useDispatch, useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import * as D from '../data'
 import * as L from '../store/login'
 import ProductRowCell from './ProductRowCell'
@@ -21,7 +21,6 @@ import {
   ACEGender,
   ACEMaritalStatus,
 } from 'reactslimer'
-import {Colors} from 'react-native-paper'
 
 const title = 'AddInCart'
 export default function AddInCart({navigation}: Props) {
@@ -60,10 +59,13 @@ export default function AddInCart({navigation}: Props) {
 
   const randomValue = getRandomIntInclusive(0, 999)
   const [url, setUrl] = useState<string>(`>>${title}<< >>${randomValue}<<`)
+  // const onSend = useCallback(() => {
+  //   const params = ACParams.init(ACParams.TYPE.ADDCART, url)
+  //   sendCommonWithPromise(url, params)
+  // }, [url])
   const onSend = useCallback(() => {
-    const params = ACParams.init(ACParams.TYPE.ADDCART, url)
-    sendCommonWithPromise(url, params)
-  }, [url])
+    console.log(`addProduct:: ${JSON.stringify(products, null, 2)}`)
+  }, [products])
 
   const renderSeparator = useCallback(() => {
     return (
@@ -97,12 +99,16 @@ export default function AddInCart({navigation}: Props) {
         <FlatList
           scrollEnabled={scrollEnabled}
           data={products}
+          extraData={products}
           ItemSeparatorComponent={renderSeparator}
           renderItem={({item, index}) => (
             <ProductRowCell
               product={item}
               index={index}
               onDeletePressed={deleteProduct(item.productId)}
+              onChange={(product, index) => {
+                products[index] = {...products[index], ...product}
+              }}
             />
           )}
           keyExtractor={item => item.id}

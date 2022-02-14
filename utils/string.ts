@@ -42,6 +42,10 @@ export function onlyLetteringAtStartIndex(value: string): string {
   return value
 }
 
+export function stringToNumber(value: string, defaultValue: number): number {
+  return Number(value) || defaultValue || 0
+}
+
 export function testForReg() {
   //  Alert.alert('home pressed.', 'message!!')
 
