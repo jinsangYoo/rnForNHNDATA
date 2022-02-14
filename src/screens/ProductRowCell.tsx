@@ -31,11 +31,16 @@ const ProductRowCell: FC<ProductRowCellProps> = ({
             {
               color: 'rgba(99, 99, 99, 1.0)',
             },
-          ]}>
+          ]}
+          placeholder="제품명">
           {product.name}
         </TextInput>
-        <TextInput style={[styles.category]}>{product.category}</TextInput>
-        <TextInput style={[styles.price]}>{product.price}</TextInput>
+        <TextInput style={[styles.category]} placeholder="제품카테">
+          {product.category}
+        </TextInput>
+        <TextInput style={[styles.price]} placeholder="제품가격">
+          {product.price}
+        </TextInput>
       </View>
       <View
         style={[
@@ -50,11 +55,14 @@ const ProductRowCell: FC<ProductRowCellProps> = ({
             {
               color: 'rgba(99, 99, 99, 1.0)',
             },
-          ]}>
+          ]}
+          placeholder="제품수량">
           {product.quantity}
         </TextInput>
-        <TextInput style={[styles.productId]}>{product.productId}</TextInput>
-        <TextInput style={[styles.optionCodeName]}>
+        <TextInput style={[styles.productId]} placeholder="제품ID">
+          {product.productId}
+        </TextInput>
+        <TextInput style={[styles.optionCodeName]} placeholder="옵션코드">
           {product.optionCodeName}
         </TextInput>
         <TouchableView style={[styles.touchableView]} onPress={onDeletePressed}>
