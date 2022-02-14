@@ -1,179 +1,144 @@
-import React, {useState, useCallback, useEffect} from 'react'
-import {
-  Platform,
-  StyleSheet,
-  ActivityIndicator,
-  ToastAndroid,
-  Alert,
-} from 'react-native'
-import {useNavigation} from '@react-navigation/native'
+import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
+import {StyleSheet, FlatList} from 'react-native'
 // prettier-ignore
-import {SafeAreaView, View, Text, TextInput, TouchableViewForFullWidth as TouchableView}
+import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TouchableViewForFullWidth as TouchableView}
 from '../theme'
-import {useAutoFocus, AutoFocusProvider} from '../contexts'
-import {useDispatch, useSelector} from 'react-redux'
-import {AppState} from '../store'
-import * as U from '../utils'
+import {useScrollEnabled} from '../contexts'
+import {useDispatch} from 'react-redux'
+import * as D from '../data'
 import * as L from '../store/login'
-import {DeleteInCartScreenProps as Props} from '../routeProps'
-import {Colors} from 'react-native-paper'
+import ProductRowCell from './ProductRowCell'
+import {AddInCartScreenProps as Props} from '../routeProps'
 
+import {getRandomIntInclusive} from '../../utils'
+import {sendCommonWithPromise} from '../../acsdk'
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus,
+} from 'reactslimer'
+
+const title = 'DeleteInCart'
 export default function DeleteInCart({navigation}: Props) {
-  const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
-  const [acesession, setAcesession] = useState<string>('')
-  const [id, setId] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const focus = useAutoFocus()
   const dispatch = useDispatch()
   const onBack = useCallback(() => {
     navigation.canGoBack() && navigation.goBack()
   }, [])
-  const goTabNavigator = useCallback(() => {
-    dispatch(L.loginAction({acesession, id, password}))
-    navigation.navigate('TabNavigator')
-  }, [acesession, id, password])
-  const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
+  const logout = useCallback(() => {
+    dispatch(L.logoutAction())
+    navigation.reset({index: 0, routes: [{name: 'Login'}]})
+  }, [])
 
   useEffect(() => {
-    // U.readFromStorage(L.loggedUserKey)
-    //   .then(value => {
-    //     if (value.length > 0) {
-    //       const savedUser = JSON.parse(value)
-    //       setAcesession(savedUser.acesession)
-    //       setId(savedUser.id)
-    //       setPassword(savedUser.password)
-    //     }
-    //   })
-    //   .catch(e => {})
-  }, [loggedIn])
+    D.makeArray(1).forEach(addProduct)
+  }, [])
+  useLayoutEffect(() => {
+    const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
+    const msgForScreen = `>>${title}<< >>${randomValueForScreen}<<`
+    const params = ACParams.init(ACParams.TYPE.EVENT, msgForScreen)
+    sendCommonWithPromise(msgForScreen, params)
+  }, [])
 
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
-  const onLogin = useCallback(() => {
-    setLoading(true)
-    fetch(`http://m.acecounter.com/login.amz?id=${id}&pw=${password}`)
-      .then(res => {
-        var _resultMap = new Map()
-        for (const [key, value] of Object.entries(res)) {
-          _resultMap.set(key, value)
-        }
+  const [scrollEnabled] = useScrollEnabled()
 
-        if (_resultMap.has('status') && _resultMap.get('status') === 200) {
-          console.log(`_resultMap.get('status'): ${_resultMap.get('status')}`)
-        } else {
-          throw new Error('response is not ok.')
-        }
+  // product
+  const [products, setProducts] = useState<D.IProduct[]>([])
+  const addProduct = useCallback(() => {
+    setProducts(products => [D.createRandomProduct(), ...products])
+  }, [])
+  const deleteProduct = useCallback(
+    (id: string) => () => {
+      setProducts(products => products.filter(p => p.productId != id))
+    },
+    [],
+  )
 
-        var _resultHeadersMap = new Map()
-        if (!_resultMap.has('headers')) {
-          throw new Error('response headers key is not exist.')
-        } else {
-          const _headers = _resultMap.get('headers')
-          for (const [keyHeaders, valueHeaders] of Object.entries(
-            _headers['map'],
-          )) {
-            _resultHeadersMap.set(keyHeaders, valueHeaders)
-          }
+  const randomValue = getRandomIntInclusive(0, 999)
+  const [url, setUrl] = useState<string>(`>>${title}<< >>${randomValue}<<`)
+  const onSend = useCallback(() => {
+    const params = ACParams.init(ACParams.TYPE.DELCART, url)
+    params.products = []
+    products.map(item => {
+      params.products?.push(
+        new ACProduct(
+          item.name,
+          item.category,
+          item.price,
+          item.quantity,
+          item.productId,
+          item.optionCodeName,
+        ),
+      )
+    })
+    sendCommonWithPromise(url, params)
+  }, [products])
 
-          if (_resultHeadersMap.has('set-cookie')) {
-            const regex = /^ACESESSION=(?!deleted).*/
-            const setCookie = _resultHeadersMap
-              .get('set-cookie')
-              .split(' ')
-              .filter(item => {
-                return regex.test(item)
-              })
-
-            if (setCookie.length != 1) {
-              throw new Error(
-                'not found ACE SESSION information at response headers.',
-              )
-            } else {
-              return setCookie[0]
-            }
-          } else {
-            throw new Error('not found set-cookie key at response headers.')
-          }
-        }
-      })
-      .then(result => {
-        console.log(`result: ${result}`)
-        dispatch(L.loginWithSaveAction({acesession: result, id, password}))
-        setLoading(false)
-        navigation.navigate('WebViewHome')
-      })
-      .catch(e => {
-        setLoading(false)
-        setErrorMessage(e.message)
-        popupErrorMessage()
-      })
-  }, [id, password])
-  const popupErrorMessage = useCallback(() => {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(errorMessage, ToastAndroid.LONG)
-    } else {
-      Alert.alert(errorMessage)
-    }
-  }, [errorMessage])
+  const renderSeparator = useCallback(() => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: '86%',
+          backgroundColor: '#CED0CE',
+          marginLeft: '14%',
+        }}
+      />
+    )
+  }, [])
 
   return (
     <SafeAreaView>
       <View style={[styles.view]}>
-        <AutoFocusProvider contentContainerStyle={[styles.keyboardAwareFocus]}>
-          <Text style={[styles.title, {marginBottom: 100}]}>ACE COUNTER</Text>
-          <View style={[styles.textView]}>
-            <Text style={[styles.text]}>ID</Text>
-            <View border style={[styles.textInputView]}>
-              <TextInput
-                onFocus={focus}
-                style={[styles.textInput]}
-                value={id}
-                onChangeText={setId}
-                placeholder="DeleteInCart"
-              />
-            </View>
-          </View>
-          <View style={[styles.textView]}>
-            <Text style={[styles.text]}>password</Text>
-            <View border style={[styles.textInputView]}>
-              <TextInput
-                secureTextEntry
-                onFocus={focus}
-                style={[styles.textInput]}
-                value={password}
-                onChangeText={setPassword}
-                placeholder="enter your password."
-              />
-            </View>
-          </View>
-          {loading && (
-            <ActivityIndicator size="large" color={Colors.lightBlue500} />
+        <NavigationHeader
+          title={title}
+          Left={() => (
+            <Icon name="arrow-left-thick" size={30} onPress={onBack} />
           )}
-          <TouchableView
-            notification
-            style={[styles.touchableView]}
-            onPress={onLogin}>
-            <Text style={[styles.text]}>Login</Text>
-          </TouchableView>
-        </AutoFocusProvider>
+          Right={() => <Icon name="logout" size={30} onPress={logout} />}
+        />
+        <TouchableView
+          notification
+          style={[styles.touchableView]}
+          onPress={addProduct}>
+          <Text style={[styles.text]}>제품 추가</Text>
+        </TouchableView>
+        <FlatList
+          scrollEnabled={scrollEnabled}
+          data={products}
+          extraData={products}
+          ItemSeparatorComponent={renderSeparator}
+          renderItem={({item, index}) => (
+            <ProductRowCell
+              product={item}
+              index={index}
+              onDeletePressed={deleteProduct(item.productId)}
+              onChange={(product, index) => {
+                products[index] = {...products[index], ...product}
+              }}
+              isDisableProductIdAndOptionCodeName={true}
+            />
+          )}
+          keyExtractor={item => item.id}
+        />
+        <TouchableView
+          notification
+          style={[styles.touchableView, styles.bottomAPITouchableView]}
+          onPress={onSend}>
+          <Text style={[styles.text]}>{title}</Text>
+        </TouchableView>
       </View>
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  view: {flex: 1, justifyContent: 'space-between', alignItems: 'center'},
+  view: {flex: 1, alignItems: 'center'},
   title: {fontSize: 40},
   text: {fontSize: 20},
-  keyboardAwareFocus: {
-    flex: 1,
-    padding: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textView: {width: '100%', padding: 5, marginBottom: 10},
-  textInput: {fontSize: 24, padding: 10},
-  textInputView: {marginTop: 5, borderRadius: 10},
   touchableView: {
     flexDirection: 'row',
     height: 50,
@@ -181,5 +146,9 @@ const styles = StyleSheet.create({
     width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(99, 255, 99, 0.5)',
+  },
+  bottomAPITouchableView: {
+    marginVertical: 10,
   },
 })

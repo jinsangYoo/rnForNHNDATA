@@ -15,7 +15,7 @@ export const useDefaultAPIList = (deps: any[] = []) => {
     {type: 'AddInCart', isEnable: true},
     {type: 'AppearProduct', isEnable: true},
     {type: 'Buy', isEnable: false},
-    {type: 'DeleteInCart', isEnable: false},
+    {type: 'DeleteInCart', isEnable: true},
     {type: 'Join', isEnable: true},
     {type: 'Leave', isEnable: true},
     {type: 'Link', isEnable: true},
