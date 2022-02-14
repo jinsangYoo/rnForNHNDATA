@@ -53,6 +53,7 @@ const ProductRowCell: FC<ProductRowCellProps> = ({
         <TextInput
           style={[styles.price]}
           placeholder="제품가격"
+          keyboardType="decimal-pad"
           onChange={e => {
             onChange && onChange({...product, price: e.nativeEvent.text}, index)
           }}>
