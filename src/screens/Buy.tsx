@@ -48,7 +48,8 @@ export default function DeleteInCart({navigation}: Props) {
   // product
   const [products, setProducts] = useState<D.IProduct[]>([])
   const addProduct = useCallback(() => {
-    setProducts(products => [D.createRandomProduct(), ...products])
+    const randomValue = getRandomIntInclusive(0, 99)
+    setProducts(products => [D.createRandomProduct(randomValue), ...products])
   }, [])
   const deleteProduct = useCallback(
     (id: string) => () => {
