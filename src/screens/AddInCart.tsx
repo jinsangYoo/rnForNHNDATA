@@ -1,9 +1,9 @@
 import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
-import {StyleSheet, ScrollView, FlatList} from 'react-native'
+import {StyleSheet, FlatList} from 'react-native'
 // prettier-ignore
 import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TouchableViewForFullWidth as TouchableView}
 from '../theme'
-import {useAutoFocus, AutoFocusProvider, useScrollEnabled} from '../contexts'
+import {useScrollEnabled} from '../contexts'
 import {useDispatch, useSelector} from 'react-redux'
 import * as D from '../data'
 import * as L from '../store/login'
@@ -24,7 +24,6 @@ import {
 
 const title = 'AddInCart'
 export default function AddInCart({navigation}: Props) {
-  const focus = useAutoFocus()
   const dispatch = useDispatch()
   const onBack = useCallback(() => {
     navigation.canGoBack() && navigation.goBack()
@@ -81,25 +80,21 @@ export default function AddInCart({navigation}: Props) {
           onPress={addProduct}>
           <Text style={[styles.text]}>제품 추가</Text>
         </TouchableView>
-        <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-          <AutoFocusProvider
-            contentContainerStyle={[styles.keyboardAwareFocus]}>
-            <FlatList
-              scrollEnabled={scrollEnabled}
-              data={products}
-              renderItem={({item}) => (
-                <ProductRowCell
-                  product={item}
-                  onDeletePressed={deleteProduct(item.productId)}
-                />
-              )}
-              keyExtractor={item => item.id}
+        <FlatList
+          scrollEnabled={scrollEnabled}
+          data={products}
+          renderItem={({item}) => (
+            <ProductRowCell
+              product={item}
+              onDeletePressed={deleteProduct(item.productId)}
             />
-          </AutoFocusProvider>
-        </ScrollView>
+          )}
+          keyExtractor={item => item.id}
+          style={[styles.productsFlatList]}
+        />
         <TouchableView
           notification
-          style={[styles.touchableView]}
+          style={[styles.touchableView, styles.bottomAPITouchableView]}
           onPress={onSend}>
           <Text style={[styles.text]}>{title}</Text>
         </TouchableView>
@@ -112,11 +107,8 @@ const styles = StyleSheet.create({
   view: {flex: 1, alignItems: 'center'},
   title: {fontSize: 40},
   text: {fontSize: 20},
-  keyboardAwareFocus: {
-    flex: 1,
-    padding: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+  productsFlatList: {
+    marginTop: 10,
   },
   touchableView: {
     flexDirection: 'row',
@@ -126,5 +118,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  contentContainerStyle: {width: '100%'},
+  bottomAPITouchableView: {
+    marginVertical: 10,
+  },
 })
