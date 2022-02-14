@@ -5,8 +5,6 @@ export const styles = StyleSheet.create({
   view: {
     width: '100%',
     padding: 5,
-    borderColor: Colors.red500,
-    borderWidth: 2,
   },
   firstRowView: {flexDirection: 'row', padding: 5, alignItems: 'center'},
   secondRowView: {

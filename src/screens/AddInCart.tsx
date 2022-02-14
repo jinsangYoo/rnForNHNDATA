@@ -21,6 +21,7 @@ import {
   ACEGender,
   ACEMaritalStatus,
 } from 'reactslimer'
+import {Colors} from 'react-native-paper'
 
 const title = 'AddInCart'
 export default function AddInCart({navigation}: Props) {
@@ -64,6 +65,19 @@ export default function AddInCart({navigation}: Props) {
     sendCommonWithPromise(url, params)
   }, [url])
 
+  const renderSeparator = useCallback(() => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: '86%',
+          backgroundColor: '#CED0CE',
+          marginLeft: '14%',
+        }}
+      />
+    )
+  }, [])
+
   return (
     <SafeAreaView>
       <View style={[styles.view]}>
@@ -83,14 +97,15 @@ export default function AddInCart({navigation}: Props) {
         <FlatList
           scrollEnabled={scrollEnabled}
           data={products}
-          renderItem={({item}) => (
+          ItemSeparatorComponent={renderSeparator}
+          renderItem={({item, index}) => (
             <ProductRowCell
               product={item}
+              index={index}
               onDeletePressed={deleteProduct(item.productId)}
             />
           )}
           keyExtractor={item => item.id}
-          style={[styles.productsFlatList]}
         />
         <TouchableView
           notification
@@ -107,9 +122,6 @@ const styles = StyleSheet.create({
   view: {flex: 1, alignItems: 'center'},
   title: {fontSize: 40},
   text: {fontSize: 20},
-  productsFlatList: {
-    marginTop: 10,
-  },
   touchableView: {
     flexDirection: 'row',
     height: 50,
@@ -117,6 +129,7 @@ const styles = StyleSheet.create({
     width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(99, 255, 99, 0.5)',
   },
   bottomAPITouchableView: {
     marginVertical: 10,

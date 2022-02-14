@@ -6,8 +6,6 @@ export const styles = StyleSheet.create({
   view: {
     flexDirection: 'row',
     padding: 5,
-    borderColor: Colors.red500,
-    borderWidth: 2,
   },
   leftView: {padding: 5, alignItems: 'center'},
   avatar: {
