@@ -8,6 +8,7 @@ import {useDispatch} from 'react-redux'
 import * as D from '../data'
 import * as L from '../store/login'
 import ProductRowCell from './ProductRowCell'
+import {useRenderSeparator} from '../hooks'
 import {AddInCartScreenProps as Props} from '../routeProps'
 
 import {getRandomIntInclusive} from '../../utils'
@@ -78,18 +79,7 @@ export default function AddInCart({navigation}: Props) {
     sendCommonWithPromise(url, params)
   }, [products])
 
-  const renderSeparator = useCallback(() => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: '86%',
-          backgroundColor: '#CED0CE',
-          marginLeft: '14%',
-        }}
-      />
-    )
-  }, [])
+  const renderSeparator = useRenderSeparator()
 
   return (
     <SafeAreaView>

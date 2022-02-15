@@ -21,8 +21,8 @@ import ReactNativeIdfaAaid, {
 } from '@sparkfabrik/react-native-idfa-aaid'
 import {gcodeSelector} from '../../utils'
 import GridCell from './GridCell'
-import {useDefaultAPIList} from '../hooks'
 import type {IAPI} from '../data'
+import {useDefaultAPIList, useRenderSeparator} from '../hooks'
 import {GridScreenProps as Props} from '../routeProps'
 
 import {getRandomIntInclusive} from '../../utils'
@@ -100,6 +100,7 @@ export default function Grid({navigation}: Props) {
     [],
   )
   const cells = useDefaultAPIList()
+  const renderSeparator = useRenderSeparator()
 
   return (
     <SafeAreaView>
@@ -155,6 +156,7 @@ export default function Grid({navigation}: Props) {
           <FlatList
             scrollEnabled={scrollEnabled}
             data={cells}
+            ItemSeparatorComponent={renderSeparator}
             renderItem={({item}) => (
               <GridCell api={item} onPressed={clickedCell(item)} />
             )}
