@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import type {FC, ComponentProps} from 'react'
-import {View as RNView, Text, Pressable, StyleSheet} from 'react-native'
+import {View, Text, Pressable, StyleSheet} from 'react-native'
 import {useTheme} from '@react-navigation/native'
 
-export type RadioButtonProps = ComponentProps<typeof RNView> & {
+export type RadioButtonProps = ComponentProps<typeof View> & {
   onPress: (value: string) => void
   defaultValue?: string
   valueAtZeroIndex?: string
@@ -27,7 +27,7 @@ export const RadioButton: FC<RadioButtonProps> = ({
     setUserOption(value)
   }
   return (
-    <RNView style={[style]} {...props}>
+    <View style={[style]} {...props}>
       {data.map((item, index) => {
         return (
           <Pressable
@@ -51,7 +51,7 @@ export const RadioButton: FC<RadioButtonProps> = ({
           </Pressable>
         )
       })}
-    </RNView>
+    </View>
   )
 }
 
