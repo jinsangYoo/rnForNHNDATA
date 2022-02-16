@@ -1,161 +1,104 @@
-import React, {useState, useCallback, useEffect} from 'react'
-import {
-  Platform,
-  StyleSheet,
-  ActivityIndicator,
-  ToastAndroid,
-  Alert,
-} from 'react-native'
-import {useNavigation} from '@react-navigation/native'
+import React, {useState, useCallback, useMemo, useEffect} from 'react'
+import {StyleSheet} from 'react-native'
 // prettier-ignore
-import {SafeAreaView, View, Text, TextInput, TouchableViewForFullWidth as TouchableView}
+import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, TextInput, Text, TouchableView}
 from '../theme'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
-import {useDispatch, useSelector} from 'react-redux'
-import {AppState} from '../store'
+import {useDispatch} from 'react-redux'
 import * as U from '../utils'
-import * as L from '../store/login'
-import {Colors} from 'react-native-paper'
+import {WebView} from 'react-native-webview'
+import {commonStyles} from '../styles/Common.style'
+
+import {getRandomIntInclusive} from '../../utils'
+import {sendCommonWithPromise} from '../../acsdk'
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus,
+} from 'reactslimer'
 import {WebviewScreenProps as Props} from '../routeProps'
 
+const title = 'Webview'
 export default function Webview({navigation}: Props) {
-  const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
-  const [acesession, setAcesession] = useState<string>('')
-  const [id, setId] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const defaultWebviewURL = useMemo(() => 'http://vklog.loginside.co.kr/', [])
+  const [url, setUrl] = useState<string>(defaultWebviewURL)
+  useEffect(() => {
+    U.readFromStorage('__webViewURL')
+      .then(value => {
+        if (value.length > 0) {
+          setUrl(value)
+        }
+      })
+      .catch(e => {})
+  }, [])
+
   const focus = useAutoFocus()
   const dispatch = useDispatch()
   const onBack = useCallback(() => {
     navigation.canGoBack() && navigation.goBack()
   }, [])
-  const goTabNavigator = useCallback(() => {
-    dispatch(L.loginAction({acesession, id, password}))
-    navigation.navigate('TabNavigator')
-  }, [acesession, id, password])
-  const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
-
-  useEffect(() => {
-    // U.readFromStorage(L.loggedUserKey)
-    //   .then(value => {
-    //     if (value.length > 0) {
-    //       const savedUser = JSON.parse(value)
-    //       setAcesession(savedUser.acesession)
-    //       setId(savedUser.id)
-    //       setPassword(savedUser.password)
-    //     }
-    //   })
-    //   .catch(e => {})
-  }, [loggedIn])
-
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
-  const onLogin = useCallback(() => {
-    setLoading(true)
-    fetch(`http://m.acecounter.com/login.amz?id=${id}&pw=${password}`)
-      .then(res => {
-        var _resultMap = new Map()
-        for (const [key, value] of Object.entries(res)) {
-          _resultMap.set(key, value)
-        }
-
-        if (_resultMap.has('status') && _resultMap.get('status') === 200) {
-          console.log(`_resultMap.get('status'): ${_resultMap.get('status')}`)
-        } else {
-          throw new Error('response is not ok.')
-        }
-
-        var _resultHeadersMap = new Map()
-        if (!_resultMap.has('headers')) {
-          throw new Error('response headers key is not exist.')
-        } else {
-          const _headers = _resultMap.get('headers')
-          for (const [keyHeaders, valueHeaders] of Object.entries(
-            _headers['map'],
-          )) {
-            _resultHeadersMap.set(keyHeaders, valueHeaders)
-          }
-
-          if (_resultHeadersMap.has('set-cookie')) {
-            const regex = /^ACESESSION=(?!deleted).*/
-            const setCookie = _resultHeadersMap
-              .get('set-cookie')
-              .split(' ')
-              .filter(item => {
-                return regex.test(item)
-              })
-
-            if (setCookie.length != 1) {
-              throw new Error(
-                'not found ACE SESSION information at response headers.',
-              )
-            } else {
-              return setCookie[0]
-            }
-          } else {
-            throw new Error('not found set-cookie key at response headers.')
-          }
-        }
-      })
-      .then(result => {
-        console.log(`result: ${result}`)
-        dispatch(L.loginWithSaveAction({acesession: result, id, password}))
-        setLoading(false)
-        navigation.navigate('WebViewHome')
-      })
-      .catch(e => {
-        setLoading(false)
-        setErrorMessage(e.message)
-        popupErrorMessage()
-      })
-  }, [id, password])
-  const popupErrorMessage = useCallback(() => {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(errorMessage, ToastAndroid.LONG)
-    } else {
-      Alert.alert(errorMessage)
-    }
-  }, [errorMessage])
+  const logout = useCallback(() => {
+    dispatch(L.logoutAction())
+    navigation.reset({index: 0, routes: [{name: 'Login'}]})
+  }, [])
+  const setDefaultURLToWebview = useCallback(() => {
+    navigation.reset({index: 0, routes: [{name: 'Login'}]})
+  }, [])
+  const refreshToWebview = useCallback(() => {
+    navigation.reset({index: 0, routes: [{name: 'Login'}]})
+  }, [])
 
   return (
     <SafeAreaView>
       <View style={[styles.view]}>
-        <AutoFocusProvider contentContainerStyle={[styles.keyboardAwareFocus]}>
-          <Text style={[styles.title, {marginBottom: 100}]}>ACE COUNTER</Text>
-          <View style={[styles.textView]}>
-            <Text style={[styles.text]}>ID</Text>
-            <View border style={[styles.textInputView]}>
-              <TextInput
-                onFocus={focus}
-                style={[styles.textInput]}
-                value={id}
-                onChangeText={setId}
-                placeholder="Webview"
-              />
-            </View>
-          </View>
-          <View style={[styles.textView]}>
-            <Text style={[styles.text]}>password</Text>
-            <View border style={[styles.textInputView]}>
-              <TextInput
-                secureTextEntry
-                onFocus={focus}
-                style={[styles.textInput]}
-                value={password}
-                onChangeText={setPassword}
-                placeholder="enter your password."
-              />
-            </View>
-          </View>
-          {loading && (
-            <ActivityIndicator size="large" color={Colors.lightBlue500} />
+        <NavigationHeader
+          title={title}
+          Left={() => (
+            <Icon name="arrow-left-thick" size={30} onPress={onBack} />
           )}
+          Right={() => <Icon name="logout" size={30} onPress={logout} />}
+        />
+        <View style={[styles.topNavigationBarForWebview]}>
           <TouchableView
             notification
             style={[styles.touchableView]}
-            onPress={onLogin}>
-            <Text style={[styles.text]}>Login</Text>
+            onPress={setDefaultURLToWebview}>
+            <Text style={[styles.text]}>D</Text>
           </TouchableView>
-        </AutoFocusProvider>
+          <TouchableView
+            notification
+            style={[styles.touchableView]}
+            onPress={refreshToWebview}>
+            <Text style={[styles.text]}>R</Text>
+          </TouchableView>
+          <AutoFocusProvider
+            contentContainerStyle={[styles.keyboardAwareFocus]}>
+            <TextInput
+              onFocus={focus}
+              style={[styles.textInput]}
+              value={url}
+              placeholder="enter website URL."
+            />
+          </AutoFocusProvider>
+          <TouchableView
+            notification
+            style={[styles.touchableView]}
+            onPress={refreshToWebview}>
+            <Text style={[styles.text]}>GO</Text>
+          </TouchableView>
+        </View>
+
+        <WebView
+          originWhitelist={['*']}
+          source={{
+            uri: defaultWebviewURL,
+          }}
+          style={[commonStyles.flex]}
+        />
       </View>
     </SafeAreaView>
   )
@@ -171,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  textView: {width: '100%', padding: 5, marginBottom: 10},
+  topNavigationBarForWebview: {width: '100%', padding: 3, flexDirection: 'row'},
   textInput: {fontSize: 24, padding: 10},
   textInputView: {marginTop: 5, borderRadius: 10},
   touchableView: {

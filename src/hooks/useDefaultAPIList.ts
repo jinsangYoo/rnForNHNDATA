@@ -23,7 +23,7 @@ export const useDefaultAPIList = (deps: any[] = []) => {
     {type: 'PL', isEnable: true},
     {type: 'Search', isEnable: true},
     {type: 'Tel', isEnable: true},
-    {type: 'Webview', isEnable: false},
+    {type: 'Webview', isEnable: true},
   ])
   return useMemo(() => {
     return name.map(item => createAPI(item))
