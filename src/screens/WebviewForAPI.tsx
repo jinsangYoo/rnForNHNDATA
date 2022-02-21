@@ -141,19 +141,19 @@ export default function WebviewForAPI({navigation}: Props) {
               styles.touchableView,
               {backgroundColor: Colors.lightBlue300},
             ]}
-            onPress={notUsed => setSourtcutURLButton('https://www.daum.net')}>
+            onPress={() => setSourtcutURLButton('https://www.daum.net')}>
             <Text style={[styles.text]}>Daum</Text>
           </TouchableView>
           <TouchableView
             notification
             style={[styles.touchableView, {backgroundColor: Colors.green300}]}
-            onPress={notUsed => setSourtcutURLButton('https://www.naver.net')}>
+            onPress={() => setSourtcutURLButton('https://www.naver.net')}>
             <Text style={[styles.text]}>Naver</Text>
           </TouchableView>
           <TouchableView
             notification
             style={[styles.touchableView, {backgroundColor: Colors.grey500}]}
-            onPress={notUsed =>
+            onPress={() =>
               setSourtcutURLButton('http://vklog.loginside.co.kr/')
             }>
             <Text style={[styles.text]}>vklog</Text>
@@ -161,9 +161,7 @@ export default function WebviewForAPI({navigation}: Props) {
           <TouchableView
             notification
             style={[styles.touchableView, {backgroundColor: Colors.red500}]}
-            onPress={notUsed =>
-              setSourtcutURLButton('https://www.acecounter.com/')
-            }>
+            onPress={() => setSourtcutURLButton('https://www.acecounter.com/')}>
             <Text style={[styles.text]}>ACE</Text>
           </TouchableView>
         </View>
