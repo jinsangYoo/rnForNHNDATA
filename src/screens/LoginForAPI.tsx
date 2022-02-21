@@ -4,8 +4,6 @@ import {StyleSheet, ScrollView} from 'react-native'
 import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TextInput, TouchableViewForFullWidth as TouchableView, RadioButton}
 from '../theme'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
-import {useDispatch, useSelector} from 'react-redux'
-import * as L from '../store/login'
 import {LoginForAPIScreenProps as Props} from '../routeProps'
 
 import {getRandomIntInclusive} from '../../utils'
@@ -23,13 +21,8 @@ import {
 const title = 'LoginForAPI'
 export default function LoginForAPI({navigation}: Props) {
   const focus = useAutoFocus()
-  const dispatch = useDispatch()
   const onBack = useCallback(() => {
     navigation.canGoBack() && navigation.goBack()
-  }, [])
-  const logout = useCallback(() => {
-    dispatch(L.logoutAction())
-    navigation.reset({index: 0, routes: [{name: 'Login'}]})
   }, [])
 
   useLayoutEffect(() => {
@@ -87,7 +80,6 @@ export default function LoginForAPI({navigation}: Props) {
       <NavigationHeader
         title={title}
         Left={() => <Icon name="arrow-left-thick" size={30} onPress={onBack} />}
-        Right={() => <Icon name="logout" size={30} onPress={logout} />}
       />
       <ScrollView contentContainerStyle={styles.contentContainerStyle}>
         <View style={[styles.view]}>

@@ -1,12 +1,9 @@
 import React, {useState, useCallback, useLayoutEffect} from 'react'
 import {StyleSheet} from 'react-native'
-import {useNavigation, DrawerActions} from '@react-navigation/native'
 // prettier-ignore
 import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TextInput, TouchableViewForFullWidth as TouchableView}
 from '../theme'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
-import {useDispatch, useSelector} from 'react-redux'
-import * as L from '../store/login'
 import {JoinScreenProps as Props} from '../routeProps'
 
 import {getRandomIntInclusive} from '../../utils'
@@ -24,13 +21,8 @@ import {
 const title = 'Join'
 export default function Join({navigation}: Props) {
   const focus = useAutoFocus()
-  const dispatch = useDispatch()
   const onBack = useCallback(() => {
     navigation.canGoBack() && navigation.goBack()
-  }, [])
-  const logout = useCallback(() => {
-    dispatch(L.logoutAction())
-    navigation.reset({index: 0, routes: [{name: 'Login'}]})
   }, [])
 
   useLayoutEffect(() => {
@@ -57,7 +49,6 @@ export default function Join({navigation}: Props) {
           Left={() => (
             <Icon name="arrow-left-thick" size={30} onPress={onBack} />
           )}
-          Right={() => <Icon name="logout" size={30} onPress={logout} />}
         />
         <AutoFocusProvider contentContainerStyle={[styles.keyboardAwareFocus]}>
           <View style={[styles.textView]}>

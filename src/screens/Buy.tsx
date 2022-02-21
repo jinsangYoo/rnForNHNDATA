@@ -4,9 +4,7 @@ import {StyleSheet, FlatList} from 'react-native'
 import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TouchableViewForFullWidth as TouchableView}
 from '../theme'
 import {useScrollEnabled} from '../contexts'
-import {useDispatch} from 'react-redux'
 import * as D from '../data'
-import * as L from '../store/login'
 import ProductRowCell from './ProductRowCell'
 import {useRenderSeparator} from '../hooks'
 import {AddInCartScreenProps as Props} from '../routeProps'
@@ -25,13 +23,8 @@ import {
 
 const title = 'Buy'
 export default function DeleteInCart({navigation}: Props) {
-  const dispatch = useDispatch()
   const onBack = useCallback(() => {
     navigation.canGoBack() && navigation.goBack()
-  }, [])
-  const logout = useCallback(() => {
-    dispatch(L.logoutAction())
-    navigation.reset({index: 0, routes: [{name: 'Login'}]})
   }, [])
 
   useEffect(() => {
@@ -89,7 +82,6 @@ export default function DeleteInCart({navigation}: Props) {
           Left={() => (
             <Icon name="arrow-left-thick" size={30} onPress={onBack} />
           )}
-          Right={() => <Icon name="logout" size={30} onPress={logout} />}
         />
         <TouchableView
           notification
