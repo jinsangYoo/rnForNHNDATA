@@ -141,6 +141,9 @@ export default function Login() {
       <View style={[styles.view]}>
         <AutoFocusProvider contentContainerStyle={[styles.keyboardAwareFocus]}>
           <Text style={[styles.title, {marginBottom: 100}]}>ACE COUNTER</Text>
+          {loading && (
+            <ActivityIndicator size="large" color={Colors.lightBlue500} />
+          )}
           <View style={[styles.textView]}>
             <Text style={[styles.text]}>ID</Text>
             <View border style={[styles.textInputView]}>
@@ -166,9 +169,6 @@ export default function Login() {
               />
             </View>
           </View>
-          {loading && (
-            <ActivityIndicator size="large" color={Colors.lightBlue500} />
-          )}
           <TouchableView
             notification
             style={[styles.touchableView]}

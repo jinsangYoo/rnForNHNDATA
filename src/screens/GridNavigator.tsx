@@ -19,7 +19,7 @@ import Link from './Link'
 import LoginForAPI from './LoginForAPI'
 import Search from './Search'
 import Tel from './Tel'
-import Webview from './Webview'
+import Webview from './WebviewForAPI'
 
 const Stack = createStackNavigator<GridStackParamList>()
 
