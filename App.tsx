@@ -35,6 +35,8 @@ import {makeStore} from './src/store'
 import {CloudMessaging} from './src/message'
 import {gcodeSelector} from './utils/aceWrappers'
 
+import DeviceInfo from 'react-native-device-info'
+
 const store = makeStore()
 
 const App = () => {
@@ -59,6 +61,27 @@ const App = () => {
   const toggleTheme = useCallback(
   () => setTheme(({dark}) => (dark ? DefaultTheme : DarkTheme)),
   [])
+
+  const testReactNativeDeviceInfo = () => {
+    DeviceInfo.getAndroidId().then(androidId => {
+      console.log(`DeviceInfo.getAndroidId: ${androidId}`)
+    })
+    DeviceInfo.getDevice().then(device => {
+      console.log(`DeviceInfo.getDevice: ${device}`)
+    })
+
+    console.log(`DeviceInfo.getDeviceType: ${DeviceInfo.getDeviceType()}`)
+    console.log(`DeviceInfo.getDeviceId: ${DeviceInfo.getDeviceId()}`)
+    DeviceInfo.getDeviceName().then(deviceName => {
+      console.log(`DeviceInfo.getDeviceName: ${deviceName}`)
+    })
+
+    console.log(`DeviceInfo.getModel: ${DeviceInfo.getModel()}`)
+    console.log(`DeviceInfo.getSystemName: ${DeviceInfo.getSystemName()}`)
+    console.log(`DeviceInfo.getSystemVersion: ${DeviceInfo.getSystemVersion()}`)
+    console.log(`DeviceInfo.getUniqueId: ${DeviceInfo.getUniqueId()}`)
+  }
+  testReactNativeDeviceInfo()
 
   CloudMessaging()
   console.log('rnForNHNData is ready.')

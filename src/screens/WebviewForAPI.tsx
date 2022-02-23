@@ -11,9 +11,11 @@ import {StyleSheet, TextInput as RNTextInput, Keyboard} from 'react-native'
 import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, TextInput, Text, TouchableViewNonWidth as TouchableView}
 from '../theme'
 import {useDispatch} from 'react-redux'
+import ReactNativeIdfaAaid, {
+  AdvertisingInfoResponse,
+} from '@sparkfabrik/react-native-idfa-aaid'
 import * as U from '../utils'
 import {WebView} from 'react-native-webview'
-import {commonStyles} from '../styles/Common.style'
 
 import {getRandomIntInclusive} from '../../utils'
 import {sendCommonWithPromise} from '../../acsdk'
@@ -40,7 +42,20 @@ export default function WebviewForAPI({navigation}: Props) {
     return {uri: 'http://vklog.loginside.co.kr/', method: 'get'}
   }, [])
   const [url, setUrl] = useState<WebViewProps>(defaultWebviewURL)
+  const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState<boolean>(false)
+  const [idfa, setIdfa] = useState<string | null>()
   useEffect(() => {
+    ReactNativeIdfaAaid.getAdvertisingInfo()
+      .then((res: AdvertisingInfoResponse) => {
+        setIsAdTrackingEnabled(!res.isAdTrackingLimited)
+        return !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
+      })
+      .catch(err => {
+        console.log(err)
+        setIsAdTrackingEnabled(false)
+        return setIdfa(null)
+      })
+
     U.readFromStorage('__webViewURL')
       .then(value => {
         if (value.length > 0) {
@@ -76,9 +91,15 @@ export default function WebviewForAPI({navigation}: Props) {
     Keyboard.dismiss()
   }, [url])
   const injectionJavascriptToWebview = useCallback(() => {
-    refForWebview.current?.injectJavaScript(`alert('_AceAPP 호출 미구현')`)
+    console.log(
+      `_AceAPP('${ACS.getKey()}', '${ACS.getDevice()}', '${ACS.getTS()}', '${idfa}', ${isAdTrackingEnabled});`,
+    )
+    refForWebview.current?.injectJavaScript(
+      `_AceAPP('${ACS.getKey()}', '${ACS.getDevice()}', '${ACS.getTS()}', '${idfa}', ${isAdTrackingEnabled});`,
+    )
+
     Keyboard.dismiss()
-  }, [])
+  }, [idfa])
   const requestToWebview = useCallback(() => {
     setUrl({uri: newUrl})
     Keyboard.dismiss()
