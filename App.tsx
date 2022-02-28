@@ -37,6 +37,8 @@ import {gcodeSelector} from './utils/aceWrappers'
 
 import DeviceInfo from 'react-native-device-info'
 
+import {sendCommonWithPromise} from './acsdk'
+
 const store = makeStore()
 
 const App = () => {
@@ -90,9 +92,11 @@ const App = () => {
       // If the app was installed from https://play.google.com/store/apps/details?id=com.myapp&referrer=my_install_referrer
       // the result will be "my_install_referrer"
       console.log(`installReferrer: ${installReferrer}`)
+      const params = ACParams.init(ACParams.TYPE.REFERRER, installReferrer)
+      sendCommonWithPromise(`installReferrer: ${installReferrer}`, params)
     })
     .catch(e => {
-      console.log(`installReferrer.e: ${JSON.stringify(e, null, 2)}`)
+      console.log(`installReferrer::e: ${JSON.stringify(e, null, 2)}`)
     })
 
   return (
