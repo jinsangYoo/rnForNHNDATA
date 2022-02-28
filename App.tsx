@@ -93,7 +93,7 @@ const App = () => {
       // the result will be "my_install_referrer"
       console.log(`installReferrer: ${installReferrer}`)
       const params = ACParams.init(ACParams.TYPE.REFERRER, installReferrer)
-      sendCommonWithPromise(`installReferrer: ${installReferrer}`, params)
+      sendCommonWithPromise(`installReferrer: >>${installReferrer}<<`, params)
     })
     .catch(e => {
       console.log(`installReferrer::e: ${JSON.stringify(e, null, 2)}`)

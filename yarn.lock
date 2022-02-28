@@ -6554,10 +6554,10 @@
     "loose-envify" "^1.1.0"
     "object-assign" "^4.1.1"
 
-"reactslimer@0.0.261":
-  "integrity" "sha512-NEeLeBGV0z7RWHo0NsxI1Z2F4Yqes4xhllZnSEun3X+/h/6MFX23LfdoYGIKt0oeMUu1v3ZBLmdAXoXn4mi5Dg=="
-  "resolved" "https://registry.npmjs.org/reactslimer/-/reactslimer-0.0.261.tgz"
-  "version" "0.0.261"
+"reactslimer@0.0.263":
+  "integrity" "sha512-EoTWs83WrEk+0WeaAEgXW/zBDpMKBBxwhh5fuwc2Q4+BUKfmb0NCoQf91Ko/KRZbvXy6QkCaObrXsSTGUSSM4w=="
+  "resolved" "https://registry.npmjs.org/reactslimer/-/reactslimer-0.0.263.tgz"
+  "version" "0.0.263"
   dependencies:
     "@react-native-async-storage/async-storage" "^1.15.5"
     "@react-native-community/netinfo" "^6.0.0"
