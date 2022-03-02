@@ -13,6 +13,7 @@ import AppearProduct from './AppearProduct'
 import Buy from './Buy'
 import DeleteInCart from './DeleteInCart'
 import PL from './PL'
+import Referrer from './Referrer'
 import Join from './Join'
 import Leave from './Leave'
 import Link from './Link'
@@ -50,6 +51,7 @@ export default function GridNavigator() {
       <Stack.Screen name="Buy" component={Buy} />
       <Stack.Screen name="DeleteInCart" component={DeleteInCart} />
       <Stack.Screen name="PL" component={PL} />
+      <Stack.Screen name="Referrer" component={Referrer} />
       <Stack.Screen name="Join" component={Join} />
       <Stack.Screen name="Leave" component={Leave} />
       <Stack.Screen name="Link" component={Link} />

@@ -67,7 +67,7 @@ const GridCell: FC<GridCellProps> = ({api: initialApi, onPressed}) => {
                   : 'rgba(200, 200, 200, 1.0)',
             },
           ]}>
-          {api.node.isEnable == true ? '구현' : '미구현'}
+          {api.node.isEnable == true ? '사용 가능' : '사용 불가능'}
         </UnderlineText>
       </View>
     </TouchableView>

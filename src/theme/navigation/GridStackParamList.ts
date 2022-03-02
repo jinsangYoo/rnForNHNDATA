@@ -10,6 +10,7 @@ type GridStackParamList = {
   Link: undefined
   LoginForAPI: undefined
   PL: undefined
+  Referrer: undefined
   Search: undefined
   Tel: undefined
   Webview: undefined

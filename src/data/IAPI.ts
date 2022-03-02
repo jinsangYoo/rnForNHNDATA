@@ -15,6 +15,7 @@ type TypeForAPI = {
     | 'Link'
     | 'LoginForAPI'
     | 'PL'
+    | 'Referrer'
     | 'Search'
     | 'Tel'
     | 'Webview'

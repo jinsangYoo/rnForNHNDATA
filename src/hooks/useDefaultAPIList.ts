@@ -1,4 +1,5 @@
 import {useMemo, useState} from 'react'
+import {Platform} from 'react-native'
 import type {IAPI, TypeForAPI} from '../data/IAPI'
 import * as F from '../data/faker'
 
@@ -21,6 +22,7 @@ export const useDefaultAPIList = (deps: any[] = []) => {
     {type: 'Link', isEnable: true},
     {type: 'LoginForAPI', isEnable: true},
     {type: 'PL', isEnable: true},
+    {type: 'Referrer', isEnable: Platform.OS === 'android' ? true : false},
     {type: 'Search', isEnable: true},
     {type: 'Tel', isEnable: true},
     {type: 'Webview', isEnable: true},
