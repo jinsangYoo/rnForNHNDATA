@@ -87,18 +87,20 @@ const App = () => {
 
   CloudMessaging()
   console.log('rnForNHNData is ready.')
-  DeviceInfo.getInstallReferrer()
-    .then(installReferrer => {
-      // If the app was installed from https://play.google.com/store/apps/details?id=com.myapp&referrer=my_install_referrer
-      // the result will be "my_install_referrer"
-      console.log(`installReferrer: ${installReferrer}`)
-      const params = ACParams.init(ACParams.TYPE.REFERRER)
-      params.keyword = installReferrer
-      sendCommonWithPromise(`installReferrer: >>${installReferrer}<<`, params)
-    })
-    .catch(e => {
-      console.log(`installReferrer::e: ${JSON.stringify(e, null, 2)}`)
-    })
+  if (Platform.OS === 'android') {
+    DeviceInfo.getInstallReferrer()
+      .then(installReferrer => {
+        // If the app was installed from https://play.google.com/store/apps/details?id=com.myapp&referrer=my_install_referrer
+        // the result will be "my_install_referrer"
+        console.log(`installReferrer: ${installReferrer}`)
+        const params = ACParams.init(ACParams.TYPE.REFERRER)
+        params.keyword = installReferrer
+        sendCommonWithPromise(`installReferrer: >>${installReferrer}<<`, params)
+      })
+      .catch(e => {
+        console.log(`installReferrer::e: ${JSON.stringify(e, null, 2)}`)
+      })
+  }
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
