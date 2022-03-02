@@ -86,7 +86,7 @@ export default function Grid({navigation}: Props) {
     (item: IAPI) => () => {
       console.log(`clickedCell::item: ${JSON.stringify(item, null, 2)}`)
       if (!item.node.isEnable) {
-        const message = 'not implementaion.'
+        const message = 'Disabled function.'
         if (Platform.OS === 'android') {
           ToastAndroid.show(message, ToastAndroid.SHORT)
         } else {
