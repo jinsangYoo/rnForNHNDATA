@@ -113,7 +113,10 @@ export default function Grid({navigation}: Props) {
         <View style={[commonStyles.widthFullView]}>
           <View style={[commonStyles.rowFlexDirectionViewNonPadding]}>
             <Text style={[styles.text]}>key:</Text>
-            <View border style={[styles.textInputViewInControlBox]}>
+            <View
+              border
+              style={[styles.textInputViewInControlBox]}
+              pointerEvents="none">
               <TextInput
                 onFocus={focus}
                 style={[styles.textInput]}
