@@ -1,11 +1,5 @@
 import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
-import {
-  Platform,
-  StyleSheet,
-  ActivityIndicator,
-  ToastAndroid,
-  Alert,
-} from 'react-native'
+import {StyleSheet, ActivityIndicator, Alert} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 // prettier-ignore
 import {SafeAreaView, View, Text, TextInput, TouchableViewForFullWidth as TouchableView}
@@ -85,7 +79,9 @@ export default function Login() {
     sendCommonWithPromise(msg, params)
   }, [])
 
-  const [errorMessage, setErrorMessage] = useState<string>('')
+  const popupErrorMessage = (message: string) => {
+    Alert.alert(message)
+  }
   const [loading, setLoading] = useState<boolean>(false)
   const onLogin = useCallback(() => {
     setLoading(true)
@@ -118,15 +114,14 @@ export default function Login() {
             const setCookie = _resultHeadersMap
               .get('set-cookie')
               .split(' ')
-              .filter(item => {
-                return regex.test(item)
-              })
+              .filter(item => regex.test(item))
 
             if (setCookie.length != 1) {
               throw new Error(
-                'not found ACE SESSION information at response headers.',
+                `${setCookie.length}: not found ACE SESSION information at response headers.`,
               )
             } else {
+              console.log(`setCookie[0]: ${setCookie[0]}`)
               return setCookie[0]
             }
           } else {
@@ -135,27 +130,19 @@ export default function Login() {
         }
       })
       .then(acesession => {
+        setLoading(false)
         console.log(`acesession: ${acesession}`)
         dispatch(L.loginWithSaveAction({acesession, id, password}))
-        setLoading(false)
         navigation.reset({
           index: 0,
           routes: [{name: 'WebViewHome', params: {acesession}}],
         })
       })
-      .catch(e => {
+      .catch((e: Error) => {
         setLoading(false)
-        setErrorMessage(e.message)
-        popupErrorMessage()
+        popupErrorMessage(`id: ${id}, pw: ${password}, message: ${e.message}`)
       })
   }, [id, password])
-  const popupErrorMessage = useCallback(() => {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(errorMessage, ToastAndroid.LONG)
-    } else {
-      Alert.alert(errorMessage)
-    }
-  }, [errorMessage])
 
   return (
     <SafeAreaView>
