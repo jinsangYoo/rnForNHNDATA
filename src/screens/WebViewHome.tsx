@@ -57,7 +57,7 @@ export default function WebViewHome({route}: Props) {
         <WebView
           originWhitelist={['*']}
           source={{
-            uri: 'http://m.acecounter.com/stat/my/site_list.amz',
+            uri: 'https://m.acecounter.com/stat/my/site_list.amz',
             headers: {
               Cookie: route.params?.acesession,
             },

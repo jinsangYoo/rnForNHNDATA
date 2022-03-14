@@ -85,7 +85,7 @@ export default function Login() {
   const [loading, setLoading] = useState<boolean>(false)
   const onLogin = useCallback(() => {
     setLoading(true)
-    fetch(`http://m.acecounter.com/login.amz?id=${id}&pw=${password}`)
+    fetch(`https://m.acecounter.com/login.amz?id=${id}&pw=${password}`)
       .then(res => {
         var _resultMap = new Map()
         for (const [key, value] of Object.entries(res)) {
