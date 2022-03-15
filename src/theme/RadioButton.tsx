@@ -1,52 +1,47 @@
-import React, {useState} from 'react'
+import React, {Dispatch, SetStateAction, useCallback, useState} from 'react'
 import type {FC, ComponentProps} from 'react'
 import {View, Text, Pressable, StyleSheet} from 'react-native'
 import {useTheme} from '@react-navigation/native'
 
 export type RadioButtonProps = ComponentProps<typeof View> & {
-  onPress: (value: string) => void
-  defaultValue?: string
-  valueAtZeroIndex?: string
-  data?: {value: string}[]
+  selected: string
+  setSelected: Dispatch<SetStateAction<string>>
+  data?: {value: string; valueForVisual: string}[]
 }
 
 export const RadioButton: FC<RadioButtonProps> = ({
-  defaultValue,
-  valueAtZeroIndex,
+  selected,
+  setSelected,
   data = [],
-  onPress,
   style,
   ...props
 }) => {
   const {colors} = useTheme()
-  const [userOption, setUserOption] = useState<string>(
-    defaultValue ? defaultValue : '',
-  )
-  const selectHandler = (value: string) => {
-    onPress(value)
-    setUserOption(value)
-  }
+  const nowForKey = new Date()
+  const itemPressed = useCallback(argSelect => {
+    console.log(`argSelect: ${argSelect}, selected: ${selected}`)
+    selected = argSelect
+    setSelected(argSelect)
+  }, [])
   return (
     <View style={[style]} {...props}>
       {data.map((item, index) => {
         return (
           <Pressable
-            style={
-              item.value === userOption ? styles.selected : styles.unselected
-            }
-            onPress={() => selectHandler(item.value)}>
+            style={item.value == selected ? styles.selected : styles.unselected}
+            onPress={() => itemPressed(item.value)}
+            key={`${nowForKey.getMilliseconds()}-${item.value}-${index}`}>
             <Text
               style={[
                 styles.option,
                 {
                   color:
-                    item.value === userOption
+                    item.value == selected
                       ? colors.text
                       : 'rgba(204, 204, 204, 1.0)',
                 },
               ]}>
-              {' '}
-              {valueAtZeroIndex && index == 0 ? valueAtZeroIndex : item.value}
+              {item.valueForVisual}
             </Text>
           </Pressable>
         )

@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useLayoutEffect} from 'react'
+import React, {useState, useCallback, useLayoutEffect, useMemo} from 'react'
 import {StyleSheet, ScrollView} from 'react-native'
 // prettier-ignore
 import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TextInput, TouchableViewForFullWidth as TouchableView, RadioButton}
@@ -36,35 +36,42 @@ export default function LoginForAPI({navigation}: Props) {
   const [url, setUrl] = useState<string>(`>>${title}<< >>${randomValue}<<`)
   const [keyword, setKeyword] = useState<string>(`로그인 >>${randomValue}<<`)
   const [age, setAge] = useState<string>(randomValue.toString())
-  const genderData = [
-    {value: ACEGender.Unknown},
-    {value: ACEGender.Man},
-    {value: ACEGender.Woman},
-  ]
-  const [genderChecked, setGenderChecked] = useState<string>(ACEGender.Unknown)
-  const maritalStatusData = [
-    {value: ACEMaritalStatus.Unknown},
-    {value: ACEMaritalStatus.Single},
-    {value: ACEMaritalStatus.Married},
-  ]
-  const [maritalStatusChecked, setMaritalStatusChecked] = useState<string>(
-    ACEMaritalStatus.Unknown,
-  )
-  if (randomValue % 5 == 0) {
-    setGenderChecked(ACEGender.Unknown)
-  } else if (randomValue % 3 == 0) {
-    setGenderChecked(ACEGender.Woman)
-  } else if (randomValue % 2 == 0) {
-    setGenderChecked(ACEGender.Man)
-  }
 
-  if (randomValue % 5 == 0) {
-    setMaritalStatusChecked(ACEMaritalStatus.Unknown)
-  } else if (randomValue % 3 == 0) {
-    setMaritalStatusChecked(ACEMaritalStatus.Single)
+  const genderData = useMemo(
+    () => [
+      {value: ACEGender.Unknown, valueForVisual: '알수 없음'},
+      {value: ACEGender.Man, valueForVisual: ACEGender.Man},
+      {value: ACEGender.Woman, valueForVisual: ACEGender.Woman},
+    ],
+    [],
+  )
+  let initGender = ACEGender.Unknown
+  if (randomValue % 3 == 0) {
+    initGender = ACEGender.Woman
   } else if (randomValue % 2 == 0) {
-    setMaritalStatusChecked(ACEMaritalStatus.Married)
+    initGender = ACEGender.Man
   }
+  const [genderChecked, setGenderChecked] = useState<string>(initGender)
+
+  const maritalStatusData = useMemo(
+    () => [
+      {value: ACEMaritalStatus.Unknown, valueForVisual: '알수 없음'},
+      {value: ACEMaritalStatus.Single, valueForVisual: ACEMaritalStatus.Single},
+      {
+        value: ACEMaritalStatus.Married,
+        valueForVisual: ACEMaritalStatus.Married,
+      },
+    ],
+    [],
+  )
+  let initMaritalStatus = ACEMaritalStatus.Unknown
+  if (randomValue % 3 == 0) {
+    initMaritalStatus = ACEMaritalStatus.Single
+  } else if (randomValue % 2 == 0) {
+    initMaritalStatus = ACEMaritalStatus.Married
+  }
+  const [maritalStatusChecked, setMaritalStatusChecked] =
+    useState<string>(initMaritalStatus)
 
   const onSend = useCallback(() => {
     const params = ACParams.init(ACParams.TYPE.LOGIN, url)
@@ -123,18 +130,16 @@ export default function LoginForAPI({navigation}: Props) {
               <View border style={[styles.textInputView]}>
                 <RadioButton
                   data={genderData}
-                  defaultValue={genderChecked}
-                  valueAtZeroIndex="알수 없음"
-                  onPress={value => setGenderChecked(value)}
+                  selected={genderChecked}
+                  setSelected={setGenderChecked}
                 />
               </View>
               <Text style={[styles.text, {marginTop: 20}]}>결혼여부 입력</Text>
               <View border style={[styles.textInputView]}>
                 <RadioButton
                   data={maritalStatusData}
-                  defaultValue={maritalStatusChecked}
-                  valueAtZeroIndex="알수 없음"
-                  onPress={value => setMaritalStatusChecked(value)}
+                  selected={maritalStatusChecked}
+                  setSelected={setMaritalStatusChecked}
                 />
               </View>
             </View>
