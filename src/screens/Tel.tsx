@@ -34,14 +34,18 @@ export default function Tel({navigation}: Props) {
 
   const randomValue = getRandomIntInclusive(0, 999).toString()
   const [url, setUrl] = useState<string>(`>>${title}<< >>${randomValue}<<`)
+  const [memberKey, setMemberKey] = useState<string>(
+    `멈버ID >>${randomValue + 0}<<`,
+  )
   const [keyword, setKeyword] = useState<string>(
     `>>${title}<< >>${randomValue + 0}<<`,
   )
   const onSend = useCallback(() => {
     const params = ACParams.init(ACParams.TYPE.TEL, url)
     params.tel = keyword
+    params.memberKey = memberKey
     sendCommonWithPromise(url, params)
-  }, [url, keyword])
+  }, [url, keyword, memberKey])
 
   return (
     <SafeAreaView>
@@ -62,6 +66,14 @@ export default function Tel({navigation}: Props) {
                 value={url}
                 onChangeText={setUrl}
                 placeholder="이벤트 명 입력"
+              />
+            </View>
+            <View border style={[styles.textInputView]}>
+              <TextInput
+                style={[styles.textInput]}
+                value={memberKey}
+                onChangeText={setMemberKey}
+                placeholder="멈버ID 입력"
               />
             </View>
           </View>

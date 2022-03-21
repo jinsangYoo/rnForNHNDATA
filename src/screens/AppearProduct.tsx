@@ -34,6 +34,9 @@ export default function AppearProduct({navigation}: Props) {
 
   const randomValue = getRandomIntInclusive(0, 999).toString()
   const [url, setUrl] = useState<string>(`>>${title}<< >>${randomValue}<<`)
+  const [memberKey, setMemberKey] = useState<string>(
+    `멈버ID >>${randomValue + 0}<<`,
+  )
   const [productName, setProductName] = useState<string>(
     `제품명 >>${randomValue + 0}<<`,
   )
@@ -43,13 +46,25 @@ export default function AppearProduct({navigation}: Props) {
   const [productPrice, setProductPrice] = useState<string>(
     getRandomIntInclusive(0, 990).toString(),
   )
+  const [productId, setProductId] = useState<string>(
+    `제품ID >>${randomValue + 0}<<`,
+  )
   const onSend = useCallback(() => {
     const params = ACParams.init(ACParams.TYPE.APPEAR_PRODUCT, url)
+    params.memberKey = memberKey
     params.productName = productName
     params.productCategoryName = productCategoryName
+    params.productId = productId
     params.productPrice = productPrice
     sendCommonWithPromise(url, params)
-  }, [url, productName, productCategoryName, productPrice])
+  }, [
+    url,
+    productName,
+    productCategoryName,
+    productPrice,
+    memberKey,
+    productId,
+  ])
 
   return (
     <SafeAreaView>
@@ -70,6 +85,15 @@ export default function AppearProduct({navigation}: Props) {
                 value={url}
                 onChangeText={setUrl}
                 placeholder="이벤트 명 입력"
+              />
+            </View>
+            <View border style={[styles.textInputView]}>
+              <TextInput
+                onFocus={focus}
+                style={[styles.textInput]}
+                value={memberKey}
+                onChangeText={setMemberKey}
+                placeholder="멈버ID 입력"
               />
             </View>
           </View>
@@ -100,6 +124,15 @@ export default function AppearProduct({navigation}: Props) {
                 value={productPrice}
                 onChangeText={setProductPrice}
                 placeholder="제품 가격 입력"
+              />
+            </View>
+            <View border style={[styles.textInputView]}>
+              <TextInput
+                onFocus={focus}
+                style={[styles.textInput]}
+                value={productId}
+                onChangeText={setProductId}
+                placeholder="제품ID 입력"
               />
             </View>
           </View>

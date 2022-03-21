@@ -1,7 +1,7 @@
 import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
 import {StyleSheet, FlatList} from 'react-native'
 // prettier-ignore
-import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TouchableViewForFullWidth as TouchableView}
+import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TextInput, TouchableViewForFullWidth as TouchableView}
 from '../theme'
 import {useScrollEnabled} from '../contexts'
 import * as D from '../data'
@@ -54,8 +54,12 @@ export default function AddInCart({navigation}: Props) {
 
   const randomValue = getRandomIntInclusive(0, 999)
   const [url, setUrl] = useState<string>(`>>${title}<< >>${randomValue}<<`)
+  const [memberKey, setMemberKey] = useState<string>(
+    `멈버ID >>${randomValue + 0}<<`,
+  )
   const onSend = useCallback(() => {
-    const params = ACParams.init(ACParams.TYPE.ADDCART, url)
+    const params = ACParams.init(ACParams.TYPE.ADDCART)
+    params.memberKey = memberKey
     params.products = []
     products.map(item => {
       params.products?.push(
@@ -70,7 +74,7 @@ export default function AddInCart({navigation}: Props) {
       )
     })
     sendCommonWithPromise(url, params)
-  }, [products])
+  }, [products, memberKey])
 
   const renderSeparator = useRenderSeparator()
 
@@ -83,6 +87,14 @@ export default function AddInCart({navigation}: Props) {
             <Icon name="arrow-left-thick" size={30} onPress={onBack} />
           )}
         />
+        <View border style={[styles.textInputView]}>
+          <TextInput
+            style={[styles.textInput]}
+            value={memberKey}
+            onChangeText={setMemberKey}
+            placeholder="멈버ID 입력"
+          />
+        </View>
         <TouchableView
           notification
           style={[styles.touchableView]}
@@ -122,6 +134,8 @@ const styles = StyleSheet.create({
   view: {flex: 1, alignItems: 'center'},
   title: {fontSize: 40},
   text: {fontSize: 20},
+  textInput: {fontSize: 24, padding: 10},
+  textInputView: {marginTop: 5, borderRadius: 10, width: '90%'},
   touchableView: {
     flexDirection: 'row',
     height: 50,
