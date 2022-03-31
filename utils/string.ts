@@ -8,6 +8,11 @@ export function isEmpty(value: any): boolean {
   )
 }
 
+export function isStartIndexAkAtGCodeString(value: string): boolean {
+  const regex = /^AK.*/
+  return regex.test(value)
+}
+
 export function isAlphabetOrNumberAtStringStartIndex(value: string): boolean {
   const regex = /^[\w].*/
   return regex.test(value)

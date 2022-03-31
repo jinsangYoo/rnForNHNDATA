@@ -25,7 +25,7 @@ import type {IAPI} from '../data'
 import {useDefaultAPIList, useRenderSeparator} from '../hooks'
 import {GridScreenProps as Props} from '../routeProps'
 
-import {getRandomIntInclusive} from '../../utils'
+import {getRandomIntInclusive, isStartIndexAkAtGCodeString} from '../../utils'
 import {sendCommonWithPromise} from '../../acsdk'
 import {
   AceConfiguration,
@@ -101,6 +101,28 @@ export default function Grid({navigation}: Props) {
   )
   const cells = useDefaultAPIList()
   const renderSeparator = useRenderSeparator()
+
+  console.log(
+    `1. isStartIndexAkAtGCodeString: ${isStartIndexAkAtGCodeString(
+      'AK2A79936',
+    )}`,
+  )
+  console.log(
+    `2. isStartIndexAkAtGCodeString: ${isStartIndexAkAtGCodeString(
+      'ak2A79936',
+    )}`,
+  )
+  console.log(
+    `3. isStartIndexAkAtGCodeString: ${isStartIndexAkAtGCodeString('')}`,
+  )
+  console.log(
+    `4. isStartIndexAkAtGCodeString: ${isStartIndexAkAtGCodeString(' ')}`,
+  )
+  console.log(
+    `5. isStartIndexAkAtGCodeString: ${isStartIndexAkAtGCodeString(
+      'QUNFXzExNDUwOF9ESUdIVFk=',
+    )}`,
+  )
 
   return (
     <SafeAreaView>
