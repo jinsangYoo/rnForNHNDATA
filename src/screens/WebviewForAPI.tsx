@@ -37,6 +37,7 @@ type WebViewProps = {
 }
 
 const title = 'Webview'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function WebviewForAPI({navigation}: Props) {
   const defaultWebviewURL = useMemo(() => {
     return {uri: 'http://vklog.loginside.co.kr/', method: 'get'}
@@ -67,7 +68,6 @@ export default function WebviewForAPI({navigation}: Props) {
       .catch(e => {})
   }, [])
   useLayoutEffect(() => {
-    const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
     const msgForScreen = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msgForScreen)
     sendCommonWithPromise(msgForScreen, params)
@@ -115,7 +115,7 @@ export default function WebviewForAPI({navigation}: Props) {
     <SafeAreaView>
       <View style={[styles.view]}>
         <NavigationHeader
-          title={title}
+          title={`${title} ${randomValueForScreen}`}
           Left={() => (
             <Icon name="arrow-left-thick" size={30} onPress={onBack} />
           )}

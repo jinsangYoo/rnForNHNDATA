@@ -16,7 +16,7 @@ import ReactNativeIdfaAaid, {
 } from '@sparkfabrik/react-native-idfa-aaid'
 
 import {getRandomIntInclusive} from '../../utils'
-import {sendCommonWithPromise} from '../../acsdk'
+import {sendCommonWithPromise, sendCommonWithPromisePopup} from '../../acsdk'
 import {
   AceConfiguration,
   ACParams,
@@ -27,7 +27,8 @@ import {
   ACEMaritalStatus,
 } from 'reactslimer'
 
-const title = 'Login'
+const title = 'ACE COUNTER'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function Login() {
   const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
   const [acesession, setAcesession] = useState<string>('')
@@ -73,8 +74,7 @@ export default function Login() {
   }, [loggedIn])
 
   useLayoutEffect(() => {
-    const randomValue = getRandomIntInclusive(0, 999).toString()
-    const msg = `>>${title}<< >>${randomValue}<<`
+    const msg = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msg)
     sendCommonWithPromise(msg, params)
   }, [])
@@ -148,7 +148,10 @@ export default function Login() {
     <SafeAreaView>
       <View style={[styles.view]}>
         <AutoFocusProvider contentContainerStyle={[styles.keyboardAwareFocus]}>
-          <Text style={[styles.title, {marginBottom: 100}]}>ACE COUNTER</Text>
+          <Text style={[styles.title, {marginBottom: 5}]}>{title}</Text>
+          <Text style={[styles.subTitle, {marginBottom: 100}]}>
+            ({randomValueForScreen})
+          </Text>
           {loading && (
             <ActivityIndicator size="large" color={Colors.lightBlue500} />
           )}
@@ -192,6 +195,7 @@ export default function Login() {
 const styles = StyleSheet.create({
   view: {flex: 1, justifyContent: 'space-between', alignItems: 'center'},
   title: {fontSize: 40},
+  subTitle: {fontSize: 20},
   text: {fontSize: 20},
   keyboardAwareFocus: {
     flex: 1,

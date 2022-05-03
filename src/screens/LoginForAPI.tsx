@@ -7,7 +7,7 @@ import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {LoginForAPIScreenProps as Props} from '../routeProps'
 
 import {getRandomIntInclusive} from '../../utils'
-import {sendCommonWithPromise} from '../../acsdk'
+import {sendCommonWithPromise, sendCommonWithPromisePopup} from '../../acsdk'
 import {
   AceConfiguration,
   ACParams,
@@ -19,6 +19,7 @@ import {
 } from 'reactslimer'
 
 const title = 'LoginForAPI'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function LoginForAPI({navigation}: Props) {
   const focus = useAutoFocus()
   const onBack = useCallback(() => {
@@ -26,7 +27,6 @@ export default function LoginForAPI({navigation}: Props) {
   }, [])
 
   useLayoutEffect(() => {
-    const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
     const msgForScreen = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msgForScreen)
     sendCommonWithPromise(msgForScreen, params)
@@ -79,13 +79,13 @@ export default function LoginForAPI({navigation}: Props) {
     params.userAge = +age
     params.userGender = genderChecked as ACEGender
     params.userMaritalStatus = maritalStatusChecked as ACEMaritalStatus
-    sendCommonWithPromise(url, params)
+    sendCommonWithPromisePopup(url, params)
   }, [url, keyword, age, genderChecked, maritalStatusChecked])
 
   return (
     <SafeAreaView>
       <NavigationHeader
-        title={title}
+        title={`${title} ${randomValueForScreen}`}
         Left={() => <Icon name="arrow-left-thick" size={30} onPress={onBack} />}
       />
       <ScrollView contentContainerStyle={styles.contentContainerStyle}>

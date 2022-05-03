@@ -7,7 +7,7 @@ import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {AppearProductScreenProps as Props} from '../routeProps'
 
 import {getRandomIntInclusive} from '../../utils'
-import {sendCommonWithPromise} from '../../acsdk'
+import {sendCommonWithPromise, sendCommonWithPromisePopup} from '../../acsdk'
 import {
   AceConfiguration,
   ACParams,
@@ -19,6 +19,7 @@ import {
 } from 'reactslimer'
 
 const title = 'AppearProduct'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function AppearProduct({navigation}: Props) {
   const focus = useAutoFocus()
   const onBack = useCallback(() => {
@@ -26,7 +27,6 @@ export default function AppearProduct({navigation}: Props) {
   }, [])
 
   useLayoutEffect(() => {
-    const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
     const msgForScreen = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msgForScreen)
     sendCommonWithPromise(msgForScreen, params)
@@ -35,7 +35,7 @@ export default function AppearProduct({navigation}: Props) {
   const randomValue = getRandomIntInclusive(0, 999).toString()
   const [url, setUrl] = useState<string>(`>>${title}<< >>${randomValue}<<`)
   const [memberKey, setMemberKey] = useState<string>(
-    `멈버ID >>${randomValue + 0}<<`,
+    `멤버ID >>${randomValue + 0}<<`,
   )
   const [productName, setProductName] = useState<string>(
     `제품명 >>${randomValue + 0}<<`,
@@ -56,7 +56,7 @@ export default function AppearProduct({navigation}: Props) {
     params.productCategoryName = productCategoryName
     params.productId = productId
     params.productPrice = productPrice
-    sendCommonWithPromise(url, params)
+    sendCommonWithPromisePopup(url, params)
   }, [
     url,
     productName,
@@ -70,7 +70,7 @@ export default function AppearProduct({navigation}: Props) {
     <SafeAreaView>
       <View style={[styles.view]}>
         <NavigationHeader
-          title={title}
+          title={`${title} ${randomValueForScreen}`}
           Left={() => (
             <Icon name="arrow-left-thick" size={30} onPress={onBack} />
           )}
@@ -93,7 +93,7 @@ export default function AppearProduct({navigation}: Props) {
                 style={[styles.textInput]}
                 value={memberKey}
                 onChangeText={setMemberKey}
-                placeholder="멈버ID 입력"
+                placeholder="멤버ID 입력"
               />
             </View>
           </View>

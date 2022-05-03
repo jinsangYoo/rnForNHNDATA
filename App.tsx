@@ -85,6 +85,15 @@ const App = () => {
   }
   testReactNativeDeviceInfo()
 
+  const testReplaceRegex = () => {
+    const s = 'iOS and js Ios'
+    const re = /iOS/gi
+
+    const newS = s.replace(re, 'iPhone OS')
+    console.log(`newS: ${newS}`)
+  }
+  testReplaceRegex()
+
   CloudMessaging()
   console.log('rnForNHNData is ready.')
   if (Platform.OS === 'android') {

@@ -20,6 +20,7 @@ function popupMessage(msg: string) {
 export function sendCommonWithPromise(
   argMessage: string,
   params: ACParams,
+  isNeedPopUp: boolean = false,
 ): void {
   console.log('in sendCommonWithPromise')
   console.log(argMessage)
@@ -30,12 +31,13 @@ export function sendCommonWithPromise(
       console.log(`${argMessage}::in then!!`)
       if (response) {
         console.log('response: ' + JSON.stringify(response, null, 2))
-        popupMessage(`success sdk send ${params.name}`)
+        if (isNeedPopUp) popupMessage(`success sdk send ${params.name}`)
       } else {
         console.log('response is undefined.')
-        popupMessage(
-          `success sdk send ${params.name} but response is undefined`,
-        )
+        if (isNeedPopUp)
+          popupMessage(
+            `success sdk send ${params.name} but response is undefined`,
+          )
       }
     })
     .catch(err => {
@@ -48,4 +50,11 @@ export function sendCommonWithPromise(
         // popupMessage(`fail sdk send ${params.name} but err is undefined`)
       }
     })
+}
+
+export function sendCommonWithPromisePopup(
+  argMessage: string,
+  params: ACParams,
+): void {
+  sendCommonWithPromise(argMessage, params, true)
 }

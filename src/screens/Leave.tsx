@@ -7,7 +7,7 @@ import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {LeaveScreenProps as Props} from '../routeProps'
 
 import {getRandomIntInclusive} from '../../utils'
-import {sendCommonWithPromise} from '../../acsdk'
+import {sendCommonWithPromise, sendCommonWithPromisePopup} from '../../acsdk'
 import {
   AceConfiguration,
   ACParams,
@@ -19,6 +19,7 @@ import {
 } from 'reactslimer'
 
 const title = 'Leave'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function Leave({navigation}: Props) {
   const focus = useAutoFocus()
   const onBack = useCallback(() => {
@@ -26,7 +27,6 @@ export default function Leave({navigation}: Props) {
   }, [])
 
   useLayoutEffect(() => {
-    const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
     const msgForScreen = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msgForScreen)
     sendCommonWithPromise(msgForScreen, params)
@@ -40,14 +40,14 @@ export default function Leave({navigation}: Props) {
   const onSend = useCallback(() => {
     const params = ACParams.init(ACParams.TYPE.LEAVE, url)
     params.userId = keyword
-    sendCommonWithPromise(url, params)
+    sendCommonWithPromisePopup(url, params)
   }, [url, keyword])
 
   return (
     <SafeAreaView>
       <View style={[styles.view]}>
         <NavigationHeader
-          title={title}
+          title={`${title} ${randomValueForScreen}`}
           Left={() => (
             <Icon name="arrow-left-thick" size={30} onPress={onBack} />
           )}

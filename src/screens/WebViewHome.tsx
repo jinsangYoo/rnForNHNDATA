@@ -23,10 +23,10 @@ import {
 import {WebViewHomeScreenProps as Props} from '../routeProps'
 
 const title = 'WebViewHome'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function WebViewHome({route}: Props) {
   useLayoutEffect(() => {
-    const randomValue = getRandomIntInclusive(0, 999).toString()
-    const msg = `>>${title}<< >>${randomValue}<<`
+    const msg = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msg)
     sendCommonWithPromise(msg, params)
   }, [])
@@ -50,7 +50,7 @@ export default function WebViewHome({route}: Props) {
     <SafeAreaView>
       <View style={[styles.view]}>
         <NavigationHeader
-          title="ACE"
+          title={`ACE ${title} ${randomValueForScreen}`}
           Left={() => <Icon name="menu" size={30} onPress={open} />}
           Right={() => <Icon name="logout" size={30} onPress={logout} />}
         />

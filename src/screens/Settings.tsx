@@ -21,7 +21,7 @@ import {useAsync} from '../hooks'
 import {getToken} from '../message'
 
 import {getRandomIntInclusive} from '../../utils'
-import {sendCommonWithPromise} from '../../acsdk'
+import {sendCommonWithPromise, sendCommonWithPromisePopup} from '../../acsdk'
 import {
   AceConfiguration,
   ACParams,
@@ -33,6 +33,7 @@ import {
 } from 'reactslimer'
 
 const title = 'Settings'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function Settings() {
   const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
   const [email, setEmail] = useState<string>('')
@@ -53,10 +54,10 @@ export default function Settings() {
     navigation.reset({index: 0, routes: [{name: 'Login'}]})
   }, [])
 
-  const goTabNavigator = useCallback(() => {
-    dispatch(L.loginAction({email, name, password}))
-    navigation.navigate('TabNavigator')
-  }, [email, name, password])
+  // const goTabNavigator = useCallback(() => {
+  //   dispatch(L.loginAction({email, name, password}))
+  //   navigation.navigate('TabNavigator')
+  // }, [email, name, password])
   // const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
 
   useEffect(() => {
@@ -84,8 +85,7 @@ export default function Settings() {
   }, [loggedIn])
 
   useLayoutEffect(() => {
-    const randomValue = getRandomIntInclusive(0, 999).toString()
-    const msg = `>>${title}<< >>${randomValue}<<`
+    const msg = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msg)
     sendCommonWithPromise(msg, params)
   }, [])
@@ -111,7 +111,7 @@ export default function Settings() {
     <SafeAreaView>
       <View style={[styles.view]}>
         <NavigationHeader
-          title={title}
+          title={`${title} ${randomValueForScreen}`}
           Left={() => <Icon name="menu" size={30} onPress={open} />}
           Right={() => <Icon name="logout" size={30} onPress={logout} />}
         />

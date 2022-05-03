@@ -10,7 +10,7 @@ import {useRenderSeparator} from '../hooks'
 import {AddInCartScreenProps as Props} from '../routeProps'
 
 import {getRandomIntInclusive} from '../../utils'
-import {sendCommonWithPromise} from '../../acsdk'
+import {sendCommonWithPromise, sendCommonWithPromisePopup} from '../../acsdk'
 import {
   AceConfiguration,
   ACParams,
@@ -22,6 +22,7 @@ import {
 } from 'reactslimer'
 
 const title = 'AddInCart'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function AddInCart({navigation}: Props) {
   const onBack = useCallback(() => {
     navigation.canGoBack() && navigation.goBack()
@@ -31,7 +32,6 @@ export default function AddInCart({navigation}: Props) {
     D.makeArray(1).forEach(addProduct)
   }, [])
   useLayoutEffect(() => {
-    const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
     const msgForScreen = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msgForScreen)
     sendCommonWithPromise(msgForScreen, params)
@@ -55,7 +55,7 @@ export default function AddInCart({navigation}: Props) {
   const randomValue = getRandomIntInclusive(0, 999)
   const [url, setUrl] = useState<string>(`>>${title}<< >>${randomValue}<<`)
   const [memberKey, setMemberKey] = useState<string>(
-    `멈버ID >>${randomValue + 0}<<`,
+    `멤버ID >>${randomValue + 0}<<`,
   )
   const onSend = useCallback(() => {
     const params = ACParams.init(ACParams.TYPE.ADDCART)
@@ -73,7 +73,7 @@ export default function AddInCart({navigation}: Props) {
         ),
       )
     })
-    sendCommonWithPromise(url, params)
+    sendCommonWithPromisePopup(url, params)
   }, [products, memberKey])
 
   const renderSeparator = useRenderSeparator()
@@ -82,7 +82,7 @@ export default function AddInCart({navigation}: Props) {
     <SafeAreaView>
       <View style={[styles.view]}>
         <NavigationHeader
-          title={title}
+          title={`${title} ${randomValueForScreen}`}
           Left={() => (
             <Icon name="arrow-left-thick" size={30} onPress={onBack} />
           )}
@@ -92,7 +92,7 @@ export default function AddInCart({navigation}: Props) {
             style={[styles.textInput]}
             value={memberKey}
             onChangeText={setMemberKey}
-            placeholder="멈버ID 입력"
+            placeholder="멤버ID 입력"
           />
         </View>
         <TouchableView

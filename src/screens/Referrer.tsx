@@ -7,7 +7,7 @@ import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {ReferrerScreenProps as Props} from '../routeProps'
 
 import {getRandomIntInclusive} from '../../utils'
-import {sendCommonWithPromise} from '../../acsdk'
+import {sendCommonWithPromise, sendCommonWithPromisePopup} from '../../acsdk'
 import {
   AceConfiguration,
   ACParams,
@@ -19,6 +19,7 @@ import {
 } from 'reactslimer'
 
 const title = 'Referrer'
+const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function Referrer({navigation}: Props) {
   const focus = useAutoFocus()
   const onBack = useCallback(() => {
@@ -26,7 +27,6 @@ export default function Referrer({navigation}: Props) {
   }, [])
 
   useLayoutEffect(() => {
-    const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
     const msgForScreen = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msgForScreen)
     sendCommonWithPromise(msgForScreen, params)
@@ -37,21 +37,21 @@ export default function Referrer({navigation}: Props) {
   const onSend = useCallback(() => {
     const params = ACParams.init(ACParams.TYPE.REFERRER)
     params.keyword = kw
-    sendCommonWithPromise(title, params)
+    sendCommonWithPromisePopup(title, params)
   }, [kw])
 
   const [kwSecond, setKwSecond] = useState<string>(`kw%3D${randomValue}2`)
   const onSendSecond = useCallback(() => {
     const params = ACParams.init(ACParams.TYPE.REFERRER)
     params.keyword = kwSecond
-    sendCommonWithPromise(title, params)
+    sendCommonWithPromisePopup(title, params)
   }, [kwSecond])
 
   return (
     <SafeAreaView>
       <View style={[styles.view]}>
         <NavigationHeader
-          title={title}
+          title={`${title} ${randomValueForScreen}`}
           Left={() => (
             <Icon name="arrow-left-thick" size={30} onPress={onBack} />
           )}
