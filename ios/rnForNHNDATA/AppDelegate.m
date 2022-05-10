@@ -63,4 +63,8 @@ static void InitializeFlipper(UIApplication *application) {
 #endif
 }
 
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+  [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+}
+
 @end
