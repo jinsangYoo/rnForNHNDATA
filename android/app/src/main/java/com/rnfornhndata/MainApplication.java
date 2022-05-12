@@ -2,6 +2,8 @@ package com.rnfornhndata;
 
 import android.app.Application;
 import android.content.Context;
+import android.webkit.WebView;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -55,6 +57,7 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    WebView.setWebContentsDebuggingEnabled(true);
   }
 
   /**
