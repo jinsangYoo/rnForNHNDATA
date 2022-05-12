@@ -48,6 +48,9 @@ const App = () => {
       .then(response => {
         console.log('SDK Promise 초기화::in then!!')
         console.log('response: ' + JSON.stringify(response, null, 2))
+        console.log(
+          'ACS.getDetail(): ' + JSON.stringify(ACS.getDetail(), null, 2),
+        )
       })
       .catch(err => {
         console.log('SDK Promise 초기화::in reject!!')
