@@ -3,7 +3,8 @@ type GridStackParamList = {
 
   AddInCart: undefined
   AppearProduct: undefined
-  Buy: undefined
+  BuyDone: undefined
+  BuyCancel: undefined
   DeleteInCart: undefined
   Join: undefined
   Leave: undefined

@@ -10,7 +10,8 @@ import Grid from './Grid'
 
 import AddInCart from './AddInCart'
 import AppearProduct from './AppearProduct'
-import Buy from './Buy'
+import BuyDone from './BuyDone'
+import BuyCancel from './BuyCancel'
 import DeleteInCart from './DeleteInCart'
 import PL from './PL'
 import Referrer from './Referrer'
@@ -48,7 +49,8 @@ export default function GridNavigator() {
 
       <Stack.Screen name="AddInCart" component={AddInCart} />
       <Stack.Screen name="AppearProduct" component={AppearProduct} />
-      <Stack.Screen name="Buy" component={Buy} />
+      <Stack.Screen name="BuyDone" component={BuyDone} />
+      <Stack.Screen name="BuyCancel" component={BuyCancel} />
       <Stack.Screen name="DeleteInCart" component={DeleteInCart} />
       <Stack.Screen name="PL" component={PL} />
       <Stack.Screen name="Referrer" component={Referrer} />

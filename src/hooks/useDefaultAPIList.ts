@@ -15,7 +15,8 @@ export const useDefaultAPIList = (deps: any[] = []) => {
   const [name, setName] = useState<TypeForAPI[]>([
     {type: 'AddInCart', isEnable: true},
     {type: 'AppearProduct', isEnable: true},
-    {type: 'Buy', isEnable: true},
+    {type: 'BuyDone', isEnable: true},
+    {type: 'BuyCancel', isEnable: true},
     {type: 'DeleteInCart', isEnable: true},
     {type: 'Join', isEnable: true},
     {type: 'Leave', isEnable: true},

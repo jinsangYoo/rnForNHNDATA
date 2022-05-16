@@ -8,7 +8,8 @@ type TypeForAPI = {
   type:
     | 'AddInCart'
     | 'AppearProduct'
-    | 'Buy'
+    | 'BuyDone'
+    | 'BuyCancel'
     | 'DeleteInCart'
     | 'Join'
     | 'Leave'
