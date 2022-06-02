@@ -8,7 +8,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'reactslimer'
+} from 'ace.sdk.react-native'
 import {getRandomIntInclusive} from '.'
 
 export function gcodeSelector(): string {

@@ -35,7 +35,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'reactslimer'
+} from 'ace.sdk.react-native'
 
 const title = 'Grid'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()

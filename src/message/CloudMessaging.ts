@@ -12,7 +12,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'reactslimer'
+} from 'ace.sdk.react-native'
 
 export function CloudMessaging() {
   useEffect(() => {

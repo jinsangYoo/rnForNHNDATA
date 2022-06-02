@@ -19,7 +19,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'reactslimer'
+} from 'ace.sdk.react-native'
 import {WebViewHomeScreenProps as Props} from '../routeProps'
 
 const title = 'WebViewHome'
