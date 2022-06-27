@@ -44,18 +44,36 @@ const store = makeStore()
 const App = () => {
   useLayoutEffect(() => {
     const _config = AceConfiguration.init(gcodeSelector())
-    ACS.configure(_config)
-      .then(response => {
-        console.log('SDK Promise 초기화::in then!!')
-        console.log('response: ' + JSON.stringify(response, null, 2))
-        console.log(
-          'ACS.getDetail(): ' + JSON.stringify(ACS.getDetail(), null, 2),
-        )
-      })
-      .catch(err => {
-        console.log('SDK Promise 초기화::in reject!!')
-        console.log('err: ' + JSON.stringify(err, null, 2))
-      })
+    // ACS.configure(_config)
+    //   .then(response => {
+    //     console.log('SDK Promise 초기화::in then!!')
+    //     console.log('response: ' + JSON.stringify(response, null, 2))
+    //     console.log(
+    //       'ACS.getDetail(): ' + JSON.stringify(ACS.getDetail(), null, 2),
+    //     )
+    //   })
+    //   .catch(err => {
+    //     console.log('SDK Promise 초기화::in reject!!')
+    //     console.log('err: ' + JSON.stringify(err, null, 2))
+    //   })
+    ACS.configure(
+      _config,
+      (error?: object, innerResult?: ACEResponseToCaller) => {
+        if (error) {
+          console.log('SDK CB 초기화::in error!!')
+          console.log('error: ' + JSON.stringify(error, null, 2))
+        } else if (innerResult) {
+          console.log('SDK CB 초기화::in innerResult!!')
+          console.log('innerResult: ' + JSON.stringify(innerResult, null, 2))
+          console.log(
+            'ACS.getDetail(): ' + JSON.stringify(ACS.getDetail(), null, 2),
+          )
+        } else {
+          console.log('SDK CB 초기화::finally!!')
+          console.log('error and innerResult is undefined.')
+        }
+      },
+    )
   }, [])
 
   const scheme = useColorScheme() // 'dark' 혹은 'light'
