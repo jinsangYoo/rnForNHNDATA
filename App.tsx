@@ -61,7 +61,10 @@ const App = () => {
       (error?: object, innerResult?: ACEResponseToCaller) => {
         if (error) {
           console.log('SDK CB 초기화::in error!!')
-          console.log('error: ' + JSON.stringify(error, null, 2))
+          console.log(`error: ${error}`)
+          if (innerResult) {
+            console.log('innerResult: ' + JSON.stringify(innerResult, null, 2))
+          }
         } else if (innerResult) {
           console.log('SDK CB 초기화::in innerResult!!')
           console.log('innerResult: ' + JSON.stringify(innerResult, null, 2))
