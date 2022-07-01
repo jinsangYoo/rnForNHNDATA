@@ -43,6 +43,9 @@ const store = makeStore()
 
 const App = () => {
   useLayoutEffect(() => {
+    console.log(`1. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
+    console.log(`ACS.getSdkVersion(): ${ACS.getSdkVersion()}`)
+
     const _config = AceConfiguration.init(gcodeSelector())
     // ACS.configure(_config)
     //   .then(response => {
@@ -68,8 +71,9 @@ const App = () => {
         } else if (innerResult) {
           console.log('SDK CB 초기화::in innerResult!!')
           console.log('innerResult: ' + JSON.stringify(innerResult, null, 2))
+          console.log(`2. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
           console.log(
-            'ACS.getDetail(): ' + JSON.stringify(ACS.getDetail(), null, 2),
+            'ACS.getDetail(): ' + JSON.stringify(ACS.getSdkDetails(), null, 2),
           )
         } else {
           console.log('SDK CB 초기화::finally!!')
