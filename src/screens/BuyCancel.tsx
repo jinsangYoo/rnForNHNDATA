@@ -60,6 +60,8 @@ export default function DeleteInCart({navigation}: Props) {
   const onSend = useCallback(() => {
     const params = ACParams.init(ACParams.TYPE.BUY_CANCEL, url)
     params.memberKey = memberKey
+    params.payMethodName = '지불방법'
+    params.orderNumber = '주문번호'
     params.products = []
     products.map(item => {
       params.products?.push(
