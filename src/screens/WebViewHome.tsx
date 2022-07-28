@@ -39,7 +39,7 @@ export default function WebViewHome({route}: Props) {
   }, [])
   const logout = useCallback(() => {
     dispatch(L.logoutAction())
-    navigation.reset({index: 0, routes: [{name: 'Login'}]})
+    navigation.reset({index: 0, routes: [{name: 'Login' as never}]})
   }, [])
   console.log(
     `${title}: ${JSON.stringify(route, null, 2)}`,
