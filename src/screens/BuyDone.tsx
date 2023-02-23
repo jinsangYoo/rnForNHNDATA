@@ -58,10 +58,11 @@ export default function DeleteInCart({navigation}: Props) {
     `멤버ID >>${randomValue + 0}<<`,
   )
   const onSend = useCallback(() => {
+    const randomValue = getRandomIntInclusive(0, 99)
     const params = ACParams.init(ACParams.TYPE.BUY_DONE, url)
     params.memberKey = memberKey
-    params.payMethodName = '지불방법'
-    params.orderNumber = '주문번호'
+    params.payMethodName = `지불방법${randomValue}`
+    params.orderNumber = `주문번호${randomValue}`
     params.products = []
     products.map(item => {
       params.products?.push(
