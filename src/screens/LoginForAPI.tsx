@@ -32,7 +32,7 @@ export default function LoginForAPI({navigation}: Props) {
     sendCommonWithPromise(msgForScreen, params)
   }, [])
 
-  const randomValue = getRandomIntInclusive(0, 999)
+  const randomValue = getRandomIntInclusive(1, 149)
   const [url, setUrl] = useState<string>(`>>${title}<< >>${randomValue}<<`)
   const [keyword, setKeyword] = useState<string>(`로그인 >>${randomValue}<<`)
   const [age, setAge] = useState<string>(randomValue.toString())
