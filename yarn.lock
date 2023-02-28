@@ -2044,10 +2044,10 @@ accepts@^1.3.7, accepts@~1.3.5, accepts@~1.3.7:
     mime-types "~2.1.34"
     negotiator "0.6.3"
 
-"ace.sdk.react-native@file:../reactSlimer.git/reactslimer-2.7.8.tgz":
-  version "2.7.8"
-  resolved "file:../reactSlimer.git/reactslimer-2.7.8.tgz"
-  integrity sha512-cbWcKR84tyZ303nffLiVAgDj+DxSTkhgIYFBB30vfjTrkPCmzTK7DZJneXN5RFLwVRHcRQ3SU3v4zborvVdsTA==
+"ace.sdk.react-native@file:../reactSlimer.git/reactslimer-2.7.9.tgz":
+  version "2.7.9"
+  resolved "file:../reactSlimer.git/reactslimer-2.7.9.tgz"
+  integrity sha512-7OR992c7kx9DWEJb155NDmPdS/eTPi3/1+oS0KD6Dcgd/W0xA0en8qmXXsCJb0WE+tU3Nf+UdnJK+PPlpLX6ag==
   dependencies:
     "@react-native-async-storage/async-storage" "^1.17.11"
     "@react-native-community/netinfo" "^9.3.7"
@@ -2300,9 +2300,9 @@ atob@^2.1.2:
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
 axios@^1.3.3:
-  version "1.3.3"
-  resolved "https://registry.npmjs.org/axios/-/axios-1.3.3.tgz"
-  integrity sha512-eYq77dYIFS77AQlhzEL937yUBSepBfPIe8FcgEDN35vMNZKMrs81pgnyrQpwfy4NF4b4XWX1Zgx7yX+25w8QJA==
+  version "1.3.4"
+  resolved "https://registry.npmjs.org/axios/-/axios-1.3.4.tgz"
+  integrity sha512-toYm+Bsyl6VC5wSkfkbbNB6ROv7KY93PEBBL6xyDczaIHasAiv4wPqQ/c4RjoQzipxRD2W5g21cOqQulZ7rHwQ==
   dependencies:
     follow-redirects "^1.15.0"
     form-data "^4.0.0"
