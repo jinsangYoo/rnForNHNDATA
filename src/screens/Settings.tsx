@@ -31,6 +31,7 @@ import {
   ACEGender,
   ACEMaritalStatus,
 } from 'ace.sdk.react-native'
+import {APP_VERSION} from '../version'
 
 const title = 'Settings'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
@@ -126,7 +127,7 @@ export default function Settings() {
                 commonStyles.rowValueToLeftPadding,
                 styles.text,
               ]}>
-              {DeviceInfo.getVersion()}
+              {APP_VERSION}
             </Text>
           </View>
           <View style={[commonStyles.widthFullAndRowFlexDirectionView]}>

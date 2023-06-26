@@ -1,9 +1,10 @@
 {
   "name": "rnfornhndata",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "private": true,
   "scripts": {
-    "android": "react-native run-android -- --reset-cache",
+    "prebuild": "node -p \"'export const APP_VERSION = ' + JSON.stringify(require('./package.json').version)\" > src/version.ts",
+    "android": "npm run prebuild && react-native run-android -- --reset-cache",
     "ios": "react-native run-ios --simulator=\"iPhone 14\"",
     "iosp": "react-native run-ios --device 'DATA7'",
     "start": "react-native start",
