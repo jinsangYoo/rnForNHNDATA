@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
-import {StyleSheet, ActivityIndicator, Alert} from 'react-native'
+import {Linking, StyleSheet, ActivityIndicator, Alert} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 // prettier-ignore
 import {SafeAreaView, View, Text, TextInput, TouchableViewForFullWidth as TouchableView}
@@ -27,6 +27,24 @@ import {
   ACEMaritalStatus,
 } from 'ace.sdk.react-native'
 
+const useInitialURL = () => {
+  const [url, setUrl] = useState<string | null>(null)
+  const [processing, setProcessing] = useState(true)
+
+  useEffect(() => {
+    const getUrlAsync = async () => {
+      // Get the deep link used to open the app
+      const initialUrl = await Linking.getInitialURL()
+      setUrl(initialUrl)
+      setProcessing(false)
+    }
+
+    getUrlAsync()
+  }, [])
+
+  return {url, processing}
+}
+
 const title = 'ACE COUNTER'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function Login() {
@@ -42,6 +60,7 @@ export default function Login() {
     navigation.navigate('TabNavigator')
   }, [acesession, id, password])
   const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
+  const {url: initialUrl, processing} = useInitialURL()
 
   const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState<boolean>(false)
   const [idfa, setIdfa] = useState<string | null>()
@@ -155,6 +174,11 @@ export default function Login() {
           {loading && (
             <ActivityIndicator size="large" color={Colors.lightBlue500} />
           )}
+          <Text>
+            {processing
+              ? 'Processing the initial url from a deep link'
+              : `The deep link is: ${initialUrl || 'None'}`}
+          </Text>
           <View style={[styles.textView]}>
             <Text style={[styles.text]}>ID</Text>
             <View border style={[styles.textInputView]}>

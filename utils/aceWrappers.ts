@@ -58,10 +58,15 @@ export function sendCommonWithPromise(
     })
 }
 
-export function setManualAdvertisingIdentifier(): void {
+export function setManualToRandomAdvertisingIdentifier(): void {
   const randomValue = getRandomIntInclusive(0, 9999999999999999).toString()
   ACS.setAdvertisingIdentifier(randomValue)
   const msg = `set manual AdvertisingIdentifier >${randomValue}<`
   console.log(msg)
-  Alert.alert('알림', msg)
+}
+
+export function setManualAdvertisingIdentifier(value: string): void {
+  ACS.setAdvertisingIdentifier(value)
+  const msg = `set manual AdvertisingIdentifier >${value}<`
+  console.log(msg)
 }

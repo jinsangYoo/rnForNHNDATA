@@ -47,7 +47,7 @@ export default function DeleteInCart({navigation}: Props) {
   }, [])
   const deleteProduct = useCallback(
     (id: string) => () => {
-      setProducts(products => products.filter(p => p.productId != id))
+      setProducts(products => products.filter(p => p.id != id))
     },
     [],
   )
@@ -110,7 +110,7 @@ export default function DeleteInCart({navigation}: Props) {
             <ProductRowCell
               product={item}
               index={index}
-              onDeletePressed={deleteProduct(item.productId)}
+              onDeletePressed={deleteProduct(item.id)}
               onChange={(product, index) => {
                 products[index] = {...products[index], ...product}
               }}
