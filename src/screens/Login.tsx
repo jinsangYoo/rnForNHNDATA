@@ -26,6 +26,7 @@ import {
   ACEGender,
   ACEMaritalStatus,
 } from 'ace.sdk.react-native'
+import {APP_VERSION} from '../version'
 
 const useInitialURL = () => {
   const [url, setUrl] = useState<string | null>(null)
@@ -35,6 +36,21 @@ const useInitialURL = () => {
     const getUrlAsync = async () => {
       // Get the deep link used to open the app
       const initialUrl = await Linking.getInitialURL()
+      console.log(`initialUrl: >>${initialUrl}<<`)
+      if (initialUrl != null) {
+        var regex = /[?&]([^=#]+)=([^&#]*)/g
+        var match: Array<string> | null
+        while ((match = regex.exec(initialUrl))) {
+          console.log(`match[1]: >>${match[1]}<<, match[2]: >>${match[2]}<<`)
+        }
+      } else {
+        console.log(`initialUrl is null`)
+      }
+
+      const params = ACParams.init(ACParams.TYPE.DEEPLINK)
+      params.keyword = initialUrl == null ? undefined : initialUrl
+      sendCommonWithPromise(`initialUrl: >>${initialUrl}<<`, params)
+
       setUrl(initialUrl)
       setProcessing(false)
     }
@@ -168,8 +184,14 @@ export default function Login() {
       <View style={[styles.view]}>
         <AutoFocusProvider contentContainerStyle={[styles.keyboardAwareFocus]}>
           <Text style={[styles.title, {marginBottom: 5}]}>{title}</Text>
-          <Text style={[styles.subTitle, {marginBottom: 100}]}>
+          <Text style={[styles.subTitle, {marginBottom: 5}]}>
             ({randomValueForScreen})
+          </Text>
+          <Text style={[styles.subTitle, {marginBottom: 5}]}>
+            app version: {APP_VERSION}
+          </Text>
+          <Text style={[{marginBottom: 100}]}>
+            SDK version: {ACS.getSdkVersion()}
           </Text>
           {loading && (
             <ActivityIndicator size="large" color={Colors.lightBlue500} />
