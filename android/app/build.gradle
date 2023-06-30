@@ -136,8 +136,8 @@ android {
         applicationId "com.rnfornhndata"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 19
-        versionName "2.7.2"
+        versionCode 21
+        versionName "2.7.4"
     }
     splits {
         abi {
