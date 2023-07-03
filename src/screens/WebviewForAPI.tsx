@@ -11,9 +11,9 @@ import {StyleSheet, TextInput as RNTextInput, Keyboard} from 'react-native'
 import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, TextInput, Text, TouchableViewNonWidth as TouchableView}
 from '../theme'
 import {useDispatch} from 'react-redux'
-import ReactNativeIdfaAaid, {
-  AdvertisingInfoResponse,
-} from '@sparkfabrik/react-native-idfa-aaid'
+// import ReactNativeIdfaAaid, {
+//   AdvertisingInfoResponse,
+// } from '@sparkfabrik/react-native-idfa-aaid'
 import * as U from '../utils'
 import {WebView} from 'react-native-webview'
 
@@ -46,16 +46,16 @@ export default function WebviewForAPI({navigation}: Props) {
   const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState<boolean>(false)
   const [idfa, setIdfa] = useState<string | null>()
   useEffect(() => {
-    ReactNativeIdfaAaid.getAdvertisingInfo()
-      .then((res: AdvertisingInfoResponse) => {
-        setIsAdTrackingEnabled(!res.isAdTrackingLimited)
-        return !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
-      })
-      .catch(err => {
-        console.log(err)
-        setIsAdTrackingEnabled(false)
-        return setIdfa(null)
-      })
+    // ReactNativeIdfaAaid.getAdvertisingInfo()
+    //   .then((res: AdvertisingInfoResponse) => {
+    //     setIsAdTrackingEnabled(!res.isAdTrackingLimited)
+    //     return !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //     setIsAdTrackingEnabled(false)
+    //     return setIdfa(null)
+    //   })
 
     U.readFromStorage('__webViewURL')
       .then(value => {

@@ -14,9 +14,9 @@ import * as L from '../store/login'
 import {commonStyles} from '../styles/Common.style'
 
 import DeviceInfo from 'react-native-device-info'
-import ReactNativeIdfaAaid, {
-  AdvertisingInfoResponse,
-} from '@sparkfabrik/react-native-idfa-aaid'
+// import ReactNativeIdfaAaid, {
+//   AdvertisingInfoResponse,
+// } from '@sparkfabrik/react-native-idfa-aaid'
 import {useAsync} from '../hooks'
 import {getToken} from '../message'
 
@@ -62,16 +62,16 @@ export default function Settings() {
   // const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
 
   useEffect(() => {
-    ReactNativeIdfaAaid.getAdvertisingInfo()
-      .then((res: AdvertisingInfoResponse) => {
-        setIsAdTrackingEnabled(!res.isAdTrackingLimited)
-        return !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
-      })
-      .catch(err => {
-        console.log(err)
-        setIsAdTrackingEnabled(false)
-        return setIdfa(null)
-      })
+    // ReactNativeIdfaAaid.getAdvertisingInfo()
+    //   .then((res: AdvertisingInfoResponse) => {
+    //     setIsAdTrackingEnabled(!res.isAdTrackingLimited)
+    //     return !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //     setIsAdTrackingEnabled(false)
+    //     return setIdfa(null)
+    //   })
 
     U.readFromStorage(L.loggedUserKey)
       .then(value => {

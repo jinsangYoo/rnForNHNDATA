@@ -11,9 +11,9 @@ import * as U from '../utils'
 import * as L from '../store/login'
 import {Colors} from 'react-native-paper'
 
-import ReactNativeIdfaAaid, {
-  AdvertisingInfoResponse,
-} from '@sparkfabrik/react-native-idfa-aaid'
+// import ReactNativeIdfaAaid, {
+//   AdvertisingInfoResponse,
+// } from '@sparkfabrik/react-native-idfa-aaid'
 
 import {getRandomIntInclusive} from '../../utils'
 import {sendCommonWithPromise, sendCommonWithPromisePopup} from '../../acsdk'
@@ -47,20 +47,20 @@ export default function Login() {
   const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState<boolean>(false)
   const [idfa, setIdfa] = useState<string | null>()
   useEffect(() => {
-    ReactNativeIdfaAaid.getAdvertisingInfo()
-      .then((res: AdvertisingInfoResponse) => {
-        setIsAdTrackingEnabled(!res.isAdTrackingLimited)
-        return !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
-      })
-      .catch(err => {
-        console.log(err)
-        setIsAdTrackingEnabled(false)
-        return setIdfa(null)
-      })
-      .finally(() => {
-        console.log(`isAdTrackingEnabled: ${isAdTrackingEnabled}`)
-        console.log(`idfa: ${idfa}`)
-      })
+    // ReactNativeIdfaAaid.getAdvertisingInfo()
+    //   .then((res: AdvertisingInfoResponse) => {
+    //     setIsAdTrackingEnabled(!res.isAdTrackingLimited)
+    //     return !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //     setIsAdTrackingEnabled(false)
+    //     return setIdfa(null)
+    //   })
+    //   .finally(() => {
+    //     console.log(`isAdTrackingEnabled: ${isAdTrackingEnabled}`)
+    //     console.log(`idfa: ${idfa}`)
+    //   })
 
     U.readFromStorage(L.loggedUserKey)
       .then(value => {

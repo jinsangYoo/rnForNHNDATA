@@ -9,7 +9,7 @@
  */
 
 import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
-import {SafeAreaView, StyleSheet, Platform} from 'react-native'
+import {SafeAreaView, StyleSheet, Platform, useColorScheme} from 'react-native'
 
 import {
   AceConfiguration,
@@ -27,7 +27,6 @@ import {
   DefaultTheme,
   DarkTheme,
 } from '@react-navigation/native'
-import {AppearanceProvider, useColorScheme} from 'react-native-appearance'
 import {Provider as ReduxProvider} from 'react-redux'
 import {ToggleThemeProvider} from './src/contexts'
 import {makeStore} from './src/store'
