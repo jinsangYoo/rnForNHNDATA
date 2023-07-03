@@ -38,10 +38,12 @@ import {gcodeSelector} from './utils/aceWrappers'
 import DeviceInfo from 'react-native-device-info'
 
 import {sendCommonWithPromise} from './acsdk'
+import {useInitialURL} from './src/hooks'
 
 const store = makeStore()
 
 const App = () => {
+  const {url: initialUrl, processing} = useInitialURL()
   useLayoutEffect(() => {
     console.log(`1. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
     console.log(`ACS.getSdkVersion(): ${ACS.getSdkVersion()}`)
@@ -113,17 +115,7 @@ const App = () => {
   }
   testReactNativeDeviceInfo()
 
-  const testReplaceRegex = () => {
-    const s = 'iOS and js Ios'
-    const re = /iOS/gi
-
-    const newS = s.replace(re, 'iPhone OS')
-    console.log(`newS: ${newS}`)
-  }
-  testReplaceRegex()
-
   CloudMessaging()
-  console.log('rnForNHNData is ready.')
   if (Platform.OS === 'android') {
     DeviceInfo.getInstallReferrer()
       .then(installReferrer => {
@@ -138,6 +130,7 @@ const App = () => {
         console.log(`installReferrer::e: ${JSON.stringify(e, null, 2)}`)
       })
   }
+  console.log('rnForNHNData is ready.')
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
