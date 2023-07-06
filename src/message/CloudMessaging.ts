@@ -111,6 +111,11 @@ export function CloudMessaging() {
                 console.log('fcmtoken: ', fcmtoken)
               }
             })
+            .catch(e => {
+              if (e) {
+                console.log('e: ', e)
+              }
+            })
         } else {
           // user doesn't have a device token yet
           console.log('please, check permission.')

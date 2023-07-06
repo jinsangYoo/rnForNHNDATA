@@ -8,20 +8,22 @@ export type ScrollEnabledContextType = {
 
 const defaultScrollEnabledContext = {
   scrollEnabled: true,
-  setScrollEnabled: (enable: boolean) => {}
+  setScrollEnabled: (enable: boolean) => {},
 }
 const ScrollEnabledContext = createContext<ScrollEnabledContextType>(
-  defaultScrollEnabledContext
+  defaultScrollEnabledContext,
 )
 
-type ScrollEnabledContextProps = {}
+type ScrollEnabledContextProps = {
+  children?: React.ReactNode
+}
 export const ScrollEnabledProvider: FC<ScrollEnabledContextProps> = ({
-  children
+  children,
 }) => {
   const [scrollEnabled, setScrollEnabled] = useState<boolean>(true)
   const value = {
     scrollEnabled,
-    setScrollEnabled
+    setScrollEnabled,
   }
   return (
     <ScrollEnabledContext.Provider value={value}>

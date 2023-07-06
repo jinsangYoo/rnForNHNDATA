@@ -35,21 +35,22 @@ export type ToggleThemeContextType = {
 }
 
 const defaultToggleThemeContext = {
-  toggleTheme: () => {}
+  toggleTheme: () => {},
 }
 const ToggleThemeContext = createContext<ToggleThemeContextType>(
-  defaultToggleThemeContext
+  defaultToggleThemeContext,
 )
 
 type ToggleThemeContextProps = {
+  children?: React.ReactNode
   toggleTheme: () => void
 }
 export const ToggleThemeProvider: FC<ToggleThemeContextProps> = ({
   children,
-  toggleTheme
+  toggleTheme,
 }) => {
   const value = {
-    toggleTheme
+    toggleTheme,
   }
   return (
     <ToggleThemeContext.Provider value={value}>
