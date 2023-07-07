@@ -7,7 +7,7 @@ import {useScrollEnabled} from '../contexts'
 import * as D from '../data'
 import ProductRowCell from './ProductRowCell'
 import {useRenderSeparator} from '../hooks'
-import {AddInCartScreenProps as Props} from '../routeProps'
+import {DeleteInCartScreenProps as Props} from '../routeProps'
 
 import {getRandomIntInclusive} from '../../utils'
 import {sendCommonWithPromise, sendCommonWithPromisePopup} from '../../acsdk'
