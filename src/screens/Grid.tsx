@@ -16,9 +16,9 @@ import {useDispatch, useSelector} from 'react-redux'
 import * as L from '../store/login'
 import {useAutoFocus, useScrollEnabled} from '../contexts'
 import {commonStyles} from '../styles/Common.style'
-// import ReactNativeIdfaAaid, {
-//   AdvertisingInfoResponse,
-// } from '@sparkfabrik/react-native-idfa-aaid'
+import ReactNativeIdfaAaid, {
+  AdvertisingInfoResponse,
+} from '@sparkfabrik/react-native-idfa-aaid'
 import {gcodeSelector} from '../../utils'
 import GridCell from './GridCell'
 import type {IAPI} from '../data'
@@ -55,16 +55,16 @@ export default function Grid({navigation}: Props) {
   const [isDebug, setIsDebug] = useState<boolean>(false)
   // idfa
   const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState<boolean>(false)
-  // useEffect(() => {
-  //   ReactNativeIdfaAaid.getAdvertisingInfo()
-  //     .then((res: AdvertisingInfoResponse) => {
-  //       setIsAdTrackingEnabled(!res.isAdTrackingLimited)
-  //     })
-  //     .catch(err => {
-  //       console.log(err)
-  //       setIsAdTrackingEnabled(false)
-  //     })
-  // }, [])
+  useEffect(() => {
+    ReactNativeIdfaAaid.getAdvertisingInfo()
+      .then((res: AdvertisingInfoResponse) => {
+        setIsAdTrackingEnabled(!res.isAdTrackingLimited)
+      })
+      .catch(err => {
+        console.log(err)
+        setIsAdTrackingEnabled(false)
+      })
+  }, [])
   useLayoutEffect(() => {
     const msg = `>>${title}<< >>${randomValueForScreen}<<`
     const params = ACParams.init(ACParams.TYPE.EVENT, msg)
@@ -77,7 +77,7 @@ export default function Grid({navigation}: Props) {
   }, [])
   const logout = useCallback(() => {
     dispatch(L.logoutAction())
-    navigation.reset({index: 0, routes: [{name: 'Login'}]})
+    navigation.reset({index: 0, routes: [{name: 'Login' as never}]})
   }, [])
   const {loggedUser} = useSelector<AppState, L.State>(({login}) => login)
   console.log(`loggedUser: ${JSON.stringify(loggedUser, null, 2)}`)

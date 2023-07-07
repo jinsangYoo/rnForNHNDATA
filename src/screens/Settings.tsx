@@ -14,9 +14,9 @@ import * as L from '../store/login'
 import {commonStyles} from '../styles/Common.style'
 
 import DeviceInfo from 'react-native-device-info'
-// import ReactNativeIdfaAaid, {
-//   AdvertisingInfoResponse,
-// } from '@sparkfabrik/react-native-idfa-aaid'
+import ReactNativeIdfaAaid, {
+  AdvertisingInfoResponse,
+} from '@sparkfabrik/react-native-idfa-aaid'
 import {useAsync} from '../hooks'
 import {getToken} from '../message'
 
@@ -41,9 +41,6 @@ export default function Settings() {
   const [name, setName] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
-  const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState<boolean>(false)
-  const [idfa, setIdfa] = useState<string | null>()
-
   const focus = useAutoFocus()
   const navigation = useNavigation()
   const dispatch = useDispatch()
@@ -52,7 +49,7 @@ export default function Settings() {
   }, [])
   const logout = useCallback(() => {
     dispatch(L.logoutAction())
-    navigation.reset({index: 0, routes: [{name: 'Login'}]})
+    navigation.reset({index: 0, routes: [{name: 'Login'} as never]})
   }, [])
 
   // const goTabNavigator = useCallback(() => {
@@ -61,18 +58,32 @@ export default function Settings() {
   // }, [email, name, password])
   // const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
 
+  const [idfa, setIdfa] = useState<string | null>()
+  const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState(false)
   useEffect(() => {
-    // ReactNativeIdfaAaid.getAdvertisingInfo()
-    //   .then((res: AdvertisingInfoResponse) => {
-    //     setIsAdTrackingEnabled(!res.isAdTrackingLimited)
-    //     return !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //     setIsAdTrackingEnabled(false)
-    //     return setIdfa(null)
-    //   })
+    const getAdvertisingInfo = async () => {
+      ReactNativeIdfaAaid.getAdvertisingInfo()
+        .then((res: AdvertisingInfoResponse) => {
+          setIsAdTrackingEnabled(!res.isAdTrackingLimited)
+          !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
+          console.log(`${title}::in then: getAdvertisingInfo`)
+          console.log(
+            `${title}::in then: isAdTrackingEnabled: ${!res.isAdTrackingLimited}`,
+          )
+          console.log(`${title}::in then: idfa: ${res.id}`)
+        })
+        .catch(err => {
+          console.log(`${title}::in catch: getAdvertisingInfo`)
+          console.log(err)
+          setIsAdTrackingEnabled(false)
+          setIdfa(null)
+        })
+    }
 
+    getAdvertisingInfo()
+  }, [])
+
+  useEffect(() => {
     U.readFromStorage(L.loggedUserKey)
       .then(value => {
         // if (value.length > 0) {
@@ -82,7 +93,7 @@ export default function Settings() {
         //   setPassword(savedUser.password)
         // }
       })
-      .catch(e => {})
+      .catch(e => console.error(e))
   }, [loggedIn])
 
   useLayoutEffect(() => {

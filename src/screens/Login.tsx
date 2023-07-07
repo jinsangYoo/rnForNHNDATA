@@ -11,9 +11,9 @@ import * as U from '../utils'
 import * as L from '../store/login'
 import {Colors} from 'react-native-paper'
 
-// import ReactNativeIdfaAaid, {
-//   AdvertisingInfoResponse,
-// } from '@sparkfabrik/react-native-idfa-aaid'
+import ReactNativeIdfaAaid, {
+  AdvertisingInfoResponse,
+} from '@sparkfabrik/react-native-idfa-aaid'
 
 import {getRandomIntInclusive} from '../../utils'
 import {sendCommonWithPromise, sendCommonWithPromisePopup} from '../../acsdk'
@@ -40,28 +40,37 @@ export default function Login() {
   const dispatch = useDispatch()
   const goTabNavigator = useCallback(() => {
     dispatch(L.loginAction({acesession, id, password}))
-    navigation.navigate('TabNavigator')
+    navigation.navigate('TabNavigator' as never)
   }, [acesession, id, password])
-  const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
+  const goSignUp = useCallback(() => navigation.navigate('SignUp' as never), [])
 
-  const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState<boolean>(false)
   const [idfa, setIdfa] = useState<string | null>()
+  const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState(false)
   useEffect(() => {
-    // ReactNativeIdfaAaid.getAdvertisingInfo()
-    //   .then((res: AdvertisingInfoResponse) => {
-    //     setIsAdTrackingEnabled(!res.isAdTrackingLimited)
-    //     return !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //     setIsAdTrackingEnabled(false)
-    //     return setIdfa(null)
-    //   })
-    //   .finally(() => {
-    //     console.log(`isAdTrackingEnabled: ${isAdTrackingEnabled}`)
-    //     console.log(`idfa: ${idfa}`)
-    //   })
+    const getAdvertisingInfo = async () => {
+      ReactNativeIdfaAaid.getAdvertisingInfo()
+        .then((res: AdvertisingInfoResponse) => {
+          setIsAdTrackingEnabled(!res.isAdTrackingLimited)
+          !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
+          console.log(`${title}::in then: getAdvertisingInfo`)
+          console.log(
+            `${title}::in then: isAdTrackingEnabled: ${!res.isAdTrackingLimited}`,
+          )
+          console.log(`${title}::in then: idfa: ${res.id}`)
+        })
+        .catch(err => {
+          console.log(`${title}::in catch: getAdvertisingInfo`)
+          console.log(err)
+          setIsAdTrackingEnabled(false)
+          setIdfa(null)
+        })
+        .finally(() => CloudMessaging())
+    }
 
+    getAdvertisingInfo()
+  }, [])
+
+  useEffect(() => {
     U.readFromStorage(L.loggedUserKey)
       .then(value => {
         if (value.length > 0) {
@@ -115,7 +124,7 @@ export default function Login() {
             const setCookie = _resultHeadersMap
               .get('set-cookie')
               .split(' ')
-              .filter(item => regex.test(item))
+              .filter((item: string) => regex.test(item))
 
             if (setCookie.length != 1) {
               throw new Error(
@@ -136,7 +145,7 @@ export default function Login() {
         dispatch(L.loginWithSaveAction({acesession, id, password}))
         navigation.reset({
           index: 0,
-          routes: [{name: 'WebViewHome', params: {acesession}}],
+          routes: [{name: 'WebViewHome' as never, params: {acesession}}],
         })
       })
       .catch((e: Error) => {

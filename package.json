@@ -27,6 +27,7 @@
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/stack": "^6.3.17",
     "ace.sdk.react-native": "file:../reactSlimer.git/reactslimer-2.9.3.tgz",
+    "@sparkfabrik/react-native-idfa-aaid": "^1.0.1",
     "color": "^4.2.3",
     "faker": "5.5.3",
     "moment": "^2.29.1",
