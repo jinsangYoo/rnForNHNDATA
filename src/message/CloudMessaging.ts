@@ -16,7 +16,6 @@ import {
 
 export function CloudMessaging() {
   useEffect(() => {
-    console.log('컴포넌트가 화면에 나타남')
     registerAppWithFCM()
     requestUserPermission()
 
@@ -31,7 +30,7 @@ export function CloudMessaging() {
       }
     })
 
-    return unsubscribe
+    unsubscribe()
   }, [])
 
   async function registerAppWithFCM() {

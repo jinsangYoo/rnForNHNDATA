@@ -31,7 +31,6 @@ import {Provider as ReduxProvider} from 'react-redux'
 import {ToggleThemeProvider} from './src/contexts'
 import {makeStore} from './src/store'
 
-import {CloudMessaging} from './src/message'
 import {gcodeSelector} from './utils/aceWrappers'
 
 import DeviceInfo from 'react-native-device-info'
@@ -114,7 +113,6 @@ const App = () => {
   }
   testReactNativeDeviceInfo()
 
-  CloudMessaging()
   if (Platform.OS === 'android') {
     DeviceInfo.getInstallReferrer()
       .then(installReferrer => {
