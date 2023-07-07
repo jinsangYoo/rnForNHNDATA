@@ -1,12 +1,18 @@
 import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
-import {StyleSheet, ActivityIndicator, Alert} from 'react-native'
+import {
+  StyleSheet,
+  ActivityIndicator,
+  Alert,
+  AppState,
+  AppStateStatus,
+} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 // prettier-ignore
 import {SafeAreaView, View, Text, TextInput, TouchableViewForFullWidth as TouchableView}
 from '../theme'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {useDispatch, useSelector} from 'react-redux'
-import {AppState} from '../store'
+import {AppState as AppStateStore} from '../store'
 import * as U from '../utils'
 import * as L from '../store/login'
 import {Colors} from 'react-native-paper'
@@ -32,7 +38,7 @@ import {CloudMessaging} from '../message'
 const title = 'ACE COUNTER'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function Login() {
-  const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
+  const {loggedIn} = useSelector<AppStateStore, L.State>(({login}) => login)
   const [acesession, setAcesession] = useState<string>('')
   const [id, setId] = useState<string>('')
   const [password, setPassword] = useState<string>('')
