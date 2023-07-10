@@ -33,7 +33,11 @@ import {
   ACEMaritalStatus,
 } from 'ace.sdk.react-native'
 import {APP_VERSION} from '../version'
-import {CloudMessaging} from '../message'
+import {
+  registerAppWithFCM,
+  requestUserPermission,
+  addListenerForForeground,
+} from '../message'
 
 const title = 'ACE COUNTER'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
@@ -71,7 +75,11 @@ export default function Login() {
           setIsAdTrackingEnabled(false)
           setIdfa(null)
         })
-        .finally(() => CloudMessaging())
+        .finally(() => {
+          registerAppWithFCM()
+          requestUserPermission()
+          addListenerForForeground()
+        })
     }
 
     getAdvertisingInfo()
