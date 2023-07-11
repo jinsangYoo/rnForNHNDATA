@@ -59,7 +59,7 @@ export default function Login() {
   const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState(false)
   useEffect(() => {
     const getAdvertisingInfo = async () => {
-      ReactNativeIdfaAaid.getAdvertisingInfo()
+      await ReactNativeIdfaAaid.getAdvertisingInfo()
         .then((res: AdvertisingInfoResponse) => {
           setIsAdTrackingEnabled(!res.isAdTrackingLimited)
           !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
@@ -76,11 +76,10 @@ export default function Login() {
           setIsAdTrackingEnabled(false)
           setIdfa(null)
         })
-        .finally(() => {
-          registerAppWithFCM()
-          requestUserPermission()
-          addListenerForForeground()
-        })
+
+      await registerAppWithFCM()
+      await requestUserPermission()
+      await addListenerForForeground()
     }
 
     getAdvertisingInfo()

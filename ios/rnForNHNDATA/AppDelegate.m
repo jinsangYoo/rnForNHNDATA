@@ -67,4 +67,17 @@ static void InitializeFlipper(UIApplication *application) {
   [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken: (NSData *)deviceToken
+    {
+      [FIRMessaging messaging].APNSToken = deviceToken;
+      NSString *fcmToken = [FIRMessaging messaging].FCMToken;
+      NSLog(@"++APNS deviceToken : %@", deviceToken);
+      NSLog(@"++FCM device token : %@", fcmToken);
+    }
+    
+    -(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+    {
+      NSLog(@"!!! ERROR regisgering for APNS : %@", error);
+    }
+
 @end

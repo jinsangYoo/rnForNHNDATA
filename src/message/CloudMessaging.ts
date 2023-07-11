@@ -13,7 +13,7 @@ import {
   ACEMaritalStatus,
 } from 'ace.sdk.react-native'
 
-export function addListenerForForeground() {
+export async function addListenerForForeground() {
   messaging().onMessage(async remoteMessage => {
     if (remoteMessage) {
       console.log(
@@ -51,11 +51,11 @@ export async function requestUserPermission() {
   switch (authorizationStatus) {
     case 0:
       console.log(`${authorizationStatus}: 거부`)
-      checkToken()
+      await checkToken()
       break
     case 1:
       console.log(`${authorizationStatus}: 수락`)
-      checkToken()
+      await checkToken()
 
       // 앱 꺼져있을 때
       messaging()
@@ -90,29 +90,19 @@ export async function requestUserPermission() {
 }
 
 // 토큰 요청: 추후 필요할 예정
-export function checkToken() {
+export async function checkToken() {
   messaging()
-    .hasPermission()
-    .then(enabled => {
-      if (enabled) {
-        messaging()
-          .getToken()
-          .then(fcmtoken => {
-            if (fcmtoken) {
-              console.log('fcmtoken: ', fcmtoken)
-            }
-          })
-          .catch(e => {
-            if (e) {
-              console.log('e: ', e)
-            }
-          })
-      } else {
-        // user doesn't have a device token yet
-        console.log('please, check permission.')
+    .getToken()
+    .then(fcmtoken => {
+      if (fcmtoken) {
+        console.log('fcmtoken: ', fcmtoken)
       }
     })
-    .catch(e => console.error(e))
+    .catch(e => {
+      if (e) {
+        console.log('e: ', e)
+      }
+    })
 }
 
 export async function handleCloudMsg(
@@ -148,15 +138,17 @@ export const hasPermissionForPush = (): Promise<boolean> =>
 
 export const getToken = (): Promise<string> =>
   new Promise((resolve, reject) => {
-    hasPermissionForPush().then(enabled => {
-      if (enabled) {
-        messaging()
-          .getToken()
-          .then(token => resolve(token))
-          .catch(reject)
-      } else {
-        console.log('please, check permission.')
-        reject(new Error('please, check permission.'))
-      }
-    })
+    hasPermissionForPush()
+      .then(enabled => {
+        if (enabled) {
+          messaging()
+            .getToken()
+            .then(token => resolve(token))
+            .catch(reject)
+        } else {
+          console.log('please, check permission.')
+          reject(new Error('please, check permission.'))
+        }
+      })
+      .catch(e => console.log(e))
   })
