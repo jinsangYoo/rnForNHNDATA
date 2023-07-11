@@ -68,6 +68,7 @@ export default function Login() {
             `${title}::in then: isAdTrackingEnabled: ${!res.isAdTrackingLimited}`,
           )
           console.log(`${title}::in then: idfa: ${res.id}`)
+          ACS.setAdvertisingIdentifier(!res.isAdTrackingLimited, res.id)
         })
         .catch(err => {
           console.log(`${title}::in catch: getAdvertisingInfo`)
