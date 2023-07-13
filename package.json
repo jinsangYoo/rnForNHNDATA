@@ -1,6 +1,6 @@
 {
   "name": "rnfornhndata",
-  "version": "2.9.1",
+  "version": "2.9.2",
   "private": true,
   "scripts": {
     "prebuild": "node -p \"'export const APP_VERSION = ' + JSON.stringify(require('./package.json').version)\" > src/version.ts",

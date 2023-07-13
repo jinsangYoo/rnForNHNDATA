@@ -13,11 +13,28 @@ import {
 
 import {sendCommonWithPromise} from '../../acsdk'
 
-export const useInitialURL = () => {
+export const useDeeplinkURL = () => {
   const [url, setUrl] = useState<string | null>(null)
   const [processing, setProcessing] = useState(true)
 
   useEffect(() => {
+    // Get the deep link used to background the app
+    const onLinkingEvent = async (event: {url: string}) => {
+      if (event.url) {
+        console.log(`useInitialURL::onLinkingEvent::event.url is ${event.url}`)
+
+        const params = ACParams.init(ACParams.TYPE.DEEPLINK)
+        params.keyword = event.url == null ? undefined : event.url
+        sendCommonWithPromise(
+          `useInitialURL::onLinkingEvent::event.url: >>${event.url}<<`,
+          params,
+        )
+      } else {
+        console.log(`useInitialURL::onLinkingEvent::event.url is null`)
+      }
+    }
+    Linking.addEventListener('url', onLinkingEvent)
+
     const getUrlAsync = async () => {
       // Get the deep link used to open the app
       const initialUrl = await Linking.getInitialURL()

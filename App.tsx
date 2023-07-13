@@ -36,12 +36,15 @@ import {gcodeSelector} from './utils/aceWrappers'
 import DeviceInfo from 'react-native-device-info'
 
 import {sendCommonWithPromise} from './acsdk'
-import {useInitialURL} from './src/hooks'
+import {useDeeplinkURL, useLinkingURL} from './src/hooks'
 
 const store = makeStore()
 
 const App = () => {
-  const {url: initialUrl, processing} = useInitialURL()
+  // const {coldURL: initialUrl, processing} = useDeeplinkURL()
+  // const {warmURL: linkingUrl} = useLinkingURL()
+  useDeeplinkURL()
+  // useLinkingURL()
   useLayoutEffect(() => {
     console.log(`1. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
     console.log(`ACS.getSdkVersion(): ${ACS.getSdkVersion()}`)
