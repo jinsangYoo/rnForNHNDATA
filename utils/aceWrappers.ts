@@ -13,9 +13,9 @@ import {getRandomIntInclusive} from '.'
 
 export function gcodeSelector(): string {
   if (Platform.OS == 'ios') {
-    return 'AK3A79964'
+    return 'AK2A97543'
   } else {
-    return 'AK2A79936'
+    return 'AK1A97542'
   }
 }
 
