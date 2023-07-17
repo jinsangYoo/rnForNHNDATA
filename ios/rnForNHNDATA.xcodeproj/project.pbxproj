@@ -8,18 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* rnForNHNDATATests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* rnForNHNDATATests.m */; };
-		0183B64FE41C54A89D4D3E76 /* libPods-rnForNHNDATA-rnForNHNDATATests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84B1FF033BA85CEE5E3113C6 /* libPods-rnForNHNDATA-rnForNHNDATATests.a */; };
 		0AA2EDB4B17449A88DEB46A5 /* DancingScript-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4649C340AC2F412393F20A17 /* DancingScript-SemiBold.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		170AE39721271EF4F4D4E4E2 /* Pods_rnForNHNDATA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9C10A7233678F1CAAE8E2E9 /* Pods_rnForNHNDATA.framework */; };
 		3C8FA71F92DA40D89FD6BB50 /* DancingScript-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 00F4DE9F24B94F868DE50CE0 /* DancingScript-Regular.ttf */; };
+		50908FB8E083E673EA985C66 /* Pods_rnForNHNDATA_rnForNHNDATATests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CA132FBC79A3BDAC968C24E /* Pods_rnForNHNDATA_rnForNHNDATATests.framework */; };
 		7A0DF4E4C36449029D9DF8F8 /* DancingScript-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E63127F9EDE94F3E95F52CB8 /* DancingScript-Bold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A15D2E9727B20BD70034B488 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A15D2E9627B20BD70034B488 /* AppTrackingTransparency.framework */; };
 		A1BAB544279D6A1300BD7EDD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A1BAB543279D6A1300BD7EDD /* GoogleService-Info.plist */; };
 		B288FACE3D8D4CE9A7970DFA /* DancingScript-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90BFF6E83C42431CA51B072B /* DancingScript-Medium.ttf */; };
-		C177F55873DD04749E0513C1 /* libPods-rnForNHNDATA.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 272CF65BC1BC8735E51C05E2 /* libPods-rnForNHNDATA.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,10 +43,9 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = rnForNHNDATA/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = rnForNHNDATA/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = rnForNHNDATA/main.m; sourceTree = "<group>"; };
-		272CF65BC1BC8735E51C05E2 /* libPods-rnForNHNDATA.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnForNHNDATA.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CA132FBC79A3BDAC968C24E /* Pods_rnForNHNDATA_rnForNHNDATATests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_rnForNHNDATA_rnForNHNDATATests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4649C340AC2F412393F20A17 /* DancingScript-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DancingScript-SemiBold.ttf"; path = "../src/assets/fonts/DancingScript-SemiBold.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = rnForNHNDATA/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		84B1FF033BA85CEE5E3113C6 /* libPods-rnForNHNDATA-rnForNHNDATATests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnForNHNDATA-rnForNHNDATATests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		90BFF6E83C42431CA51B072B /* DancingScript-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DancingScript-Medium.ttf"; path = "../src/assets/fonts/DancingScript-Medium.ttf"; sourceTree = "<group>"; };
 		A15D2E9627B20BD70034B488 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		A15FB2A6279EEBF200B0A789 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
@@ -67,6 +66,7 @@
 		A15FB2B5279EEBF200B0A789 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		A1BAB543279D6A1300BD7EDD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A1CCAC97279FD0B700979B48 /* rnForNHNDATA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = rnForNHNDATA.entitlements; path = rnForNHNDATA/rnForNHNDATA.entitlements; sourceTree = "<group>"; };
+		A9C10A7233678F1CAAE8E2E9 /* Pods_rnForNHNDATA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_rnForNHNDATA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6C6A6019A36928B4684BD09 /* Pods-rnForNHNDATA-rnForNHNDATATests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnForNHNDATA-rnForNHNDATATests.release.xcconfig"; path = "Target Support Files/Pods-rnForNHNDATA-rnForNHNDATATests/Pods-rnForNHNDATA-rnForNHNDATATests.release.xcconfig"; sourceTree = "<group>"; };
 		D76223508164856597D68B8B /* Pods-rnForNHNDATA-rnForNHNDATATests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnForNHNDATA-rnForNHNDATATests.debug.xcconfig"; path = "Target Support Files/Pods-rnForNHNDATA-rnForNHNDATATests/Pods-rnForNHNDATA-rnForNHNDATATests.debug.xcconfig"; sourceTree = "<group>"; };
 		E63127F9EDE94F3E95F52CB8 /* DancingScript-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DancingScript-Bold.ttf"; path = "../src/assets/fonts/DancingScript-Bold.ttf"; sourceTree = "<group>"; };
@@ -80,7 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0183B64FE41C54A89D4D3E76 /* libPods-rnForNHNDATA-rnForNHNDATATests.a in Frameworks */,
+				50908FB8E083E673EA985C66 /* Pods_rnForNHNDATA_rnForNHNDATATests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,7 +89,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A15D2E9727B20BD70034B488 /* AppTrackingTransparency.framework in Frameworks */,
-				C177F55873DD04749E0513C1 /* libPods-rnForNHNDATA.a in Frameworks */,
+				170AE39721271EF4F4D4E4E2 /* Pods_rnForNHNDATA.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,8 +134,8 @@
 			children = (
 				A15D2E9627B20BD70034B488 /* AppTrackingTransparency.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				272CF65BC1BC8735E51C05E2 /* libPods-rnForNHNDATA.a */,
-				84B1FF033BA85CEE5E3113C6 /* libPods-rnForNHNDATA-rnForNHNDATATests.a */,
+				A9C10A7233678F1CAAE8E2E9 /* Pods_rnForNHNDATA.framework */,
+				2CA132FBC79A3BDAC968C24E /* Pods_rnForNHNDATA_rnForNHNDATATests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -572,7 +572,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = rnForNHNDATA/rnForNHNDATA.entitlements;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HA4JNBHU77;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = rnForNHNDATA/Info.plist;
@@ -582,7 +582,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.9.1;
+				MARKETING_VERSION = 2.9.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -603,7 +603,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = rnForNHNDATA/rnForNHNDATA.entitlements;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HA4JNBHU77;
 				INFOPLIST_FILE = rnForNHNDATA/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
@@ -612,7 +612,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.9.1;
+				MARKETING_VERSION = 2.9.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
