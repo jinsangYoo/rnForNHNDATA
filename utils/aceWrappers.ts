@@ -60,13 +60,13 @@ export function sendCommonWithPromise(
 
 export function setManualToRandomAdvertisingIdentifier(): void {
   const randomValue = getRandomIntInclusive(0, 9999999999999999).toString()
-  ACS.setAdvertisingIdentifier(randomValue)
+  ACS.setAdvertisingIdentifier(true, randomValue)
   const msg = `set manual AdvertisingIdentifier >${randomValue}<`
   console.log(msg)
 }
 
 export function setManualAdvertisingIdentifier(value: string): void {
-  ACS.setAdvertisingIdentifier(value)
+  ACS.setAdvertisingIdentifier(true, value)
   const msg = `set manual AdvertisingIdentifier >${value}<`
   console.log(msg)
 }
