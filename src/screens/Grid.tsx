@@ -36,6 +36,7 @@ import {
   ACEGender,
   ACEMaritalStatus,
 } from 'ace.sdk.react-native'
+import Validate from '../utils/validate'
 
 const title = 'Grid'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
@@ -58,7 +59,17 @@ export default function Grid({navigation}: Props) {
   useEffect(() => {
     ReactNativeIdfaAaid.getAdvertisingInfo()
       .then((res: AdvertisingInfoResponse) => {
-        setIsAdTrackingEnabled(!res.isAdTrackingLimited)
+        console.log(`${title}::in then: getAdvertisingInfo`)
+        console.log(
+          `${title}::in then: isAdTrackingEnabled: ${!res.isAdTrackingLimited}`,
+        )
+        console.log(`${title}::in then: idfa: ${res.id}`)
+
+        const result = Validate.validateAdvertisingIdentifier(
+          !res.isAdTrackingLimited,
+          res.id,
+        )
+        setIsAdTrackingEnabled(result.isAdEnabled)
       })
       .catch(err => {
         console.log(err)

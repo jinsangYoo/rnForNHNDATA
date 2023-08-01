@@ -5,6 +5,7 @@ import {
   Alert,
   AppState,
   AppStateStatus,
+  Platform,
 } from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 // prettier-ignore
@@ -38,6 +39,7 @@ import {
   requestUserPermission,
   addListenerForForeground,
 } from '../message'
+import Validate from '../utils/validate'
 
 const title = 'ACE COUNTER'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
@@ -58,17 +60,25 @@ export default function Login() {
   const [idfa, setIdfa] = useState<string | null>()
   const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState(false)
   useEffect(() => {
-    const getAdvertisingInfo = async () => {
+    const getAdvertisingAndFCM = async () => {
       await ReactNativeIdfaAaid.getAdvertisingInfo()
         .then((res: AdvertisingInfoResponse) => {
-          setIsAdTrackingEnabled(!res.isAdTrackingLimited)
-          !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
           console.log(`${title}::in then: getAdvertisingInfo`)
           console.log(
             `${title}::in then: isAdTrackingEnabled: ${!res.isAdTrackingLimited}`,
           )
           console.log(`${title}::in then: idfa: ${res.id}`)
           ACS.setAdvertisingIdentifier(!res.isAdTrackingLimited, res.id)
+
+          const result = Validate.validateAdvertisingIdentifier(
+            !res.isAdTrackingLimited,
+            res.id,
+          )
+          setIdfa(result.adid)
+          setIsAdTrackingEnabled(result.isAdEnabled)
+          console.log(
+            `${title}::in then: result of validateAdvertisingIdentifier: ${result.isAdEnabled}, >>${result.adid}<<`,
+          )
         })
         .catch(err => {
           console.log(`${title}::in catch: getAdvertisingInfo`)
@@ -82,7 +92,7 @@ export default function Login() {
       await addListenerForForeground()
     }
 
-    getAdvertisingInfo()
+    getAdvertisingAndFCM()
   }, [])
 
   useEffect(() => {

@@ -6,7 +6,12 @@ import React, {
   useRef,
   useMemo,
 } from 'react'
-import {StyleSheet, TextInput as RNTextInput, Keyboard} from 'react-native'
+import {
+  StyleSheet,
+  TextInput as RNTextInput,
+  Keyboard,
+  Platform,
+} from 'react-native'
 // prettier-ignore
 import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, TextInput, Text, TouchableViewNonWidth as TouchableView}
 from '../theme'
@@ -30,6 +35,7 @@ import {
 } from 'ace.sdk.react-native'
 import {WebviewScreenProps as Props} from '../routeProps'
 import {Colors} from 'react-native-paper'
+import Validate from '../utils/validate'
 
 type WebViewProps = {
   uri: string
@@ -49,13 +55,18 @@ export default function WebviewForAPI({navigation}: Props) {
     const getAdvertisingInfo = async () => {
       ReactNativeIdfaAaid.getAdvertisingInfo()
         .then((res: AdvertisingInfoResponse) => {
-          setIsAdTrackingEnabled(!res.isAdTrackingLimited)
-          !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
           console.log(`${title}::in then: getAdvertisingInfo`)
           console.log(
             `${title}::in then: isAdTrackingEnabled: ${!res.isAdTrackingLimited}`,
           )
           console.log(`${title}::in then: idfa: ${res.id}`)
+
+          const result = Validate.validateAdvertisingIdentifier(
+            !res.isAdTrackingLimited,
+            res.id,
+          )
+          setIdfa(result.adid)
+          setIsAdTrackingEnabled(result.isAdEnabled)
         })
         .catch(err => {
           console.log(`${title}::in catch: getAdvertisingInfo`)

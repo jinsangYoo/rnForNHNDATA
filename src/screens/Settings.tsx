@@ -32,6 +32,7 @@ import {
   ACEMaritalStatus,
 } from 'ace.sdk.react-native'
 import {APP_VERSION} from '../version'
+import Validate from '../utils/validate'
 
 const title = 'Settings'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
@@ -64,13 +65,18 @@ export default function Settings() {
     const getAdvertisingInfo = async () => {
       ReactNativeIdfaAaid.getAdvertisingInfo()
         .then((res: AdvertisingInfoResponse) => {
-          setIsAdTrackingEnabled(!res.isAdTrackingLimited)
-          !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
           console.log(`${title}::in then: getAdvertisingInfo`)
           console.log(
             `${title}::in then: isAdTrackingEnabled: ${!res.isAdTrackingLimited}`,
           )
           console.log(`${title}::in then: idfa: ${res.id}`)
+
+          const result = Validate.validateAdvertisingIdentifier(
+            !res.isAdTrackingLimited,
+            res.id,
+          )
+          setIdfa(result.adid)
+          setIsAdTrackingEnabled(result.isAdEnabled)
         })
         .catch(err => {
           console.log(`${title}::in catch: getAdvertisingInfo`)

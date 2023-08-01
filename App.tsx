@@ -50,6 +50,7 @@ const App = () => {
     console.log(`ACS.getSdkVersion(): ${ACS.getSdkVersion()}`)
 
     const _config = AceConfiguration.init(gcodeSelector())
+    // _config.disableToCollectAdvertisingIdentifier = true
     // ACS.configure(_config)
     //   .then(response => {
     //     console.log('SDK Promise 초기화::in then!!')
