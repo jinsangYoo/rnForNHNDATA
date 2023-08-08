@@ -134,6 +134,14 @@ export default function Grid({navigation}: Props) {
       'QUNFXzExNDUwOF9ESUdIVFk=',
     )}`,
   )
+  const getSDKDetails = useCallback(() => {
+    const details = JSON.stringify(ACS.getSdkDetails(), null, 2)
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(details, ToastAndroid.LONG)
+    } else {
+      Alert.alert(details)
+    }
+  }, [])
 
   return (
     <SafeAreaView>
@@ -186,6 +194,20 @@ export default function Grid({navigation}: Props) {
             pointerEvents="none">
             <Text style={[styles.text]}>개인 정보 취급 방침 활성화:</Text>
             <Switch value={isAdTrackingEnabled} />
+          </View>
+          <View
+            style={[
+              commonStyles.rowFlexDirectionViewNonPadding,
+              styles.controlBoxJustifyContent,
+              {marginTop: 10},
+            ]}>
+            <Text style={[styles.text]}>SDK 상태보기:</Text>
+            <TouchableView
+              notification
+              style={[styles.touchableViewInControlBox]}
+              onPress={getSDKDetails}>
+              <Text style={[styles.textInTouchableView]}>보기</Text>
+            </TouchableView>
           </View>
         </View>
         <View style={styles.view}>
