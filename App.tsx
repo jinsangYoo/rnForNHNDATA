@@ -27,25 +27,33 @@ import {
   DefaultTheme,
   DarkTheme,
 } from '@react-navigation/native'
-import {Provider as ReduxProvider} from 'react-redux'
 import {ToggleThemeProvider} from './src/contexts'
-import {makeStore} from './src/store'
 
 import {gcodeSelector} from './utils/aceWrappers'
 
 import DeviceInfo from 'react-native-device-info'
 
 import {sendCommonWithPromise} from './acsdk'
-import {useDeeplinkURL, useLinkingURL} from './src/hooks'
+import {useDeeplinkURL} from './src/hooks'
 
-const store = makeStore()
+import {useDispatch, useSelector} from 'react-redux'
+import {AppState as AppStateStore} from './src/store'
+import * as I from './src/store/appinfo'
 
 const App = () => {
   // const {coldURL: initialUrl, processing} = useDeeplinkURL()
   // const {warmURL: linkingUrl} = useLinkingURL()
   useDeeplinkURL()
   // useLinkingURL()
-  useLayoutEffect(() => {
+
+  const {appinfo} = useSelector<AppStateStore, I.State>(({appinfo}) => appinfo)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    console.log(`App::appinfo: >>${appinfo}<<`)
+    dispatch(I.appInfoWithLoadAction())
+  }, [appinfo])
+
+  useEffect(() => {
     console.log(`1. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
     console.log(`ACS.getSdkVersion(): ${ACS.getSdkVersion()}`)
 
@@ -136,11 +144,9 @@ const App = () => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <ToggleThemeProvider toggleTheme={toggleTheme}>
-        <ReduxProvider store={store}>
-          <NavigationContainer theme={theme}>
-            <MainNavigator />
-          </NavigationContainer>
-        </ReduxProvider>
+        <NavigationContainer theme={theme}>
+          <MainNavigator />
+        </NavigationContainer>
       </ToggleThemeProvider>
     </SafeAreaView>
   )

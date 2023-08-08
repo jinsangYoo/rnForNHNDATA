@@ -2,7 +2,6 @@ import {combineReducers} from 'redux'
 import * as T from './types'
 
 const initialLoggedIn = false
-
 const loggedInReducer = (state = initialLoggedIn, action: T.Actions) => {
   switch (action.type) {
     case 'login':
