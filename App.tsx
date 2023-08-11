@@ -38,7 +38,7 @@ import {useDeeplinkURL} from './src/hooks'
 
 import {useDispatch, useSelector} from 'react-redux'
 import {AppState as AppStateStore} from './src/store'
-import * as I from './src/store/appinfo'
+import * as AI from './src/store/appinfo'
 
 const App = () => {
   // const {coldURL: initialUrl, processing} = useDeeplinkURL()
@@ -46,11 +46,21 @@ const App = () => {
   useDeeplinkURL()
   // useLinkingURL()
 
-  const {appinfo} = useSelector<AppStateStore, I.State>(({appinfo}) => appinfo)
+  // const {appinformaion} = useSelector<AppStateStore, AI.State>(
+  //   ({appinfo}) => appinfo,
+  // )
+  const appinfo = useSelector<AppStateStore, AI.State>(appStateStore => {
+    console.log('useSelector::appStateStore:')
+    console.log(appStateStore)
+    console.log('useSelector::appStateStore.appinfo:')
+    console.log(appStateStore.appinfo)
+    return appStateStore.appinfo
+  })
   const dispatch = useDispatch()
   useEffect(() => {
-    console.log(`App::appinfo: >>${appinfo}<<`)
-    dispatch(I.appInfoWithLoadAction())
+    console.log('App::appinfo')
+    console.log(appinfo)
+    // dispatch(AI.appInfoWithLoadAction())
   }, [appinfo])
 
   useEffect(() => {

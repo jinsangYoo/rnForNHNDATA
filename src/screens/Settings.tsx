@@ -34,7 +34,7 @@ import {
 import {APP_VERSION} from '../version'
 import Validate from '../utils/validate'
 
-import * as I from '../store/appinfo'
+import * as AI from '../store/appinfo'
 
 const title = 'Settings'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
@@ -43,9 +43,10 @@ export default function Settings() {
   const [email, setEmail] = useState<string>('')
   const [name, setName] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const {appinfo} = useSelector<AppStateStore, I.State>(({appinfo}) => appinfo)
+  const appinfo = useSelector<AppStateStore, AI.State>(({appinfo}) => appinfo)
   useEffect(() => {
-    console.log(`${title}::appinfo: >>${appinfo}<<`)
+    console.log(`${title}::appinfo:`)
+    console.log(appinfo)
   }, [appinfo])
 
   const focus = useAutoFocus()
@@ -131,22 +132,27 @@ export default function Settings() {
     }
   }, [token])
   const toggleDebugSwitch = () => {
-    dispatch(I.appInfoWithSaveAction({...appinfo, debug: !appinfo.debug}))
+    dispatch(
+      AI.appInfoWithSaveAction({
+        ...appinfo.appinformaion,
+        debug: !appinfo.appinformaion.debug,
+      }),
+    )
   }
   const toggleEnablePrivacyPolicySwitch = () => {
     dispatch(
-      I.appInfoWithSaveAction({
-        ...appinfo,
-        enablePrivacyPolicy: !appinfo.enablePrivacyPolicy,
+      AI.appInfoWithSaveAction({
+        ...appinfo.appinformaion,
+        enablePrivacyPolicy: !appinfo.appinformaion.enablePrivacyPolicy,
       }),
     )
   }
   const toggleDisableToCollectAdvertisingIdentifierSwitch = () => {
     dispatch(
-      I.appInfoWithSaveAction({
-        ...appinfo,
+      AI.appInfoWithSaveAction({
+        ...appinfo.appinformaion,
         disableToCollectAdvertisingIdentifier:
-          !appinfo.disableToCollectAdvertisingIdentifier,
+          !appinfo.appinformaion.disableToCollectAdvertisingIdentifier,
       }),
     )
   }
@@ -237,12 +243,15 @@ export default function Settings() {
 
           <View style={[commonStyles.widthFullAndRowFlexDirectionView]}>
             <Text style={[styles.text]}>Debug:</Text>
-            <Switch value={appinfo.debug} onValueChange={toggleDebugSwitch} />
+            <Switch
+              value={appinfo.appinformaion.debug}
+              onValueChange={toggleDebugSwitch}
+            />
           </View>
           <View style={[commonStyles.widthFullAndRowFlexDirectionView]}>
             <Text style={[styles.text]}>EnablePrivacyPolicy:</Text>
             <Switch
-              value={appinfo.enablePrivacyPolicy}
+              value={appinfo.appinformaion.enablePrivacyPolicy}
               onValueChange={toggleEnablePrivacyPolicySwitch}
             />
           </View>
@@ -251,7 +260,9 @@ export default function Settings() {
               DisableToCollectAdvertisingIdentifier:
             </Text>
             <Switch
-              value={appinfo.disableToCollectAdvertisingIdentifier}
+              value={
+                appinfo.appinformaion.disableToCollectAdvertisingIdentifier
+              }
               onValueChange={toggleDisableToCollectAdvertisingIdentifierSwitch}
             />
           </View>

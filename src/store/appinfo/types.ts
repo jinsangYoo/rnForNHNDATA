@@ -9,17 +9,17 @@ export type AppInfo = {
   isLoaded: boolean
 }
 export type State = {
-  appinfo: AppInfo
+  appinformaion: AppInfo
 }
 
 export type DeleteAppInfoAction = Action<'deleteAppInfo'>
 export type LoadAppInfoAction = Action<'loadAppInfo'> & {
   isSuccess: boolean
-  appInfo: AppInfo
+  appinformaion: AppInfo
 }
 export type SaveAppInfoAction = Action<'saveAppInfo'> & {
   isSuccess: boolean
-  appInfo: AppInfo
+  appinformaion: AppInfo
 }
 export type Actions =
   | SaveAppInfoAction

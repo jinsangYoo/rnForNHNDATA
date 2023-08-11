@@ -15,12 +15,12 @@ const appInfoReducer = (state = initialAppInfo, action: T.Actions) => {
       if (!action.isSuccess) {
         return {...state, isLoaded: action.isSuccess}
       }
-      return {...state, ...action.appInfo, isLoaded: action.isSuccess}
+      return {...state, ...action.appinformaion, isLoaded: action.isSuccess}
     case 'loadAppInfo':
       if (!action.isSuccess) {
         return {...state, isLoaded: action.isSuccess}
       }
-      return {...state, ...action.appInfo, isLoaded: action.isSuccess}
+      return {...state, ...action.appinformaion, isLoaded: action.isSuccess}
     case 'deleteAppInfo':
       return initialAppInfo
   }

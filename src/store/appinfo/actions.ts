@@ -5,21 +5,21 @@ import type * as T from './types'
 export const appInfoForSaveKey = 'appInfoForSaveKey'
 export const saveAction = (
   isSuccess: boolean,
-  appInfo: T.AppInfo,
+  appinformaion: T.AppInfo,
 ): T.SaveAppInfoAction => ({
   type: 'saveAppInfo',
   isSuccess,
-  appInfo,
+  appinformaion,
 })
 export const appInfoWithSaveAction =
-  (appInfo: T.AppInfo) => (dispatch: Dispatch) => {
-    U.writeToStorage(appInfoForSaveKey, JSON.stringify(appInfo))
+  (appinformaion: T.AppInfo) => (dispatch: Dispatch) => {
+    U.writeToStorage(appInfoForSaveKey, JSON.stringify(appinformaion))
       .then(() => {
-        dispatch(saveAction(true, appInfo))
+        dispatch(saveAction(true, appinformaion))
       })
       .catch(e => {
         console.error(e)
-        dispatch(saveAction(false, appInfo))
+        dispatch(saveAction(false, appinformaion))
       })
   }
 export const deleteAction = (): T.DeleteAppInfoAction => ({
@@ -27,11 +27,11 @@ export const deleteAction = (): T.DeleteAppInfoAction => ({
 })
 export const loadAction = (
   isSuccess: boolean,
-  appInfo: T.AppInfo,
+  appinformaion: T.AppInfo,
 ): T.LoadAppInfoAction => ({
   type: 'loadAppInfo',
   isSuccess,
-  appInfo,
+  appinformaion,
 })
 export const appInfoWithLoadAction = () => (dispatch: Dispatch) => {
   U.readFromStorage(appInfoForSaveKey)
