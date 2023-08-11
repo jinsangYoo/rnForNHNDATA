@@ -39,6 +39,7 @@ import {useDeeplinkURL} from './src/hooks'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppState as AppStateStore} from './src/store'
 import * as AI from './src/store/appinfo'
+import type {AppInfo} from './src/store/appinfo'
 
 const App = () => {
   // const {coldURL: initialUrl, processing} = useDeeplinkURL()
@@ -46,22 +47,24 @@ const App = () => {
   useDeeplinkURL()
   // useLinkingURL()
 
-  // const {appinformaion} = useSelector<AppStateStore, AI.State>(
-  //   ({appinfo}) => appinfo,
-  // )
-  const appinfo = useSelector<AppStateStore, AI.State>(appStateStore => {
-    console.log('useSelector::appStateStore:')
-    console.log(appStateStore)
-    console.log('useSelector::appStateStore.appinfo:')
-    console.log(appStateStore.appinfo)
-    return appStateStore.appinfo
+  const appinformaion = useSelector<AppStateStore, AppInfo>(state => {
+    console.log('useSelector::state:')
+    console.log(state)
+    console.log('useSelector::state.appinfo:')
+    console.log(state.appinfo)
+    console.log('useSelector::state.appinfo.appinformaion:')
+    console.log(state.appinfo.appinformaion)
+    return state.appinfo.appinformaion
   })
   const dispatch = useDispatch()
   useEffect(() => {
-    console.log('App::appinfo')
-    console.log(appinfo)
-    // dispatch(AI.appInfoWithLoadAction())
-  }, [appinfo])
+    console.log('App::appinformaion')
+    console.log(appinformaion)
+    console.log(`App::appinformaion.debug: ${appinformaion.debug}`)
+    console.log('App::appinformaion.debug:')
+    console.log(appinformaion.debug)
+  }, [appinformaion])
+  // dispatch(AI.appInfoWithLoadAction())
 
   useEffect(() => {
     console.log(`1. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
