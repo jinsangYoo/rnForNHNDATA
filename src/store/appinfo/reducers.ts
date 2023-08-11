@@ -27,5 +27,5 @@ const appInfoReducer = (state = initialAppInfo, action: T.Actions) => {
   return state
 }
 export const reducer = combineReducers({
-  appInfo: appInfoReducer,
+  appinformaion: appInfoReducer,
 })
