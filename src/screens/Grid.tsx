@@ -19,7 +19,7 @@ import {commonStyles} from '../styles/Common.style'
 import ReactNativeIdfaAaid, {
   AdvertisingInfoResponse,
 } from '@sparkfabrik/react-native-idfa-aaid'
-import {gcodeSelector} from '../../utils'
+import {gcodeSelector, isEmpty} from '../../utils'
 import GridCell from './GridCell'
 import type {IAPI} from '../data'
 import {useDefaultAPIList, useRenderSeparator} from '../hooks'
@@ -38,20 +38,22 @@ import {
 } from 'ace.sdk.react-native'
 import Validate from '../utils/validate'
 
+import {AppState as AppStateStore} from '../store'
+import * as AI from '../store/appinfo'
+
 const title = 'Grid'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function Grid({navigation}: Props) {
   // gcode
   const focus = useAutoFocus()
-  const [gcode, setGcode] = useState<string>(gcodeSelector())
-  const onApplyGcode = useCallback(() => {
-    const message = 'not implementaion.'
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(message, ToastAndroid.SHORT)
-    } else {
-      Alert.alert(message)
-    }
-  }, [])
+  const dispatch = useDispatch()
+  const {appinformaion} = useSelector<AppStateStore, AI.State>(
+    ({appinfo}) => appinfo,
+  )
+  const [gcode, setGcode] = useState<string>(
+    isEmpty(appinformaion.gcode) ? gcodeSelector() : appinformaion.gcode,
+  )
+
   // idfa
   const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState<boolean>(false)
   useEffect(() => {
@@ -80,7 +82,6 @@ export default function Grid({navigation}: Props) {
     sendCommonWithPromise(msg, params)
   }, [])
   // navigation
-  const dispatch = useDispatch()
   const open = useCallback(() => {
     navigation.dispatch(DrawerActions.openDrawer())
   }, [])
@@ -164,12 +165,6 @@ export default function Grid({navigation}: Props) {
                 placeholder="enter your gcode."
               />
             </View>
-            {/* <TouchableView
-              notification
-              style={[styles.touchableViewInControlBox]}
-              onPress={onApplyGcode}>
-              <Text style={[styles.textInTouchableView]}>apply</Text>
-            </TouchableView> */}
           </View>
           <View
             style={[

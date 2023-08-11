@@ -13,6 +13,8 @@ export const saveAction = (
 })
 export const appInfoWithSaveAction =
   (appinformaion: T.AppInfo) => (dispatch: Dispatch) => {
+    console.log(`appInfoWithSaveAction::appinformaion:`)
+    console.log(appinformaion)
     U.writeToStorage(appInfoForSaveKey, JSON.stringify(appinformaion))
       .then(() => {
         dispatch(saveAction(true, appinformaion))

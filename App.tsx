@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
+import React, {useState, useCallback, useEffect} from 'react'
 import {SafeAreaView, StyleSheet, Platform, useColorScheme} from 'react-native'
 
 import {
@@ -40,6 +40,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {AppState as AppStateStore} from './src/store'
 import * as AI from './src/store/appinfo'
 import type {AppInfo} from './src/store/appinfo'
+import {isEmpty} from './utils'
 
 const App = () => {
   // const {coldURL: initialUrl, processing} = useDeeplinkURL()
@@ -63,15 +64,20 @@ const App = () => {
     console.log(`App::appinformaion.debug: ${appinformaion.debug}`)
     console.log('App::appinformaion.debug:')
     console.log(appinformaion.debug)
-  }, [appinformaion])
-  // dispatch(AI.appInfoWithLoadAction())
+    dispatch(AI.appInfoWithLoadAction())
+  }, [])
 
   useEffect(() => {
     console.log(`1. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
     console.log(`ACS.getSdkVersion(): ${ACS.getSdkVersion()}`)
 
-    const _config = AceConfiguration.init(gcodeSelector())
-    // _config.disableToCollectAdvertisingIdentifier = true
+    const _config = AceConfiguration.init(
+      isEmpty(appinformaion.gcode) ? gcodeSelector() : appinformaion.gcode,
+    )
+    _config.disableToCollectAdvertisingIdentifier =
+      appinformaion.disableToCollectAdvertisingIdentifier
+    _config.debug = appinformaion.debug
+    _config.enablePrivacyPolicy = appinformaion.enablePrivacyPolicy
     // ACS.configure(_config)
     //   .then(response => {
     //     console.log('SDK Promise 초기화::in then!!')

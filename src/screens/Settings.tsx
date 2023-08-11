@@ -1,11 +1,10 @@
 import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
-import {Platform, StyleSheet, ToastAndroid, Alert, Switch} from 'react-native'
+import {Platform, StyleSheet, ToastAndroid, Alert} from 'react-native'
 import {useNavigation, DrawerActions} from '@react-navigation/native'
 import Clipboard from '@react-native-clipboard/clipboard'
 // prettier-ignore
 import {SafeAreaView, View, Text, NavigationHeader, TouchableView, MaterialCommunityIcon as Icon}
 from '../theme'
-import * as D from '../data'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppState as AppStateStore} from '../store'
@@ -34,8 +33,6 @@ import {
 import {APP_VERSION} from '../version'
 import Validate from '../utils/validate'
 
-import * as AI from '../store/appinfo'
-
 const title = 'Settings'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function Settings() {
@@ -43,13 +40,6 @@ export default function Settings() {
   const [email, setEmail] = useState<string>('')
   const [name, setName] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const {appinformaion} = useSelector<AppStateStore, AI.State>(
-    ({appinfo}) => appinfo,
-  )
-  useEffect(() => {
-    console.log(`${title}::appinformaion:`)
-    console.log(appinformaion)
-  }, [appinformaion])
 
   const focus = useAutoFocus()
   const navigation = useNavigation()
@@ -133,31 +123,6 @@ export default function Settings() {
       Alert.alert(doneCopy)
     }
   }, [token])
-  const toggleDebugSwitch = () => {
-    dispatch(
-      AI.appInfoWithSaveAction({
-        ...appinformaion,
-        debug: !appinformaion.debug,
-      }),
-    )
-  }
-  const toggleEnablePrivacyPolicySwitch = () => {
-    dispatch(
-      AI.appInfoWithSaveAction({
-        ...appinformaion,
-        enablePrivacyPolicy: !appinformaion.enablePrivacyPolicy,
-      }),
-    )
-  }
-  const toggleDisableToCollectAdvertisingIdentifierSwitch = () => {
-    dispatch(
-      AI.appInfoWithSaveAction({
-        ...appinformaion,
-        disableToCollectAdvertisingIdentifier:
-          !appinformaion.disableToCollectAdvertisingIdentifier,
-      }),
-    )
-  }
 
   return (
     <SafeAreaView>
@@ -235,36 +200,6 @@ export default function Settings() {
               {error && <Text>error: {error.message}</Text>}
               {token}
             </Text>
-          </View>
-          <TouchableView
-            notification
-            style={[styles.touchableView]}
-            onPress={copyToClipboard}>
-            <Text style={[styles.text]}>복사</Text>
-          </TouchableView>
-
-          <View style={[commonStyles.widthFullAndRowFlexDirectionView]}>
-            <Text style={[styles.text]}>Debug:</Text>
-            <Switch
-              value={appinformaion.debug}
-              onValueChange={toggleDebugSwitch}
-            />
-          </View>
-          <View style={[commonStyles.widthFullAndRowFlexDirectionView]}>
-            <Text style={[styles.text]}>EnablePrivacyPolicy:</Text>
-            <Switch
-              value={appinformaion.enablePrivacyPolicy}
-              onValueChange={toggleEnablePrivacyPolicySwitch}
-            />
-          </View>
-          <View style={[commonStyles.widthFullAndRowFlexDirectionView]}>
-            <Text style={[styles.text]}>
-              DisableToCollectAdvertisingIdentifier:
-            </Text>
-            <Switch
-              value={appinformaion.disableToCollectAdvertisingIdentifier}
-              onValueChange={toggleDisableToCollectAdvertisingIdentifierSwitch}
-            />
           </View>
           <TouchableView
             notification
