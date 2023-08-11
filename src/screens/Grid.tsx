@@ -52,8 +52,6 @@ export default function Grid({navigation}: Props) {
       Alert.alert(message)
     }
   }, [])
-  // debug mode
-  const [isDebug, setIsDebug] = useState<boolean>(false)
   // idfa
   const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState<boolean>(false)
   useEffect(() => {
@@ -173,18 +171,6 @@ export default function Grid({navigation}: Props) {
               <Text style={[styles.textInTouchableView]}>apply</Text>
             </TouchableView> */}
           </View>
-          {/* <View
-            style={[
-              commonStyles.rowFlexDirectionViewNonPadding,
-              styles.controlBoxJustifyContent,
-            ]}>
-            <Text style={[styles.text]}>debug 모드:</Text>
-            <Switch
-              value={isDebug}
-              onValueChange={setIsDebug}
-              style={{height: 50}}
-            />
-          </View> */}
           <View
             style={[
               commonStyles.rowFlexDirectionViewNonPadding,

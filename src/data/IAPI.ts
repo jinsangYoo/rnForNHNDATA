@@ -6,6 +6,7 @@ type IAPI = {
 
 type TypeForAPI = {
   type:
+    | 'SDK_Configure_Setting'
     | 'AddInCart'
     | 'AppearProduct'
     | 'BuyDone'
@@ -20,6 +21,7 @@ type TypeForAPI = {
     | 'Search'
     | 'Tel'
     | 'Webview'
+  displayName: string
   isEnable: boolean
 }
 export type {IAPI, TypeForAPI}

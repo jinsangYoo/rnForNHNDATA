@@ -1,6 +1,7 @@
 type GridStackParamList = {
   Grid: undefined
 
+  SDK_Configure_Setting: undefined
   AddInCart: undefined
   AppearProduct: undefined
   BuyDone: undefined

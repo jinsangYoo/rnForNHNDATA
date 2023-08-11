@@ -1,3 +1,5 @@
+export * from './SDK_Configure_SettingScreenProps'
+
 export * from './AddInCartScreenProps'
 export * from './AppearProductScreenProps'
 export * from './BuyCancelScreenProps'
