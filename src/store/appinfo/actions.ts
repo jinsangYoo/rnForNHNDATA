@@ -13,8 +13,13 @@ export const saveAction = (
 })
 export const appInfoWithSaveAction =
   (appinformaion: T.AppInfo) => (dispatch: Dispatch) => {
-    console.log(`appInfoWithSaveAction::appinformaion:`)
-    console.log(appinformaion)
+    console.log(
+      `appInfoWithSaveAction::appinformaion: ${JSON.stringify(
+        appinformaion,
+        null,
+        2,
+      )}`,
+    )
     U.writeToStorage(appInfoForSaveKey, JSON.stringify(appinformaion))
       .then(() => {
         dispatch(saveAction(true, appinformaion))
@@ -39,10 +44,18 @@ export const appInfoWithLoadAction = () => (dispatch: Dispatch) => {
   U.readFromStorage(appInfoForSaveKey)
     .then(value => {
       const storedAppInfo = JSON.parse(value)
+      console.log(
+        `appInfoWithLoadAction::storedAppInfo: ${JSON.stringify(
+          storedAppInfo,
+          null,
+          2,
+        )}`,
+      )
       dispatch(loadAction(true, storedAppInfo))
     })
     .catch(e => {
-      console.error(e)
+      console.info('Fail: appInfo read from storage.')
+      console.info(e)
       dispatch(
         loadAction(false, {
           version: '',
@@ -51,6 +64,7 @@ export const appInfoWithLoadAction = () => (dispatch: Dispatch) => {
           debug: true,
           enablePrivacyPolicy: false,
           isLoaded: false,
+          actionType: 'init',
         }),
       )
     })

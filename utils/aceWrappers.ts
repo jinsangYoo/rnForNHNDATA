@@ -8,14 +8,26 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'reactslimer'
 import {getRandomIntInclusive} from '.'
 
-export function gcodeSelector(): string {
-  if (Platform.OS == 'ios') {
-    return 'AK2A97543'
+export function getContraryGcode(): string {
+  return gcodeSelector(true)
+}
+
+export function gcodeSelector(reverse: boolean = false): string {
+  if (reverse) {
+    if (!(Platform.OS === 'ios')) {
+      return 'AK2A97543'
+    } else {
+      return 'AK1A97542'
+    }
   } else {
-    return 'AK1A97542'
+    if (Platform.OS === 'ios') {
+      return 'AK2A97543'
+    } else {
+      return 'AK1A97542'
+    }
   }
 }
 

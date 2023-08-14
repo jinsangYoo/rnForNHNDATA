@@ -7,6 +7,7 @@ export type AppInfo = {
   debug: boolean
   enablePrivacyPolicy: boolean
   isLoaded: boolean
+  actionType: string
 }
 export type State = {
   appinformaion: AppInfo

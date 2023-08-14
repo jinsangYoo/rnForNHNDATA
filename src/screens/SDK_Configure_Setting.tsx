@@ -1,12 +1,17 @@
 import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
-import {StyleSheet, Switch} from 'react-native'
+import {Platform, StyleSheet, ToastAndroid, Alert, Switch} from 'react-native'
 // prettier-ignore
 import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, Text, TextInput, TouchableViewForFullWidth as TouchableView}
 from '../theme'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {SDK_Configure_SettingScreenProps as Props} from '../routeProps'
 
-import {gcodeSelector, getRandomIntInclusive, isEmpty} from '../../utils'
+import {
+  gcodeSelector,
+  getContraryGcode,
+  getRandomIntInclusive,
+  isEmpty,
+} from '../../utils'
 import {sendCommonWithPromise, sendCommonWithPromisePopup} from '../../acsdk'
 import {
   AceConfiguration,
@@ -16,7 +21,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'reactslimer'
 
 import {commonStyles} from '../styles/Common.style'
 import {AppState as AppStateStore} from '../store'
@@ -79,9 +84,10 @@ export default function SDK_Configure_Setting({navigation}: Props) {
         enablePrivacyPolicy: enablePrivacyPolicy,
       }),
     )
-  }, [])
+    onPopup('저장')
+  }, [gcode, disableToCollectAdvertisingIdentifier, debug, enablePrivacyPolicy])
 
-  const onSaveByDefaultValues = useCallback(() => {
+  const onSaveByDefaultOverwrite = useCallback(() => {
     setGcode(gcodeSelector())
     setDisableToCollectAdvertisingIdentifier(false)
     setEnablePrivacyPolicy(false)
@@ -96,7 +102,32 @@ export default function SDK_Configure_Setting({navigation}: Props) {
         enablePrivacyPolicy: false,
       }),
     )
+
+    onPopup('Default 값으로 덮어쓰고 저장')
   }, [])
+
+  const onSaveToContraryPlatformGcodeOverwrite = useCallback(() => {
+    setGcode(getContraryGcode())
+    dispatch(
+      AI.appInfoWithSaveAction({
+        ...appinformaion,
+        gcode: getContraryGcode(),
+        disableToCollectAdvertisingIdentifier:
+          disableToCollectAdvertisingIdentifier,
+        debug: debug,
+        enablePrivacyPolicy: enablePrivacyPolicy,
+      }),
+    )
+    onPopup('다른 플랫폼 GOCDE로 덮어쓰고 저장')
+  }, [disableToCollectAdvertisingIdentifier, debug, enablePrivacyPolicy])
+
+  const onPopup = (message: string) => {
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(message, ToastAndroid.SHORT)
+    } else {
+      Alert.alert(message)
+    }
+  }
 
   return (
     <SafeAreaView>
@@ -155,8 +186,19 @@ export default function SDK_Configure_Setting({navigation}: Props) {
               styles.touchableViewRedBG,
               styles.bottomAPITouchableView,
             ]}
-            onPress={onSaveByDefaultValues}>
-            <Text style={[styles.text]}>Default 설정</Text>
+            onPress={onSaveByDefaultOverwrite}>
+            <Text style={[styles.text]}>Default 덮어쓰기 설정</Text>
+          </TouchableView>
+
+          <TouchableView
+            notification
+            style={[
+              styles.touchableView,
+              styles.touchableViewBrightGreenBG,
+              styles.bottomAPITouchableView,
+            ]}
+            onPress={onSaveToContraryPlatformGcodeOverwrite}>
+            <Text style={[styles.text]}>다른 플랫폼 GCODE 로 설정</Text>
           </TouchableView>
         </AutoFocusProvider>
       </View>
@@ -192,6 +234,9 @@ const styles = StyleSheet.create({
   },
   touchableViewRedBG: {
     backgroundColor: 'rgba(255, 99, 99, 1.0)',
+  },
+  touchableViewBrightGreenBG: {
+    backgroundColor: '#97FFB9',
   },
   bottomAPITouchableView: {
     marginVertical: 10,
