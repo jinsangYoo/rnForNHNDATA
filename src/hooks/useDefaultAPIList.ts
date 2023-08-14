@@ -18,6 +18,11 @@ export const useDefaultAPIList = (deps: any[] = []) => {
       displayName: 'SDK 초기화 설정',
       isEnable: true,
     },
+    {
+      type: 'ManuallySetAD_ID',
+      displayName: '수동 광고식별자 설정',
+      isEnable: true,
+    },
     {type: 'AddInCart', displayName: '장바구니 추가', isEnable: true},
     {type: 'AppearProduct', displayName: '제품노출', isEnable: true},
     {type: 'BuyDone', displayName: '구매완료', isEnable: true},

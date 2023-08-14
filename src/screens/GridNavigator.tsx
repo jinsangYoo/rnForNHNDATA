@@ -9,6 +9,8 @@ import HomeRight from './HomeRight'
 import Grid from './Grid'
 
 import SDK_Configure_Setting from './SDK_Configure_Setting'
+import ManuallySetAD_ID from './ManuallySetAD_ID'
+
 import AddInCart from './AddInCart'
 import AppearProduct from './AppearProduct'
 import BuyDone from './BuyDone'
@@ -52,6 +54,7 @@ export default function GridNavigator() {
         name="SDK_Configure_Setting"
         component={SDK_Configure_Setting}
       />
+      <Stack.Screen name="ManuallySetAD_ID" component={ManuallySetAD_ID} />
       <Stack.Screen name="AddInCart" component={AddInCart} />
       <Stack.Screen name="AppearProduct" component={AppearProduct} />
       <Stack.Screen name="BuyDone" component={BuyDone} />

@@ -1,4 +1,5 @@
 export * from './SDK_Configure_SettingScreenProps'
+export * from './ManuallySetAD_IDScreenProps'
 
 export * from './AddInCartScreenProps'
 export * from './AppearProductScreenProps'

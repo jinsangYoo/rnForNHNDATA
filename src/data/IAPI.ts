@@ -7,6 +7,7 @@ type IAPI = {
 type TypeForAPI = {
   type:
     | 'SDK_Configure_Setting'
+    | 'ManuallySetAD_ID'
     | 'AddInCart'
     | 'AppearProduct'
     | 'BuyDone'
