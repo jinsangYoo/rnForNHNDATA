@@ -20,7 +20,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'reactslimer'
 
 const title = 'Timer'
 export default function Timer() {

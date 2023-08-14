@@ -20,7 +20,7 @@ export default function Home() {
   const goLeft = useCallback(() => navigation.navigate('HomeLeft'), [])
   const goRight = useCallback(
     () => navigation.navigate('HomeRight', {name: 'Jack', age: 32}),
-    []
+    [],
   )
   const open = useCallback(() => {
     navigation.dispatch(DrawerActions.openDrawer())
@@ -48,7 +48,7 @@ export default function Home() {
       leftRef.current?.resetOffset()
       flatListRef.current?.scrollToOffset({animated: true, offset: 0})
     },
-    []
+    [],
   )
   useEffect(() => D.makeArray(5).forEach(addPerson), [])
   const flatListRef = useRef<FlatList | null>(null)
@@ -93,5 +93,5 @@ export default function Home() {
 }
 const styles = StyleSheet.create({
   view: {flex: 1},
-  text: {marginRight: 10, fontSize: 20}
+  text: {marginRight: 10, fontSize: 20},
 })

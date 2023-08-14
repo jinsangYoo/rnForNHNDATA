@@ -15,7 +15,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'reactslimer'
 
 type IdAndAvatar = Pick<D.IPerson, 'id' | 'avatar'>
 

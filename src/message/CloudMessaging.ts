@@ -11,7 +11,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'reactslimer'
 
 export async function addListenerForForeground() {
   messaging().onMessage(async remoteMessage => {

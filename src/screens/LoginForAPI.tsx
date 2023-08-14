@@ -16,7 +16,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'reactslimer'
 
 const title = 'LoginForAPI'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()

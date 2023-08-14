@@ -32,7 +32,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'reactslimer'
 import {WebviewScreenProps as Props} from '../routeProps'
 import {Colors} from 'react-native-paper'
 import Validate from '../utils/validate'

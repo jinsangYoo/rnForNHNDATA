@@ -32,7 +32,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'reactslimer'
 import {APP_VERSION} from '../version'
 import {
   registerAppWithFCM,

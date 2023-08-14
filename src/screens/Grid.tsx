@@ -35,7 +35,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'reactslimer'
 import Validate from '../utils/validate'
 
 import {AppState as AppStateStore} from '../store'

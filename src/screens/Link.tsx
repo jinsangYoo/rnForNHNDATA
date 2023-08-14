@@ -16,7 +16,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'reactslimer'
 
 const title = 'Link'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()

@@ -7,7 +7,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'reactslimer'
 
 function popupMessage(msg: string) {
   if (Platform.OS === 'android') {
