@@ -6,16 +6,10 @@ import React, {
   useRef,
   useMemo,
 } from 'react'
-import {
-  StyleSheet,
-  TextInput as RNTextInput,
-  Keyboard,
-  Platform,
-} from 'react-native'
+import {StyleSheet, TextInput as RNTextInput, Keyboard} from 'react-native'
 // prettier-ignore
 import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, TextInput, Text, TouchableViewNonWidth as TouchableView}
 from '../theme'
-import {useDispatch} from 'react-redux'
 import ReactNativeIdfaAaid, {
   AdvertisingInfoResponse,
 } from '@sparkfabrik/react-native-idfa-aaid'
@@ -98,7 +92,6 @@ export default function WebviewForAPI({navigation}: Props) {
   const [newUrl, setNewUrl] = useState<string>(url.uri)
   const refForWebview = useRef<WebView | null>(null)
   const refForTextInput = useRef<RNTextInput | null>(null)
-  const dispatch = useDispatch()
   const onBack = useCallback(() => {
     navigation.canGoBack() && navigation.goBack()
   }, [])
