@@ -107,9 +107,9 @@ export default function Settings() {
     sendCommonWithPromise(msg, params)
   }, [])
 
-  const [token, setToken] = useState<string>('not init')
+  const [token, setToken] = useState<string>('not init token')
   const [error, resetError] = useAsync(async () => {
-    setToken('not init')
+    setToken('can not get token')
     resetError()
     const _token = await getToken()
     setToken(_token)
