@@ -6,6 +6,7 @@
     "prebuild": "node -p \"'export const APP_VERSION = ' + JSON.stringify(require('./package.json').version)\" > src/version.ts",
     "reset": "npm start -- --reset-cache",
     "android": "npm run prebuild && react-native run-android -- --reset-cache",
+    "androids": "npm run prebuild && react-native run-android -- --reset-cache --simulator=\"Pixel_4_API_33(AVD) - 13\"",
     "ios": "npm run prebuild && react-native run-ios --simulator=\"iPhone 14\"",
     "iosp": "npm run prebuild && react-native run-ios --device 'DATA'",
     "start": "react-native start",
