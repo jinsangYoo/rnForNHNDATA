@@ -1,14 +1,33 @@
-import React, {useEffect, useCallback, useState} from 'react'
+import React, {useLayoutEffect, useEffect, useCallback, useState} from 'react'
 import {StyleSheet, View, Text, ScrollView, Platform} from 'react-native'
 import {Colors} from 'react-native-paper'
 import {Avatar} from '../components'
 import * as D from '../data'
 import {useInterval} from '../hooks'
 
+import {getRandomIntInclusive} from '../../utils'
+import {sendCommonWithPromise} from '../../acsdk'
+import {
+  AceConfiguration,
+  ACParams,
+  ACS,
+  ACEResponseToCaller,
+  ACProduct,
+  ACEGender,
+  ACEMaritalStatus,
+} from 'acecounter.sdk.react-native'
+
 type IdAndAvatar = Pick<D.IPerson, 'id' | 'avatar'>
 
 const title = 'Interval'
 export default function Interval() {
+  useLayoutEffect(() => {
+    const randomValue = getRandomIntInclusive(0, 999).toString()
+    const msg = `>>${title}<< >>${randomValue}<<`
+    const params = ACParams.init(ACParams.TYPE.EVENT, msg)
+    sendCommonWithPromise(msg, params)
+  }, [])
+
   const [avatars, setAvatars] = useState<IdAndAvatar[]>([])
   const [start, setStart] = useState(true)
   useInterval(
@@ -20,7 +39,7 @@ export default function Interval() {
         ])
       }
     },
-    1000,
+    5000,
     [start],
   )
   const toggleStart = useCallback(() => setStart(start => !start), [])

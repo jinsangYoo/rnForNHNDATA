@@ -1,38 +1,49 @@
-import React, {useState} from 'react'
-import {StyleSheet, View, Text, FlatList} from 'react-native'
+import React, {useState, useCallback, useEffect} from 'react'
+import {StyleSheet, ActivityIndicator} from 'react-native'
 import {Colors} from 'react-native-paper'
-import Country from './Country'
-import * as D from '../data'
-import {useAsync} from '../hooks'
+import {SafeAreaView, View, Text, TopBar, UnderlineText} from '../theme'
 
-const title = 'Fetch'
 export default function Fetch() {
-  const [countries, setCountries] = useState<D.ICountry[]>([])
-  const [error, resetError] = useAsync(async () => {
-    setCountries([])
-    resetError()
-    // await Promise.reject(new Error('some error occurs'))
-    const countries = await D.getCountries()
-    setCountries(countries)
-  })
+  const [humorText, setHumorText] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const getHumor = useCallback(() => {
+    setHumorText('')
+    setErrorMessage('')
+    setLoading(true)
+    fetch('https://api.chucknorris.io/jokes/random')
+      .then(res => res.json())
+      .then(result => {
+        setHumorText(result.value)
+        setLoading(false)
+      })
+      .catch(e => {
+        setErrorMessage(e.message)
+        setLoading(false)
+      })
+  }, [])
+  useEffect(getHumor, [])
 
   return (
-    <View style={[styles.view]}>
-      <Text style={[styles.title]}>{title}</Text>
-      {error && <Text>{error.message}</Text>}
-      <FlatList
-        data={countries}
-        showsVerticalScrollIndicator={false}
-        renderItem={({item}) => <Country country={item} />}
-        keyExtractor={(item, index) => index.toString()}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-      />
-    </View>
+    <SafeAreaView>
+      <TopBar>
+        <UnderlineText style={[styles.text]} onPress={getHumor}>
+          get humor
+        </UnderlineText>
+      </TopBar>
+      {loading && (
+        <ActivityIndicator size="large" color={Colors.lightBlue500} />
+      )}
+      <View style={[styles.content]}>
+        <Text style={[styles.text]}>{humorText}</Text>
+        {errorMessage.length > 0 && (
+          <Text style={[styles.text]}>{errorMessage}</Text>
+        )}
+      </View>
+    </SafeAreaView>
   )
 }
-
 const styles = StyleSheet.create({
-  view: {flex: 1, alignItems: 'center', backgroundColor: Colors.blue100},
-  title: {fontSize: 30, color: 'white', fontWeight: '600'},
-  separator: {borderBottomColor: Colors.blue50, borderBottomWidth: 1},
+  text: {fontSize: 20, textAlign: 'center'},
+  content: {flex: 1, alignItems: 'center', justifyContent: 'center'},
 })
