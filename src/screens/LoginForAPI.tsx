@@ -16,7 +16,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'acecounter.sdk.react-native'
 
 const title = 'LoginForAPI'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()

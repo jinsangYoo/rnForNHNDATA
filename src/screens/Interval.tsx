@@ -15,7 +15,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'acecounter.sdk.react-native'
 
 type IdAndAvatar = Pick<D.IPerson, 'id' | 'avatar'>
 

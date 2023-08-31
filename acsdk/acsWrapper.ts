@@ -7,7 +7,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'acecounter.sdk.react-native'
 
 function popupMessage(msg: string) {
   if (Platform.OS === 'android') {

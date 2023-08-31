@@ -1,7 +1,6 @@
 import React from 'react'
 import type {FC} from 'react'
 import {StyleSheet, View, Text} from 'react-native'
-import {Colors} from 'react-native-paper'
 import * as D from '../data'
 
 export type ContryProps = {

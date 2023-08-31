@@ -18,3 +18,6 @@ export * from './useNavigationHorizontalInterpolator'
 
 export * from './useDefaultAPIList'
 export * from './useRenderSeparator'
+
+export * from './useDeeplink'
+export * from './useLinkingURL'

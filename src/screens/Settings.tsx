@@ -5,10 +5,9 @@ import Clipboard from '@react-native-clipboard/clipboard'
 // prettier-ignore
 import {SafeAreaView, View, Text, NavigationHeader, TouchableView, MaterialCommunityIcon as Icon}
 from '../theme'
-import * as D from '../data'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {useDispatch, useSelector} from 'react-redux'
-import {AppState} from '../store'
+import {AppState as AppStateStore} from '../store'
 import * as U from '../utils'
 import * as L from '../store/login'
 import {commonStyles} from '../styles/Common.style'
@@ -30,19 +29,17 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'acecounter.sdk.react-native'
 import {APP_VERSION} from '../version'
+import Validate from '../utils/validate'
 
 const title = 'Settings'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function Settings() {
-  const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
+  const {loggedIn} = useSelector<AppStateStore, L.State>(({login}) => login)
   const [email, setEmail] = useState<string>('')
   const [name, setName] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-
-  const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState<boolean>(false)
-  const [idfa, setIdfa] = useState<string | null>()
 
   const focus = useAutoFocus()
   const navigation = useNavigation()
@@ -52,7 +49,7 @@ export default function Settings() {
   }, [])
   const logout = useCallback(() => {
     dispatch(L.logoutAction())
-    navigation.reset({index: 0, routes: [{name: 'Login'}]})
+    navigation.reset({index: 0, routes: [{name: 'Login'} as never]})
   }, [])
 
   // const goTabNavigator = useCallback(() => {
@@ -61,18 +58,37 @@ export default function Settings() {
   // }, [email, name, password])
   // const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
 
+  const [idfa, setIdfa] = useState<string | null>()
+  const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState(false)
   useEffect(() => {
-    ReactNativeIdfaAaid.getAdvertisingInfo()
-      .then((res: AdvertisingInfoResponse) => {
-        setIsAdTrackingEnabled(!res.isAdTrackingLimited)
-        return !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
-      })
-      .catch(err => {
-        console.log(err)
-        setIsAdTrackingEnabled(false)
-        return setIdfa(null)
-      })
+    const getAdvertisingInfo = async () => {
+      ReactNativeIdfaAaid.getAdvertisingInfo()
+        .then((res: AdvertisingInfoResponse) => {
+          console.log(`${title}::in then: getAdvertisingInfo`)
+          console.log(
+            `${title}::in then: isAdTrackingEnabled: ${!res.isAdTrackingLimited}`,
+          )
+          console.log(`${title}::in then: idfa: ${res.id}`)
 
+          const result = Validate.validateAdvertisingIdentifier(
+            !res.isAdTrackingLimited,
+            res.id,
+          )
+          setIdfa(result.adid)
+          setIsAdTrackingEnabled(result.isAdEnabled)
+        })
+        .catch(err => {
+          console.log(`${title}::in catch: getAdvertisingInfo`)
+          console.log(err)
+          setIsAdTrackingEnabled(false)
+          setIdfa(null)
+        })
+    }
+
+    getAdvertisingInfo()
+  }, [])
+
+  useEffect(() => {
     U.readFromStorage(L.loggedUserKey)
       .then(value => {
         // if (value.length > 0) {
@@ -82,7 +98,7 @@ export default function Settings() {
         //   setPassword(savedUser.password)
         // }
       })
-      .catch(e => {})
+      .catch(e => console.error(e))
   }, [loggedIn])
 
   useLayoutEffect(() => {
@@ -91,9 +107,9 @@ export default function Settings() {
     sendCommonWithPromise(msg, params)
   }, [])
 
-  const [token, setToken] = useState<string>('not init')
+  const [token, setToken] = useState<string>('not init token')
   const [error, resetError] = useAsync(async () => {
-    setToken('not init')
+    setToken('can not get token')
     resetError()
     const _token = await getToken()
     setToken(_token)

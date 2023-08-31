@@ -8,8 +8,8 @@
  * @format
  */
 
-import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
-import {SafeAreaView, StyleSheet, Platform} from 'react-native'
+import React, {useState, useCallback, useEffect} from 'react'
+import {SafeAreaView, StyleSheet, Platform, useColorScheme} from 'react-native'
 
 import {
   AceConfiguration,
@@ -19,7 +19,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'acecounter.sdk.react-native'
 
 import MainNavigator from './src/screens/MainNavigator'
 import {
@@ -27,38 +27,133 @@ import {
   DefaultTheme,
   DarkTheme,
 } from '@react-navigation/native'
-import {AppearanceProvider, useColorScheme} from 'react-native-appearance'
-import {Provider as ReduxProvider} from 'react-redux'
 import {ToggleThemeProvider} from './src/contexts'
-import {makeStore} from './src/store'
 
-import {CloudMessaging} from './src/message'
 import {gcodeSelector} from './utils/aceWrappers'
 
 import DeviceInfo from 'react-native-device-info'
 
 import {sendCommonWithPromise} from './acsdk'
+import {useDeeplinkURL} from './src/hooks'
 
-const store = makeStore()
+import {useDispatch, useSelector} from 'react-redux'
+import {AppState as AppStateStore} from './src/store'
+import * as AI from './src/store/appinfo'
+import type {AppInfo} from './src/store/appinfo'
+import * as U from './src/utils'
 
 const App = () => {
-  useLayoutEffect(() => {
-    console.log(`1. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
-    console.log(`ACS.getSdkVersion(): ${ACS.getSdkVersion()}`)
+  // const {coldURL: initialUrl, processing} = useDeeplinkURL()
+  // const {warmURL: linkingUrl} = useLinkingURL()
+  useDeeplinkURL()
+  // useLinkingURL()
 
+  const appinformaion = useSelector<AppStateStore, AppInfo>(state => {
+    console.log('useSelector::state:')
+    console.log(state)
+    // console.log('useSelector::state.appinfo:')
+    // console.log(state.appinfo)
+    console.log(
+      `useSelector::state.appinfo.appinformaion: ${JSON.stringify(
+        state.appinfo.appinformaion,
+        null,
+        2,
+      )}`,
+    )
+    return state.appinfo.appinformaion
+  })
+  const dispatch = useDispatch()
+  useEffect(() => {
+    console.log(`App::appinformaion: ${JSON.stringify(appinformaion, null, 2)}`)
+    dispatch(AI.appInfoWithLoadAction())
+  }, [])
+
+  const [gcode, setGcode] = useState('')
+  const [debug, setDebug] = useState(true)
+  const [enablePrivacyPolicy, setEnablePrivacyPolicy] = useState(false)
+  const [
+    disableToCollectAdvertisingIdentifier,
+    setDisableToCollectAdvertisingIdentifier,
+  ] = useState(false)
+  useEffect(() => {
+    console.log(`0. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
+    console.log(`0. ACS.getSdkVersion(): ${ACS.getSdkVersion()}`)
+
+    U.readFromStorage(AI.appInfoForSaveKey)
+      .then(value => {
+        if (value.length > 0) {
+          const storedConfigureValues = JSON.parse(value)
+          console.log(
+            `저장된 gcode: >>${storedConfigureValues.gcode}<< 를 사용합니다.`,
+          )
+          console.log(JSON.stringify(storedConfigureValues, null, 2))
+          setGcode(storedConfigureValues.gcode)
+          setDebug(storedConfigureValues.debug)
+          setEnablePrivacyPolicy(storedConfigureValues.enablePrivacyPolicy)
+          setDisableToCollectAdvertisingIdentifier(
+            storedConfigureValues.disableToCollectAdvertisingIdentifier,
+          )
+
+          const _config = AceConfiguration.init(storedConfigureValues.gcode)
+          _config.debug = storedConfigureValues.debug
+          _config.enablePrivacyPolicy =
+            storedConfigureValues.enablePrivacyPolicy
+          _config.disableToCollectAdvertisingIdentifier =
+            storedConfigureValues.disableToCollectAdvertisingIdentifier
+
+          ACS.configure(
+            _config,
+            (error?: object, innerResult?: ACEResponseToCaller) => {
+              if (error) {
+                console.log('SDK CB 초기화::in error!!')
+                console.log(`error: ${error}`)
+                if (innerResult) {
+                  console.log(
+                    'innerResult: ' + JSON.stringify(innerResult, null, 2),
+                  )
+                }
+              } else if (innerResult) {
+                console.log('SDK CB 초기화::in innerResult!!')
+                console.log(
+                  'innerResult: ' + JSON.stringify(innerResult, null, 2),
+                )
+                console.log(`2. ACS.isEnableSDK(): ${ACS.isEnableSDK()}`)
+                console.log(
+                  'ACS.getDetail(): ' +
+                    JSON.stringify(ACS.getSdkDetails(), null, 2),
+                )
+              } else {
+                console.log('SDK CB 초기화::finally!!')
+                console.log('error and innerResult is undefined.')
+              }
+            },
+          )
+        } else {
+          console.log(
+            `초기화 JSON 파일 읽기 실패 value.length: >>${value.length}<<`,
+          )
+          defaultInitForSDK()
+        }
+      })
+      .catch(e => {
+        console.log(`초기화 JSON 파일 읽기 실패`)
+        console.log(e)
+        defaultInitForSDK()
+      })
+  }, [])
+
+  const defaultInitForSDK = useCallback(() => {
+    console.log(
+      `gcodeSelector(): >>${gcodeSelector()}<< 의 gcode 를 사용합니다.`,
+    )
+
+    setGcode(gcodeSelector())
     const _config = AceConfiguration.init(gcodeSelector())
-    // ACS.configure(_config)
-    //   .then(response => {
-    //     console.log('SDK Promise 초기화::in then!!')
-    //     console.log('response: ' + JSON.stringify(response, null, 2))
-    //     console.log(
-    //       'ACS.getDetail(): ' + JSON.stringify(ACS.getDetail(), null, 2),
-    //     )
-    //   })
-    //   .catch(err => {
-    //     console.log('SDK Promise 초기화::in reject!!')
-    //     console.log('err: ' + JSON.stringify(err, null, 2))
-    //   })
+    _config.debug = debug
+    _config.enablePrivacyPolicy = enablePrivacyPolicy
+    _config.disableToCollectAdvertisingIdentifier =
+      disableToCollectAdvertisingIdentifier
+
     ACS.configure(
       _config,
       (error?: object, innerResult?: ACEResponseToCaller) => {
@@ -81,6 +176,18 @@ const App = () => {
         }
       },
     )
+    // ACS.configure(_config)
+    //   .then(response => {
+    //     console.log('SDK Promise 초기화::in then!!')
+    //     console.log('response: ' + JSON.stringify(response, null, 2))
+    //     console.log(
+    //       'ACS.getDetail(): ' + JSON.stringify(ACS.getDetail(), null, 2),
+    //     )
+    //   })
+    //   .catch(err => {
+    //     console.log('SDK Promise 초기화::in reject!!')
+    //     console.log('err: ' + JSON.stringify(err, null, 2))
+    //   })
   }, [])
 
   const scheme = useColorScheme() // 'dark' 혹은 'light'
@@ -113,17 +220,6 @@ const App = () => {
   }
   testReactNativeDeviceInfo()
 
-  const testReplaceRegex = () => {
-    const s = 'iOS and js Ios'
-    const re = /iOS/gi
-
-    const newS = s.replace(re, 'iPhone OS')
-    console.log(`newS: ${newS}`)
-  }
-  testReplaceRegex()
-
-  CloudMessaging()
-  console.log('rnForNHNData is ready.')
   if (Platform.OS === 'android') {
     DeviceInfo.getInstallReferrer()
       .then(installReferrer => {
@@ -138,15 +234,14 @@ const App = () => {
         console.log(`installReferrer::e: ${JSON.stringify(e, null, 2)}`)
       })
   }
+  console.log('rnForNHNData is ready.')
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <ToggleThemeProvider toggleTheme={toggleTheme}>
-        <ReduxProvider store={store}>
-          <NavigationContainer theme={theme}>
-            <MainNavigator />
-          </NavigationContainer>
-        </ReduxProvider>
+        <NavigationContainer theme={theme}>
+          <MainNavigator />
+        </NavigationContainer>
       </ToggleThemeProvider>
     </SafeAreaView>
   )

@@ -19,7 +19,7 @@ import {commonStyles} from '../styles/Common.style'
 import ReactNativeIdfaAaid, {
   AdvertisingInfoResponse,
 } from '@sparkfabrik/react-native-idfa-aaid'
-import {gcodeSelector} from '../../utils'
+import {gcodeSelector, isEmpty} from '../../utils'
 import GridCell from './GridCell'
 import type {IAPI} from '../data'
 import {useDefaultAPIList, useRenderSeparator} from '../hooks'
@@ -35,30 +35,41 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'acecounter.sdk.react-native'
+import Validate from '../utils/validate'
+
+import {AppState as AppStateStore} from '../store'
+import * as AI from '../store/appinfo'
 
 const title = 'Grid'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function Grid({navigation}: Props) {
   // gcode
   const focus = useAutoFocus()
-  const [gcode, setGcode] = useState<string>(gcodeSelector())
-  const onApplyGcode = useCallback(() => {
-    const message = 'not implementaion.'
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(message, ToastAndroid.SHORT)
-    } else {
-      Alert.alert(message)
-    }
-  }, [])
-  // debug mode
-  const [isDebug, setIsDebug] = useState<boolean>(false)
+  const dispatch = useDispatch()
+  const {appinformaion} = useSelector<AppStateStore, AI.State>(
+    ({appinfo}) => appinfo,
+  )
+  const [gcode, setGcode] = useState<string>(
+    isEmpty(appinformaion.gcode) ? gcodeSelector() : appinformaion.gcode,
+  )
+
   // idfa
   const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState<boolean>(false)
   useEffect(() => {
     ReactNativeIdfaAaid.getAdvertisingInfo()
       .then((res: AdvertisingInfoResponse) => {
-        setIsAdTrackingEnabled(!res.isAdTrackingLimited)
+        console.log(`${title}::in then: getAdvertisingInfo`)
+        console.log(
+          `${title}::in then: isAdTrackingEnabled: ${!res.isAdTrackingLimited}`,
+        )
+        console.log(`${title}::in then: idfa: ${res.id}`)
+
+        const result = Validate.validateAdvertisingIdentifier(
+          !res.isAdTrackingLimited,
+          res.id,
+        )
+        setIsAdTrackingEnabled(result.isAdEnabled)
       })
       .catch(err => {
         console.log(err)
@@ -71,13 +82,12 @@ export default function Grid({navigation}: Props) {
     sendCommonWithPromise(msg, params)
   }, [])
   // navigation
-  const dispatch = useDispatch()
   const open = useCallback(() => {
     navigation.dispatch(DrawerActions.openDrawer())
   }, [])
   const logout = useCallback(() => {
     dispatch(L.logoutAction())
-    navigation.reset({index: 0, routes: [{name: 'Login'}]})
+    navigation.reset({index: 0, routes: [{name: 'Login' as never}]})
   }, [])
   const {loggedUser} = useSelector<AppState, L.State>(({login}) => login)
   console.log(`loggedUser: ${JSON.stringify(loggedUser, null, 2)}`)
@@ -123,6 +133,14 @@ export default function Grid({navigation}: Props) {
       'QUNFXzExNDUwOF9ESUdIVFk=',
     )}`,
   )
+  const getSDKDetails = useCallback(() => {
+    const details = JSON.stringify(ACS.getSdkDetails(), null, 2)
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(details, ToastAndroid.LONG)
+    } else {
+      Alert.alert(details)
+    }
+  }, [])
 
   return (
     <SafeAreaView>
@@ -147,25 +165,7 @@ export default function Grid({navigation}: Props) {
                 placeholder="enter your gcode."
               />
             </View>
-            {/* <TouchableView
-              notification
-              style={[styles.touchableViewInControlBox]}
-              onPress={onApplyGcode}>
-              <Text style={[styles.textInTouchableView]}>apply</Text>
-            </TouchableView> */}
           </View>
-          {/* <View
-            style={[
-              commonStyles.rowFlexDirectionViewNonPadding,
-              styles.controlBoxJustifyContent,
-            ]}>
-            <Text style={[styles.text]}>debug 모드:</Text>
-            <Switch
-              value={isDebug}
-              onValueChange={setIsDebug}
-              style={{height: 50}}
-            />
-          </View> */}
           <View
             style={[
               commonStyles.rowFlexDirectionViewNonPadding,
@@ -175,6 +175,20 @@ export default function Grid({navigation}: Props) {
             pointerEvents="none">
             <Text style={[styles.text]}>개인 정보 취급 방침 활성화:</Text>
             <Switch value={isAdTrackingEnabled} />
+          </View>
+          <View
+            style={[
+              commonStyles.rowFlexDirectionViewNonPadding,
+              styles.controlBoxJustifyContent,
+              {marginTop: 10},
+            ]}>
+            <Text style={[styles.text]}>SDK 상태보기:</Text>
+            <TouchableView
+              notification
+              style={[styles.touchableViewInControlBox]}
+              onPress={getSDKDetails}>
+              <Text style={[styles.textInTouchableView]}>보기</Text>
+            </TouchableView>
           </View>
         </View>
         <View style={styles.view}>

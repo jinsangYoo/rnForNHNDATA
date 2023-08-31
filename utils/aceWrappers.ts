@@ -8,14 +8,26 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'acecounter.sdk.react-native'
 import {getRandomIntInclusive} from '.'
 
-export function gcodeSelector(): string {
-  if (Platform.OS == 'ios') {
-    return 'AK3A79964'
+export function getContraryGcode(): string {
+  return gcodeSelector(true)
+}
+
+export function gcodeSelector(reverse: boolean = false): string {
+  if (reverse) {
+    if (!(Platform.OS === 'ios')) {
+      return 'AK2A97543'
+    } else {
+      return 'AK1A97542'
+    }
   } else {
-    return 'AK2A79936'
+    if (Platform.OS === 'ios') {
+      return 'AK2A97543'
+    } else {
+      return 'AK1A97542'
+    }
   }
 }
 
@@ -60,13 +72,13 @@ export function sendCommonWithPromise(
 
 export function setManualToRandomAdvertisingIdentifier(): void {
   const randomValue = getRandomIntInclusive(0, 9999999999999999).toString()
-  ACS.setAdvertisingIdentifier(randomValue)
+  ACS.setAdvertisingIdentifier(true, randomValue)
   const msg = `set manual AdvertisingIdentifier >${randomValue}<`
   console.log(msg)
 }
 
 export function setManualAdvertisingIdentifier(value: string): void {
-  ACS.setAdvertisingIdentifier(value)
+  ACS.setAdvertisingIdentifier(true, value)
   const msg = `set manual AdvertisingIdentifier >${value}<`
   console.log(msg)
 }

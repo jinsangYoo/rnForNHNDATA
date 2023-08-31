@@ -19,7 +19,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'acecounter.sdk.react-native'
 import {WebViewHomeScreenProps as Props} from '../routeProps'
 
 const title = 'WebViewHome'

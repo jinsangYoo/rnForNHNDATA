@@ -53,7 +53,7 @@ const GridCell: FC<GridCellProps> = ({api: initialApi, onPressed}) => {
                   : 'rgba(200, 200, 200, 1.0)',
             },
           ]}>
-          {api.node.type}
+          {api.node.displayName}
         </Text>
         <UnderlineText
           ellipsizeMode="tail"

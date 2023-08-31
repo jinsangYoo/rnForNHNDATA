@@ -1,12 +1,19 @@
 import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react'
-import {Linking, StyleSheet, ActivityIndicator, Alert} from 'react-native'
+import {
+  StyleSheet,
+  ActivityIndicator,
+  Alert,
+  AppState,
+  AppStateStatus,
+  Platform,
+} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 // prettier-ignore
 import {SafeAreaView, View, Text, TextInput, TouchableViewForFullWidth as TouchableView}
 from '../theme'
 import {useAutoFocus, AutoFocusProvider} from '../contexts'
 import {useDispatch, useSelector} from 'react-redux'
-import {AppState} from '../store'
+import {AppState as AppStateStore} from '../store'
 import * as U from '../utils'
 import * as L from '../store/login'
 import {Colors} from 'react-native-paper'
@@ -25,30 +32,19 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
-
-const useInitialURL = () => {
-  const [url, setUrl] = useState<string | null>(null)
-  const [processing, setProcessing] = useState(true)
-
-  useEffect(() => {
-    const getUrlAsync = async () => {
-      // Get the deep link used to open the app
-      const initialUrl = await Linking.getInitialURL()
-      setUrl(initialUrl)
-      setProcessing(false)
-    }
-
-    getUrlAsync()
-  }, [])
-
-  return {url, processing}
-}
+} from 'acecounter.sdk.react-native'
+import {APP_VERSION} from '../version'
+import {
+  registerAppWithFCM,
+  requestUserPermission,
+  addListenerForForeground,
+} from '../message'
+import Validate from '../utils/validate'
 
 const title = 'ACE COUNTER'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
 export default function Login() {
-  const {loggedIn} = useSelector<AppState, L.State>(({login}) => login)
+  const {loggedIn} = useSelector<AppStateStore, L.State>(({login}) => login)
   const [acesession, setAcesession] = useState<string>('')
   const [id, setId] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -57,29 +53,49 @@ export default function Login() {
   const dispatch = useDispatch()
   const goTabNavigator = useCallback(() => {
     dispatch(L.loginAction({acesession, id, password}))
-    navigation.navigate('TabNavigator')
+    navigation.navigate('TabNavigator' as never)
   }, [acesession, id, password])
-  const goSignUp = useCallback(() => navigation.navigate('SignUp'), [])
-  const {url: initialUrl, processing} = useInitialURL()
+  const goSignUp = useCallback(() => navigation.navigate('SignUp' as never), [])
 
-  const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState<boolean>(false)
   const [idfa, setIdfa] = useState<string | null>()
+  const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState(false)
   useEffect(() => {
-    ReactNativeIdfaAaid.getAdvertisingInfo()
-      .then((res: AdvertisingInfoResponse) => {
-        setIsAdTrackingEnabled(!res.isAdTrackingLimited)
-        return !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
-      })
-      .catch(err => {
-        console.log(err)
-        setIsAdTrackingEnabled(false)
-        return setIdfa(null)
-      })
-      .finally(() => {
-        console.log(`isAdTrackingEnabled: ${isAdTrackingEnabled}`)
-        console.log(`idfa: ${idfa}`)
-      })
+    const getAdvertisingAndFCM = async () => {
+      await ReactNativeIdfaAaid.getAdvertisingInfo()
+        .then((res: AdvertisingInfoResponse) => {
+          console.log(`${title}::in then: getAdvertisingInfo`)
+          console.log(
+            `${title}::in then: isAdTrackingEnabled: ${!res.isAdTrackingLimited}`,
+          )
+          console.log(`${title}::in then: idfa: ${res.id}`)
+          ACS.setAdvertisingIdentifier(!res.isAdTrackingLimited, res.id)
 
+          const result = Validate.validateAdvertisingIdentifier(
+            !res.isAdTrackingLimited,
+            res.id,
+          )
+          setIdfa(result.adid)
+          setIsAdTrackingEnabled(result.isAdEnabled)
+          console.log(
+            `${title}::in then: result of validateAdvertisingIdentifier: ${result.isAdEnabled}, >>${result.adid}<<`,
+          )
+        })
+        .catch(err => {
+          console.log(`${title}::in catch: getAdvertisingInfo`)
+          console.log(err)
+          setIsAdTrackingEnabled(false)
+          setIdfa(null)
+        })
+
+      await registerAppWithFCM()
+      await requestUserPermission()
+      await addListenerForForeground()
+    }
+
+    getAdvertisingAndFCM()
+  }, [])
+
+  useEffect(() => {
     U.readFromStorage(L.loggedUserKey)
       .then(value => {
         if (value.length > 0) {
@@ -133,7 +149,7 @@ export default function Login() {
             const setCookie = _resultHeadersMap
               .get('set-cookie')
               .split(' ')
-              .filter(item => regex.test(item))
+              .filter((item: string) => regex.test(item))
 
             if (setCookie.length != 1) {
               throw new Error(
@@ -154,7 +170,7 @@ export default function Login() {
         dispatch(L.loginWithSaveAction({acesession, id, password}))
         navigation.reset({
           index: 0,
-          routes: [{name: 'WebViewHome', params: {acesession}}],
+          routes: [{name: 'WebViewHome' as never, params: {acesession}}],
         })
       })
       .catch((e: Error) => {
@@ -168,17 +184,18 @@ export default function Login() {
       <View style={[styles.view]}>
         <AutoFocusProvider contentContainerStyle={[styles.keyboardAwareFocus]}>
           <Text style={[styles.title, {marginBottom: 5}]}>{title}</Text>
-          <Text style={[styles.subTitle, {marginBottom: 100}]}>
+          <Text style={[styles.subTitle, {marginBottom: 5}]}>
             ({randomValueForScreen})
+          </Text>
+          <Text style={[styles.subTitle, {marginBottom: 5}]}>
+            app version: {APP_VERSION}
+          </Text>
+          <Text style={[{marginBottom: 100}]}>
+            SDK version: {ACS.getSdkVersion()}
           </Text>
           {loading && (
             <ActivityIndicator size="large" color={Colors.lightBlue500} />
           )}
-          <Text>
-            {processing
-              ? 'Processing the initial url from a deep link'
-              : `The deep link is: ${initialUrl || 'None'}`}
-          </Text>
           <View style={[styles.textView]}>
             <Text style={[styles.text]}>ID</Text>
             <View border style={[styles.textInputView]}>

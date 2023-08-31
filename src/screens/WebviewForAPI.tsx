@@ -10,7 +10,6 @@ import {StyleSheet, TextInput as RNTextInput, Keyboard} from 'react-native'
 // prettier-ignore
 import {SafeAreaView, NavigationHeader, MaterialCommunityIcon as Icon, View, TextInput, Text, TouchableViewNonWidth as TouchableView}
 from '../theme'
-import {useDispatch} from 'react-redux'
 import ReactNativeIdfaAaid, {
   AdvertisingInfoResponse,
 } from '@sparkfabrik/react-native-idfa-aaid'
@@ -27,9 +26,10 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'ace.sdk.react-native'
+} from 'acecounter.sdk.react-native'
 import {WebviewScreenProps as Props} from '../routeProps'
 import {Colors} from 'react-native-paper'
+import Validate from '../utils/validate'
 
 type WebViewProps = {
   uri: string
@@ -43,20 +43,36 @@ export default function WebviewForAPI({navigation}: Props) {
     return {uri: 'http://vklog.loginside.co.kr/', method: 'get'}
   }, [])
   const [url, setUrl] = useState<WebViewProps>(defaultWebviewURL)
-  const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState<boolean>(false)
   const [idfa, setIdfa] = useState<string | null>()
+  const [isAdTrackingEnabled, setIsAdTrackingEnabled] = useState(false)
   useEffect(() => {
-    ReactNativeIdfaAaid.getAdvertisingInfo()
-      .then((res: AdvertisingInfoResponse) => {
-        setIsAdTrackingEnabled(!res.isAdTrackingLimited)
-        return !res.isAdTrackingLimited ? setIdfa(res.id) : setIdfa(null)
-      })
-      .catch(err => {
-        console.log(err)
-        setIsAdTrackingEnabled(false)
-        return setIdfa(null)
-      })
+    const getAdvertisingInfo = async () => {
+      ReactNativeIdfaAaid.getAdvertisingInfo()
+        .then((res: AdvertisingInfoResponse) => {
+          console.log(`${title}::in then: getAdvertisingInfo`)
+          console.log(
+            `${title}::in then: isAdTrackingEnabled: ${!res.isAdTrackingLimited}`,
+          )
+          console.log(`${title}::in then: idfa: ${res.id}`)
 
+          const result = Validate.validateAdvertisingIdentifier(
+            !res.isAdTrackingLimited,
+            res.id,
+          )
+          setIdfa(result.adid)
+          setIsAdTrackingEnabled(result.isAdEnabled)
+        })
+        .catch(err => {
+          console.log(`${title}::in catch: getAdvertisingInfo`)
+          console.log(err)
+          setIsAdTrackingEnabled(false)
+          setIdfa(null)
+        })
+    }
+
+    getAdvertisingInfo()
+  }, [])
+  useEffect(() => {
     U.readFromStorage('__webViewURL')
       .then(value => {
         if (value.length > 0) {
@@ -76,7 +92,6 @@ export default function WebviewForAPI({navigation}: Props) {
   const [newUrl, setNewUrl] = useState<string>(url.uri)
   const refForWebview = useRef<WebView | null>(null)
   const refForTextInput = useRef<RNTextInput | null>(null)
-  const dispatch = useDispatch()
   const onBack = useCallback(() => {
     navigation.canGoBack() && navigation.goBack()
   }, [])
