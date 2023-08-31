@@ -16,7 +16,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'reactslimer'
+} from 'acecounter.sdk.react-native'
 
 const title = 'Leave'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()

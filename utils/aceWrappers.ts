@@ -8,7 +8,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'reactslimer'
+} from 'acecounter.sdk.react-native'
 import {getRandomIntInclusive} from '.'
 
 export function getContraryGcode(): string {

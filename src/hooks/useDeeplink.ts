@@ -9,7 +9,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'reactslimer'
+} from 'acecounter.sdk.react-native'
 
 import {sendCommonWithPromise} from '../../acsdk'
 

@@ -13,7 +13,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'reactslimer'
+} from 'acecounter.sdk.react-native'
 
 const title = 'LifeCycle'
 export default function LifeCycle() {

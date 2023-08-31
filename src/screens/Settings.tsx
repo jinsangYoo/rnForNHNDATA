@@ -29,7 +29,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'reactslimer'
+} from 'acecounter.sdk.react-native'
 import {APP_VERSION} from '../version'
 import Validate from '../utils/validate'
 

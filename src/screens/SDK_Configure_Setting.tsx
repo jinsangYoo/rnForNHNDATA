@@ -21,7 +21,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'reactslimer'
+} from 'acecounter.sdk.react-native'
 
 import {commonStyles} from '../styles/Common.style'
 import {AppState as AppStateStore} from '../store'

@@ -1,6 +1,6 @@
 {
   "name": "rnfornhndata",
-  "version": "2.9.15",
+  "version": "2.9.16",
   "private": true,
   "scripts": {
     "prebuild": "node -p \"'export const APP_VERSION = ' + JSON.stringify(require('./package.json').version)\" > src/version.ts",
@@ -27,8 +27,8 @@
     "@react-navigation/drawer": "^6.6.3",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/stack": "^6.3.17",
-    "reactslimer": "^2.9.15",
     "@sparkfabrik/react-native-idfa-aaid": "^1.0.1",
+    "acecounter.sdk.react-native": "^2.9.15",
     "color": "^4.2.3",
     "faker": "5.5.3",
     "moment": "^2.29.1",

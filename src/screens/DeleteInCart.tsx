@@ -19,7 +19,7 @@ import {
   ACProduct,
   ACEGender,
   ACEMaritalStatus,
-} from 'reactslimer'
+} from 'acecounter.sdk.react-native'
 
 const title = 'DeleteInCart'
 const randomValueForScreen = getRandomIntInclusive(0, 999).toString()
