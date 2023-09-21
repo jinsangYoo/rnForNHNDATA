@@ -45,8 +45,12 @@
                 <data
                     android:scheme="https"
                     android:host="aceapp.acecounter.com"
-                    android:path="/rn"
                     tools:ignore="AppLinkUrlError" />
+
+                <data
+                    android:path="/rn" />
+                <data
+                    android:path="/com.rnfornhndata" />
             </intent-filter>
         </activity>
     </application>
