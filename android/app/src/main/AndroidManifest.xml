@@ -45,6 +45,7 @@
                 <data
                     android:scheme="https"
                     android:host="aceapp.acecounter.com"
+                    android:path="/rn"
                     tools:ignore="AppLinkUrlError" />
             </intent-filter>
         </activity>
